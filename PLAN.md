@@ -12,9 +12,20 @@ If a decision is unclear but forward progress is still reasonable, record it in 
 
   Create the Rust workspace, basic crate layout, formatting/lint/test commands, and CI needed for later PRs to have useful gates. Include a minimal CLI binary and a minimal Leptos app shell only far enough to prove the workspace builds. Do not implement catalog behavior yet.
 
-  Expected coverage: workspace build tests or smoke tests, CI command coverage, and enough checks to catch broken formatting, clippy failures, and test failures.
+  This step must apply the Rust-relevant `$scode-modernize` baseline while scaffolding the project:
 
-  Coverage gate before swarm: add or update tests that prove the scaffold, build checks, and CI gates catch the failures this step is meant to catch.
+  - add separate GitHub Actions jobs for `cargo fmt --all -- --check`, `cargo clippy`, and `cargo test`
+  - add cargo caching to every CI job that compiles Rust code
+  - avoid deprecated `actions-rs/*` actions
+  - add `dprint` formatting for Markdown, TOML, and JSON, including a CI check
+  - keep agent finish-work commands in sync with required CI commands
+  - keep `AGENTS.md` canonical and `CLAUDE.md` as a symlink to it
+  - add Conventional Commit guidance to the agent instructions
+  - use `tracing`/`tracing-subscriber` instead of `log`-ecosystem logging when logging is introduced
+
+  Expected coverage: workspace build tests or smoke tests, CI command coverage, dprint coverage, modernization checklist verification, and enough checks to catch broken formatting, clippy failures, and test failures.
+
+  Coverage gate before swarm: add or update tests or scripted checks that prove the scaffold, build checks, dprint check, modernization baseline, and CI gates catch the failures this step is meant to catch.
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 

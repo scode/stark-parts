@@ -1,0 +1,17 @@
+[workspace]
+members = [
+  "crates/stark-parts-cli",
+  "crates/stark-parts-web",
+]
+resolver = "3"
+
+[workspace.package]
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/scode/stark-parts"
+
+[workspace.dependencies]
+clap = { version = "4.5.53", features = ["derive"] }
+leptos = { version = "0.8.14", features = ["csr", "ssr"] }
+tracing = "0.1.43"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }

@@ -9,6 +9,15 @@ against the finished diff, address all feedback that is unambiguously an improve
 fixes, rerun the swarm if the fixes materially change the diff, mark the step `[x]`, then commit that step and create
 the PR. The next step builds on top of the previous step's bookmark.
 
+Creating or updating a PR is not a stopping point for the overall plan. Agents should keep working through later plan
+steps and return with the full set of created PRs unless blocked by a real dependency or by the user's current
+instruction.
+
+Merging is different. "Ready for review", "ready to merge", passing checks, approved reviews, a completed plan step, or
+the need to build later PRs on top of earlier PRs are not permission to merge. Do not merge a PR, close a PR as merged,
+enable auto-merge, or ask another tool or service to merge a PR unless the user's current instruction explicitly says to
+do that.
+
 If a decision is unclear but forward progress is still reasonable, record it in `AMBIGUITY.md` and continue. Only stop
 for help when the decision is existential enough that building either direction would likely waste the stack.
 

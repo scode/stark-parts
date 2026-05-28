@@ -64,7 +64,7 @@ for help when the decision is existential enough that building either direction 
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 
-- 3. [ ] Upstream catalog client trait and fixture-backed crawler core.
+- 3. [x] Upstream catalog client trait and fixture-backed crawler core.
 
   Add the trait boundary for Stark upstream catalog access and implement crawler traversal against that trait using
   fixture responses. The crawler core should handle variant tag discovery, category recursion, product group fetches,

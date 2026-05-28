@@ -1,5 +1,6 @@
 [workspace]
 members = [
+  "crates/stark-parts-catalog",
   "crates/stark-parts-cli",
   "crates/stark-parts-web",
 ]
@@ -12,6 +13,12 @@ repository = "https://github.com/scode/stark-parts"
 
 [workspace.dependencies]
 clap = { version = "4.5.53", features = ["derive"] }
+json5 = "1.3.1"
 leptos = { version = "0.8.14", features = ["csr", "ssr"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+thiserror = "2.0.17"
+time = { version = "0.3.44", features = ["parsing"] }
 tracing = "0.1.43"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
+url = "2.5.7"

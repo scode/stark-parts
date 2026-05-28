@@ -48,7 +48,7 @@ for help when the decision is existential enough that building either direction 
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 
-- 2. [ ] Catalog schema and deterministic JSON5 formatting.
+- 2. [x] Catalog schema and deterministic JSON5 formatting.
 
   Define the project-owned committed catalog schema, including metadata, bike variants, category tree nodes, products,
   articles, variants, SKUs, attributes, prices, availability, image URLs, Stark website links or link-building fields,

@@ -1,3 +1,5 @@
+pub mod search;
+
 use leptos::prelude::*;
 
 const APP_TITLE: &str = "Stark Parts";

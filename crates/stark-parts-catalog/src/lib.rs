@@ -8,7 +8,9 @@
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
+#[cfg(feature = "http")]
 use std::thread::sleep;
+#[cfg(feature = "http")]
 use std::time::Duration;
 use time::OffsetDateTime;
 use time::format_description::well_known::Rfc3339;
@@ -16,6 +18,7 @@ use url::Url;
 
 const SCHEMA_VERSION: u32 = 1;
 const MAX_CATEGORY_DEPTH: usize = 32;
+#[cfg(feature = "http")]
 const STARK_SPARE_PARTS_URL: &str = "https://starkfuture.com/parts-and-accessories/spare-parts";
 pub const DEFAULT_CATALOG_PATH: &str = "catalog/stark-parts.json5";
 const ALLOWED_IMAGE_HOSTS: &[&str] = &[
@@ -382,12 +385,14 @@ pub trait HttpTransport {
     fn get_text(&self, url: &str) -> UpstreamResult<String>;
 }
 
+#[cfg(feature = "http")]
 #[derive(Debug)]
 pub struct ReqwestTransport {
     client: reqwest::blocking::Client,
     api_base_url: Url,
 }
 
+#[cfg(feature = "http")]
 impl ReqwestTransport {
     pub fn new(api_base_url: &str) -> UpstreamResult<Self> {
         let mut api_base_url = Url::parse(api_base_url)
@@ -478,6 +483,7 @@ impl ReqwestTransport {
     }
 }
 
+#[cfg(feature = "http")]
 fn should_retry_request_error(error: &reqwest::Error) -> bool {
     if error.is_timeout() || error.is_connect() {
         return true;
@@ -493,6 +499,7 @@ fn should_retry_request_error(error: &reqwest::Error) -> bool {
     )
 }
 
+#[cfg(feature = "http")]
 impl HttpTransport for ReqwestTransport {
     fn get_json(&self, path: &str, params: &[(&str, &str)]) -> UpstreamResult<serde_json::Value> {
         let url = self.build_url(path, params)?;
@@ -510,12 +517,13 @@ impl HttpTransport for ReqwestTransport {
     }
 }
 
-pub struct StarkHttpClient<T = ReqwestTransport> {
+pub struct StarkHttpClient<T> {
     transport: T,
     variants: Vec<UpstreamBikeVariant>,
     localizations: HashMap<String, String>,
 }
 
+#[cfg(feature = "http")]
 impl StarkHttpClient<ReqwestTransport> {
     pub fn new(config: &CrawlConfig) -> UpstreamResult<Self> {
         let transport = ReqwestTransport::new(&config.api_base_url)?;
@@ -725,6 +733,7 @@ impl<T: HttpTransport> UpstreamCatalog for StarkHttpClient<T> {
     }
 }
 
+#[cfg(any(feature = "http", test))]
 fn extract_spare_parts_localizations(html: &str) -> HashMap<String, String> {
     let mut localizations = HashMap::new();
     let mut remaining = html;
@@ -754,11 +763,13 @@ fn extract_spare_parts_localizations(html: &str) -> HashMap<String, String> {
     localizations
 }
 
+#[cfg(any(feature = "http", test))]
 fn decode_next_payload_json_string(value: &str) -> Result<String, serde_json::Error> {
     let once = serde_json::from_str::<String>(&format!("\"{value}\""))?;
     serde_json::from_str::<String>(&format!("\"{once}\"")).or(Ok(once))
 }
 
+#[cfg(any(feature = "http", test))]
 fn find_next_payload_json_string_end(value: &str) -> Option<usize> {
     let bytes = value.as_bytes();
     let mut index = 0;
@@ -778,6 +789,7 @@ fn find_next_payload_json_string_end(value: &str) -> Option<usize> {
     None
 }
 
+#[cfg(any(feature = "http", test))]
 fn discover_bike_variants_from_page(html: &str) -> UpstreamResult<Vec<UpstreamBikeVariant>> {
     let marker = "/parts-and-accessories/spare-parts/";
     let mut variants = Vec::new();
@@ -813,6 +825,7 @@ fn discover_bike_variants_from_page(html: &str) -> UpstreamResult<Vec<UpstreamBi
     Ok(variants)
 }
 
+#[cfg(any(feature = "http", test))]
 fn display_name_for_variant_tag(tag: &str) -> String {
     match tag {
         "varg" => "VARG MX 1.0".to_owned(),
@@ -1819,12 +1832,16 @@ mod tests {
     use super::*;
     use std::cell::RefCell;
     use std::collections::{HashMap, HashSet};
+    #[cfg(feature = "http")]
     use std::io::{Read, Write};
+    #[cfg(feature = "http")]
     use std::net::TcpListener;
+    #[cfg(feature = "http")]
     use std::sync::{
         Arc,
         atomic::{AtomicUsize, Ordering},
     };
+    #[cfg(feature = "http")]
     use std::thread;
 
     #[test]
@@ -2735,6 +2752,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "http")]
     fn reqwest_transport_builds_stark_api_urls_without_live_network() {
         let transport = ReqwestTransport::new("https://api.starkfuture.com/v2").unwrap();
         let url = transport
@@ -2751,6 +2769,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "http")]
     fn reqwest_transport_retries_transient_server_errors() {
         let (base_url, request_count) =
             status_sequence_server(&[(500, "server error"), (200, r#"{"ok":true}"#)]);
@@ -2763,6 +2782,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "http")]
     fn reqwest_transport_does_not_retry_deterministic_client_errors() {
         let (base_url, request_count) = status_sequence_server(&[(404, "missing")]);
         let transport = ReqwestTransport::new(&base_url).unwrap();
@@ -2774,6 +2794,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "http")]
     fn reqwest_transport_rejects_invalid_base_urls_without_live_network() {
         let error = ReqwestTransport::new("not a url").unwrap_err();
 
@@ -2863,6 +2884,7 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "http")]
     fn status_sequence_server(statuses: &[(u16, &str)]) -> (String, Arc<AtomicUsize>) {
         let listener = TcpListener::bind("127.0.0.1:0").unwrap();
         let address = listener.local_addr().unwrap();

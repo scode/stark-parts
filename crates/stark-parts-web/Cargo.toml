@@ -6,6 +6,12 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-leptos.workspace = true
+console_error_panic_hook.workspace = true
 stark-parts-catalog = { path = "../stark-parts-catalog", default-features = false }
 url.workspace = true
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+leptos = { workspace = true, features = ["csr"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+leptos = { workspace = true, features = ["ssr"] }

@@ -141,7 +141,7 @@ for help when the decision is existential enough that building either direction 
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 
-- 8. [ ] Static build verification with committed catalog.
+- 8. [x] Static build verification with committed catalog.
 
   Verify the static app build consumes the committed JSON5 catalog and still performs search locally after initial load.
   This step should not be the first real catalog build; it is the end-to-end verification pass after the catalog, search

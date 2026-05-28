@@ -79,7 +79,7 @@ for help when the decision is existential enough that building either direction 
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 
-- 4. [ ] Real Stark HTTP client and catalog commands.
+- 4. [x] Real Stark HTTP client and catalog commands.
 
   Implement the concrete network client behind the upstream trait and wire `stark-parts catalog init` and
   `stark-parts catalog update`. Both commands must run from the repository root, emit deterministic JSON5, use

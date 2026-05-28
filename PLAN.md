@@ -40,11 +40,11 @@ for help when the decision is existential enough that building either direction 
   - add Conventional Commit guidance to the agent instructions
   - use `tracing`/`tracing-subscriber` instead of `log`-ecosystem logging when logging is introduced
 
-  Expected coverage: workspace build tests or smoke tests, CI command coverage, dprint coverage, modernization checklist
-  verification, and enough checks to catch broken formatting, clippy failures, and test failures.
+  Expected coverage: workspace build tests or smoke tests, CI command coverage, dprint coverage, and enough checks to
+  catch broken formatting, clippy failures, and test failures.
 
-  Coverage gate before swarm: add or update tests or scripted checks that prove the scaffold, build checks, dprint
-  check, modernization baseline, and CI gates catch the failures this step is meant to catch.
+  Coverage gate before swarm: add or update tests or checks that prove the scaffold, build checks, dprint check, and CI
+  gates catch the failures this step is meant to catch.
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 

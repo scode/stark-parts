@@ -6,8 +6,10 @@
 //! smaller contract for search and rendering.
 
 use serde::{Deserialize, Serialize};
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
+use std::thread::sleep;
+use std::time::Duration;
 use time::OffsetDateTime;
 use time::format_description::well_known::Rfc3339;
 use url::Url;
@@ -16,7 +18,10 @@ const SCHEMA_VERSION: u32 = 1;
 const MAX_CATEGORY_DEPTH: usize = 32;
 const STARK_SPARE_PARTS_URL: &str = "https://starkfuture.com/parts-and-accessories/spare-parts";
 pub const DEFAULT_CATALOG_PATH: &str = "catalog/stark-parts.json5";
-const ALLOWED_IMAGE_HOSTS: &[&str] = &["s3-stark-prod.s3.eu-central-1.amazonaws.com"];
+const ALLOWED_IMAGE_HOSTS: &[&str] = &[
+    "s3-stark-prod.s3.eu-central-1.amazonaws.com",
+    "s3-stark-production.s3.eu-west-1.amazonaws.com",
+];
 const ALLOWED_STARK_LINK_HOSTS: &[&str] = &["starkfuture.com", "www.starkfuture.com"];
 
 /// A project-owned snapshot of the public Stark parts catalog.
@@ -414,11 +419,7 @@ impl ReqwestTransport {
         }
 
         tracing::debug!(%url, "fetching Stark page");
-        self.client
-            .get(url)
-            .send()
-            .and_then(reqwest::blocking::Response::error_for_status)
-            .map_err(|error| UpstreamError::new(format!("Stark page request failed: {error}")))?
+        self.send_with_retries(url, "Stark page request")?
             .text()
             .map_err(|error| {
                 UpstreamError::new(format!("Stark page response was not text: {error}"))
@@ -442,6 +443,54 @@ impl ReqwestTransport {
 
         Ok(url)
     }
+
+    fn send_with_retries(
+        &self,
+        url: Url,
+        context: &str,
+    ) -> UpstreamResult<reqwest::blocking::Response> {
+        for attempt in 1..=3 {
+            match self
+                .client
+                .get(url.clone())
+                .send()
+                .and_then(reqwest::blocking::Response::error_for_status)
+            {
+                Ok(response) => return Ok(response),
+                Err(error) => {
+                    tracing::warn!(%url, attempt, %error, "{context} failed");
+                    let should_retry = should_retry_request_error(&error);
+                    if attempt < 3 && should_retry {
+                        sleep(Duration::from_millis(250 * attempt));
+                    } else {
+                        let label = if should_retry {
+                            "failed after retries"
+                        } else {
+                            "failed"
+                        };
+                        return Err(UpstreamError::new(format!("{context} {label}: {error}")));
+                    }
+                }
+            }
+        }
+
+        unreachable!("retry loop always returns on attempt 3")
+    }
+}
+
+fn should_retry_request_error(error: &reqwest::Error) -> bool {
+    if error.is_timeout() || error.is_connect() {
+        return true;
+    }
+
+    matches!(
+        error.status(),
+        Some(reqwest::StatusCode::TOO_MANY_REQUESTS)
+            | Some(reqwest::StatusCode::INTERNAL_SERVER_ERROR)
+            | Some(reqwest::StatusCode::BAD_GATEWAY)
+            | Some(reqwest::StatusCode::SERVICE_UNAVAILABLE)
+            | Some(reqwest::StatusCode::GATEWAY_TIMEOUT)
+    )
 }
 
 impl HttpTransport for ReqwestTransport {
@@ -449,11 +498,7 @@ impl HttpTransport for ReqwestTransport {
         let url = self.build_url(path, params)?;
 
         tracing::debug!(%url, "fetching Stark catalog JSON");
-        self.client
-            .get(url)
-            .send()
-            .and_then(reqwest::blocking::Response::error_for_status)
-            .map_err(|error| UpstreamError::new(format!("Stark API request failed: {error}")))?
+        self.send_with_retries(url, "Stark API request")?
             .json()
             .map_err(|error| {
                 UpstreamError::new(format!("Stark API response was not valid JSON: {error}"))
@@ -468,13 +513,21 @@ impl HttpTransport for ReqwestTransport {
 pub struct StarkHttpClient<T = ReqwestTransport> {
     transport: T,
     variants: Vec<UpstreamBikeVariant>,
+    localizations: HashMap<String, String>,
 }
 
 impl StarkHttpClient<ReqwestTransport> {
     pub fn new(config: &CrawlConfig) -> UpstreamResult<Self> {
         let transport = ReqwestTransport::new(&config.api_base_url)?;
-        let variants = discover_bike_variants(&transport)?;
-        Self::with_transport(transport, config.country.clone(), variants)
+        let html = transport.get_text(STARK_SPARE_PARTS_URL)?;
+        let variants = discover_bike_variants_from_page(&html)?;
+        let localizations = extract_spare_parts_localizations(&html);
+        Self::with_transport_and_localizations(
+            transport,
+            config.country.clone(),
+            variants,
+            localizations,
+        )
     }
 }
 
@@ -483,6 +536,15 @@ impl<T> StarkHttpClient<T> {
         transport: T,
         _country: String,
         variants: Vec<UpstreamBikeVariant>,
+    ) -> UpstreamResult<Self> {
+        Self::with_transport_and_localizations(transport, _country, variants, HashMap::new())
+    }
+
+    pub fn with_transport_and_localizations(
+        transport: T,
+        _country: String,
+        variants: Vec<UpstreamBikeVariant>,
+        localizations: HashMap<String, String>,
     ) -> UpstreamResult<Self> {
         if variants.is_empty() {
             return Err(UpstreamError::new(
@@ -493,7 +555,12 @@ impl<T> StarkHttpClient<T> {
         Ok(Self {
             transport,
             variants,
+            localizations,
         })
+    }
+
+    fn localized(&self, key: Option<&String>) -> Option<String> {
+        key.and_then(|key| self.localizations.get(key)).cloned()
     }
 }
 
@@ -513,13 +580,16 @@ impl<T: HttpTransport> UpstreamCatalog for StarkHttpClient<T> {
 
         Ok(categories
             .into_iter()
-            .map(|category| UpstreamCategory {
-                code: category.code,
-                name_key: category.name_key,
-                display_name: None,
-                image_url: category.image_url,
-                is_leaf: category.is_leaf,
-                path: category.path,
+            .map(|category| {
+                let display_name = self.localized(category.name_key.as_ref());
+                UpstreamCategory {
+                    code: category.code,
+                    name_key: category.name_key,
+                    display_name,
+                    image_url: category.image_url,
+                    is_leaf: category.is_leaf,
+                    path: category.path,
+                }
             })
             .collect())
     }
@@ -540,13 +610,17 @@ impl<T: HttpTransport> UpstreamCatalog for StarkHttpClient<T> {
 
         Ok(products
             .into_iter()
-            .map(|product| UpstreamProductSummary {
-                code: product.code,
-                name_key: product.name_key,
-                description_key: product.description_key,
-                display_name: None,
-                description: None,
-                image_url: product.image_url,
+            .map(|product| {
+                let display_name = self.localized(product.name_key.as_ref());
+                let description = self.localized(product.description_key.as_ref());
+                UpstreamProductSummary {
+                    code: product.code,
+                    name_key: product.name_key,
+                    description_key: product.description_key,
+                    display_name,
+                    description,
+                    image_url: product.image_url,
+                }
             })
             .collect())
     }
@@ -568,69 +642,140 @@ impl<T: HttpTransport> UpstreamCatalog for StarkHttpClient<T> {
             &[("tags", tag), ("country", country)],
         )?;
         let detail = serde_json::from_value::<ProductDetailResponse>(value).map_err(|error| {
-            UpstreamError::new(format!("product-detail response shape changed: {error}"))
+            UpstreamError::new(format!(
+                "product-detail response shape changed for {product_code} ({tag}/{country}): {error}"
+            ))
         })?;
+
+        let display_name = self.localized(detail.name_key.as_ref());
+        let description = self.localized(detail.description_key.as_ref());
 
         Ok(UpstreamProductDetail {
             code: detail.code,
             name_key: detail.name_key,
             description_key: detail.description_key,
-            display_name: None,
-            description: None,
+            display_name,
+            description,
             feature_image_url: detail.feature_image_url,
             articles: detail
                 .articles
                 .unwrap_or_default()
                 .into_iter()
-                .map(|entry| UpstreamArticleEntry {
-                    reference: entry.reference,
-                    article: UpstreamArticle {
-                        code: entry.article.code,
-                        name_key: entry.article.name_key,
-                        description_key: entry.article.description_key,
-                        display_name: None,
-                        description: None,
-                        image_url: entry.article.image_url,
-                        tags: entry.article.tags.unwrap_or_default(),
-                        is_kit: entry.article.is_kit.unwrap_or(false),
-                        kit_contain: entry.article.kit_contain.unwrap_or_default(),
-                        variants: entry
-                            .article
-                            .variants
-                            .unwrap_or_default()
-                            .into_iter()
-                            .map(|variant| UpstreamArticleVariant {
-                                code: variant.code,
-                                skus: variant.skus.unwrap_or_default(),
-                                availability: variant.availability,
-                                price: variant.price.map(|price| UpstreamPrice {
-                                    total_minor: price.total_minor(),
-                                    currency: currency_for_country(country),
-                                }),
-                                attributes: variant
-                                    .attributes
-                                    .unwrap_or_default()
-                                    .into_iter()
-                                    .map(|attribute| UpstreamAttributeSelection {
-                                        attribute_code: attribute.attribute.code,
-                                        option_code: attribute.selected_option.code,
-                                        option_display_name: None,
-                                        option_name_key: attribute.selected_option.name_key,
-                                    })
-                                    .collect(),
-                            })
-                            .collect(),
-                    },
+                .map(|entry| {
+                    let kit_contain = entry
+                        .article
+                        .kit_contain
+                        .unwrap_or_default()
+                        .into_iter()
+                        .map(KitContainResponse::into_catalog_text)
+                        .collect::<UpstreamResult<Vec<_>>>()?;
+
+                    let article_display_name = self.localized(entry.article.name_key.as_ref());
+                    let article_description =
+                        self.localized(entry.article.description_key.as_ref());
+
+                    Ok(UpstreamArticleEntry {
+                        reference: entry.reference,
+                        article: UpstreamArticle {
+                            code: entry.article.code,
+                            name_key: entry.article.name_key,
+                            description_key: entry.article.description_key,
+                            display_name: article_display_name,
+                            description: article_description,
+                            image_url: entry.article.image_url,
+                            tags: entry.article.tags.unwrap_or_default(),
+                            is_kit: entry.article.is_kit.unwrap_or(false),
+                            kit_contain,
+                            variants: entry
+                                .article
+                                .variants
+                                .unwrap_or_default()
+                                .into_iter()
+                                .map(|variant| UpstreamArticleVariant {
+                                    code: variant.code,
+                                    skus: variant.skus.unwrap_or_default(),
+                                    availability: variant.availability,
+                                    price: variant.price.map(|price| UpstreamPrice {
+                                        total_minor: price.total_minor(),
+                                        currency: currency_for_country(country),
+                                    }),
+                                    attributes: variant
+                                        .attributes
+                                        .unwrap_or_default()
+                                        .into_iter()
+                                        .map(|attribute| {
+                                            let option_display_name = self.localized(
+                                                attribute.selected_option.name_key.as_ref(),
+                                            );
+                                            UpstreamAttributeSelection {
+                                                attribute_code: attribute.attribute.code,
+                                                option_code: attribute.selected_option.code,
+                                                option_display_name,
+                                                option_name_key: attribute.selected_option.name_key,
+                                            }
+                                        })
+                                        .collect(),
+                                })
+                                .collect(),
+                        },
+                    })
                 })
-                .collect(),
+                .collect::<UpstreamResult<Vec<_>>>()?,
         })
     }
 }
 
-fn discover_bike_variants(
-    transport: &impl HttpTransport,
-) -> UpstreamResult<Vec<UpstreamBikeVariant>> {
-    discover_bike_variants_from_page(&transport.get_text(STARK_SPARE_PARTS_URL)?)
+fn extract_spare_parts_localizations(html: &str) -> HashMap<String, String> {
+    let mut localizations = HashMap::new();
+    let mut remaining = html;
+
+    while let Some(key_start) = remaining.find("spare_parts_") {
+        let candidate = &remaining[key_start..];
+        let Some(key_end) = candidate.find("\\\":\\\"") else {
+            break;
+        };
+        let key = &candidate[..key_end];
+        let value = &candidate[key_end + 5..];
+        let Some(value_end) = find_next_payload_json_string_end(value) else {
+            remaining = &candidate[key.len()..];
+            continue;
+        };
+        let escaped_value = value[..value_end].replace("\\\\\\\"", "\\\"");
+
+        if let Ok(display_value) = decode_next_payload_json_string(&escaped_value)
+            && !display_value.trim().is_empty()
+        {
+            localizations.entry(key.to_owned()).or_insert(display_value);
+        }
+
+        remaining = &value[value_end..];
+    }
+
+    localizations
+}
+
+fn decode_next_payload_json_string(value: &str) -> Result<String, serde_json::Error> {
+    let once = serde_json::from_str::<String>(&format!("\"{value}\""))?;
+    serde_json::from_str::<String>(&format!("\"{once}\"")).or(Ok(once))
+}
+
+fn find_next_payload_json_string_end(value: &str) -> Option<usize> {
+    let bytes = value.as_bytes();
+    let mut index = 0;
+    while index + 1 < bytes.len() {
+        if bytes[index] == b'\\' && bytes[index + 1] == b'"' {
+            let following_is_object_boundary =
+                matches!(bytes.get(index + 2), Some(b'}' | b',') | None);
+            if following_is_object_boundary {
+                return Some(index);
+            }
+            index += 2;
+            continue;
+        }
+        index += 1;
+    }
+
+    None
 }
 
 fn discover_bike_variants_from_page(html: &str) -> UpstreamResult<Vec<UpstreamBikeVariant>> {
@@ -690,6 +835,14 @@ fn currency_for_country(country: &str) -> String {
     }
 }
 
+fn non_empty_string(value: String) -> Option<String> {
+    if value.trim().is_empty() {
+        None
+    } else {
+        Some(value)
+    }
+}
+
 #[derive(Deserialize)]
 struct CategoryResponse {
     code: String,
@@ -730,8 +883,52 @@ struct ArticleResponse {
     image_url: Option<String>,
     tags: Option<Vec<String>>,
     is_kit: Option<bool>,
-    kit_contain: Option<Vec<String>>,
+    kit_contain: Option<Vec<KitContainResponse>>,
     variants: Option<Vec<VariantResponse>>,
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum KitContainResponse {
+    Code(String),
+    Part(KitContainPartResponse),
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct KitContainPartResponse {
+    sku: Option<String>,
+    part_description: Option<String>,
+    quantity: Option<u32>,
+}
+
+impl KitContainResponse {
+    fn into_catalog_text(self) -> UpstreamResult<String> {
+        match self {
+            Self::Code(code) => {
+                non_empty_string(code).ok_or_else(|| UpstreamError::new("empty kit_contain code"))
+            }
+            Self::Part(KitContainPartResponse {
+                sku,
+                part_description,
+                quantity,
+            }) => {
+                let mut parts = Vec::new();
+                if let Some(sku) = sku.and_then(non_empty_string) {
+                    parts.push(match quantity {
+                        Some(quantity) if quantity > 1 => format!("{sku} x{quantity}"),
+                        _ => sku,
+                    });
+                }
+                if let Some(description) = part_description.and_then(non_empty_string) {
+                    parts.push(description);
+                }
+                non_empty_string(parts.join(" ")).ok_or_else(|| {
+                    UpstreamError::new("kit_contain object did not include sku or part_description")
+                })
+            }
+        }
+    }
 }
 
 #[derive(Deserialize)]
@@ -1621,7 +1818,93 @@ fn indent_line(out: &mut String, indent: usize) {
 mod tests {
     use super::*;
     use std::cell::RefCell;
-    use std::collections::HashMap;
+    use std::collections::{HashMap, HashSet};
+    use std::io::{Read, Write};
+    use std::net::TcpListener;
+    use std::sync::{
+        Arc,
+        atomic::{AtomicUsize, Ordering},
+    };
+    use std::thread;
+
+    #[test]
+    fn generated_catalog_snapshot_covers_discovered_public_variants() {
+        let catalog = generated_catalog_snapshot();
+        let variant_ids = catalog
+            .bike_variants
+            .iter()
+            .map(|variant| variant.id.as_str())
+            .collect::<Vec<_>>();
+        let tree_ids = catalog
+            .catalog_trees
+            .iter()
+            .map(|tree| tree.bike_variant_id.as_str())
+            .collect::<HashSet<_>>();
+
+        assert_eq!(variant_ids, ["varg-sm", "varg-ex", "varg-1.2", "varg"]);
+        assert_eq!(tree_ids.len(), variant_ids.len());
+        for variant_id in variant_ids {
+            assert!(
+                tree_ids.contains(variant_id),
+                "missing generated catalog tree for {variant_id}"
+            );
+        }
+    }
+
+    #[test]
+    fn generated_catalog_snapshot_has_sane_metadata_and_content() {
+        let catalog = generated_catalog_snapshot();
+
+        assert_eq!(catalog.metadata.schema_version, 1);
+        assert_eq!(
+            catalog.metadata.source.api_base_url,
+            "https://api.starkfuture.com/v2"
+        );
+        assert_eq!(catalog.metadata.source.country, "US");
+        assert_eq!(catalog.metadata.source.language, "en");
+        assert_eq!(
+            catalog
+                .metadata
+                .source
+                .endpoints
+                .iter()
+                .map(|endpoint| endpoint.path.as_str())
+                .collect::<Vec<_>>(),
+            [
+                "/store/categories",
+                "/store/products",
+                "/store/products/{code}"
+            ]
+        );
+
+        for tree in &catalog.catalog_trees {
+            let (product_group_count, article_count, sku_count) =
+                count_generated_catalog_content(&tree.categories);
+            assert!(
+                product_group_count > 0,
+                "generated tree for {} has no product groups",
+                tree.bike_variant_id
+            );
+            assert!(
+                article_count > 0,
+                "generated tree for {} has no articles",
+                tree.bike_variant_id
+            );
+            assert!(
+                sku_count > 0,
+                "generated tree for {} has no SKUs",
+                tree.bike_variant_id
+            );
+        }
+    }
+
+    #[test]
+    fn generated_catalog_snapshot_is_canonical_json5() {
+        let bytes = include_str!("../../../catalog/stark-parts.json5");
+        let catalog = parse_catalog_json5(bytes).unwrap();
+
+        assert_eq!(format_catalog_json5(&catalog).unwrap(), bytes);
+    }
 
     #[test]
     fn parses_json5_comments_and_round_trips_to_deterministic_bytes() {
@@ -1701,6 +1984,36 @@ mod tests {
         assert!(
             first.find("amount_minor: 1299").unwrap() < first.find("currency: \"USD\"").unwrap()
         );
+    }
+
+    fn generated_catalog_snapshot() -> Catalog {
+        parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5")).unwrap()
+    }
+
+    fn count_generated_catalog_content(categories: &[CategoryNode]) -> (usize, usize, usize) {
+        let mut product_group_count = 0;
+        let mut article_count = 0;
+        let mut sku_count = 0;
+        for category in categories {
+            product_group_count += category.product_groups.len();
+            for group in &category.product_groups {
+                article_count += group.articles.len();
+                for article in &group.articles {
+                    sku_count += article
+                        .variants
+                        .iter()
+                        .filter(|variant| variant.sku.is_some())
+                        .count();
+                }
+            }
+            let (child_product_groups, child_articles, child_skus) =
+                count_generated_catalog_content(&category.categories);
+            product_group_count += child_product_groups;
+            article_count += child_articles;
+            sku_count += child_skus;
+        }
+
+        (product_group_count, article_count, sku_count)
     }
 
     #[test]
@@ -2170,7 +2483,11 @@ mod tests {
                             "image_url": "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/SMX1-P-ST.webp",
                             "tags": ["varg", "varg-ex"],
                             "is_kit": false,
-                            "kit_contain": [],
+                            "kit_contain": [{
+                                "sku": "STD-BE-0008",
+                                "part_description": "wheel_bearings-kc-0",
+                                "quantity": 4
+                            }],
                             "variants": [{
                                 "code": "28_seat_assembly-seat_color.jet_black",
                                 "skus": ["SMX1-P-ST-B"],
@@ -2189,13 +2506,39 @@ mod tests {
                 }),
             );
 
-        let client = StarkHttpClient::with_transport(
+        let client = StarkHttpClient::with_transport_and_localizations(
             transport,
             "US".to_owned(),
             vec![UpstreamBikeVariant {
                 tag: "varg-ex".to_owned(),
                 display_name: Some("Varg EX".to_owned()),
             }],
+            HashMap::from([
+                (
+                    "spare_parts_category_bodywork_name".to_owned(),
+                    "Bodywork".to_owned(),
+                ),
+                (
+                    "spare_parts_product_9_seat_name".to_owned(),
+                    "Seat".to_owned(),
+                ),
+                (
+                    "spare_parts_product_9_seat_description".to_owned(),
+                    "Seat assembly".to_owned(),
+                ),
+                (
+                    "spare_parts_product_28_seat_assembly_name".to_owned(),
+                    "Original Seat".to_owned(),
+                ),
+                (
+                    "spare_parts_product_28_seat_assembly_description".to_owned(),
+                    "Original replacement seat".to_owned(),
+                ),
+                (
+                    "spare_parts_attribute_option_jet_black_name".to_owned(),
+                    "Jet Black".to_owned(),
+                ),
+            ]),
         )
         .unwrap();
 
@@ -2206,6 +2549,24 @@ mod tests {
 
         assert_eq!(product.code, "9_seat");
         assert_eq!(
+            catalog.catalog_trees[0].categories[0].display_name,
+            Some("Bodywork".to_owned())
+        );
+        assert_eq!(product.display_name, Some("Seat".to_owned()));
+        assert_eq!(product.description, Some("Seat assembly".to_owned()));
+        assert_eq!(
+            product.articles[0].display_name,
+            Some("Original Seat".to_owned())
+        );
+        assert_eq!(
+            product.articles[0].description,
+            Some("Original replacement seat".to_owned())
+        );
+        assert_eq!(
+            product.articles[0].kit_contents,
+            vec!["STD-BE-0008 x4 wheel_bearings-kc-0"]
+        );
+        assert_eq!(
             product.description_localization_key,
             Some("spare_parts_product_9_seat_description".to_owned())
         );
@@ -2215,6 +2576,10 @@ mod tests {
         assert_eq!(
             variant.attributes[0].option_localization_key,
             Some("spare_parts_attribute_option_jet_black_name".to_owned())
+        );
+        assert_eq!(
+            variant.attributes[0].option_display_name,
+            Some("Jet Black".to_owned())
         );
     }
 
@@ -2240,6 +2605,43 @@ mod tests {
             error
                 .to_string()
                 .contains("category response shape changed")
+        );
+    }
+
+    #[test]
+    fn stark_http_client_rejects_unknown_kit_content_objects() {
+        let transport = FakeHttpTransport::new().with(
+            "/store/products/wheel_maintenance?country=US&tags=varg-sm",
+            serde_json::json!({
+                "code": "wheel_maintenance",
+                "name_key": "spare_parts_product_wheel_maintenance_name",
+                "articles": [{
+                    "article": {
+                        "code": "wheel_bearings",
+                        "kit_contain": [{ "unexpected": "value" }],
+                        "variants": []
+                    }
+                }]
+            }),
+        );
+        let client = StarkHttpClient::with_transport(
+            transport,
+            "US".to_owned(),
+            vec![UpstreamBikeVariant {
+                tag: "varg-sm".to_owned(),
+                display_name: Some("VARG SM".to_owned()),
+            }],
+        )
+        .unwrap();
+
+        let error = client
+            .product_detail("varg-sm", "US", "wheel_maintenance")
+            .unwrap_err();
+
+        assert!(
+            error
+                .to_string()
+                .contains("product-detail response shape changed for wheel_maintenance")
         );
     }
 
@@ -2299,6 +2701,24 @@ mod tests {
     }
 
     #[test]
+    fn extracts_spare_parts_localizations_from_next_payload_text() {
+        let localizations = extract_spare_parts_localizations(
+            r#"
+            self.__next_f.push([1,"{\"spare_parts_category_bodywork_name\":\"Bodywork\",\"spare_parts_product_9_seat_description\":\"Seat with \\\"quoted\\\" fitment notes\"}"])
+            "#,
+        );
+
+        assert_eq!(
+            localizations.get("spare_parts_category_bodywork_name"),
+            Some(&"Bodywork".to_owned())
+        );
+        assert_eq!(
+            localizations.get("spare_parts_product_9_seat_description"),
+            Some(&"Seat with \"quoted\" fitment notes".to_owned())
+        );
+    }
+
+    #[test]
     fn variant_discovery_does_not_treat_mx_1_2_as_legacy_mx() {
         let variants = discover_bike_variants_from_page(
             r#"<a href="/parts-and-accessories/spare-parts/varg-1.2">Stark VARG MX 1.2</a>"#,
@@ -2328,6 +2748,29 @@ mod tests {
             url.as_str(),
             "https://api.starkfuture.com/v2/store/products?category=brakes_front_brake&tags=varg-ex"
         );
+    }
+
+    #[test]
+    fn reqwest_transport_retries_transient_server_errors() {
+        let (base_url, request_count) =
+            status_sequence_server(&[(500, "server error"), (200, r#"{"ok":true}"#)]);
+        let transport = ReqwestTransport::new(&base_url).unwrap();
+
+        let value = transport.get_json("/store/products", &[]).unwrap();
+
+        assert_eq!(value, serde_json::json!({ "ok": true }));
+        assert_eq!(request_count.load(Ordering::SeqCst), 2);
+    }
+
+    #[test]
+    fn reqwest_transport_does_not_retry_deterministic_client_errors() {
+        let (base_url, request_count) = status_sequence_server(&[(404, "missing")]);
+        let transport = ReqwestTransport::new(&base_url).unwrap();
+
+        let error = transport.get_json("/store/products", &[]).unwrap_err();
+
+        assert!(error.to_string().contains("Stark API request failed"));
+        assert_eq!(request_count.load(Ordering::SeqCst), 1);
     }
 
     #[test]
@@ -2418,6 +2861,40 @@ mod tests {
                 }],
             }],
         }
+    }
+
+    fn status_sequence_server(statuses: &[(u16, &str)]) -> (String, Arc<AtomicUsize>) {
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let address = listener.local_addr().unwrap();
+        let statuses = statuses
+            .iter()
+            .map(|(status, body)| (*status, (*body).to_owned()))
+            .collect::<Vec<_>>();
+        let request_count = Arc::new(AtomicUsize::new(0));
+        let server_request_count = Arc::clone(&request_count);
+
+        thread::spawn(move || {
+            for (status, body) in statuses {
+                let (mut stream, _) = listener.accept().unwrap();
+                let mut request = [0; 1024];
+                let _ = stream.read(&mut request);
+                server_request_count.fetch_add(1, Ordering::SeqCst);
+
+                let reason = match status {
+                    200 => "OK",
+                    404 => "Not Found",
+                    500 => "Internal Server Error",
+                    _ => "Status",
+                };
+                let response = format!(
+                    "HTTP/1.1 {status} {reason}\r\ncontent-type: application/json\r\ncontent-length: {}\r\nconnection: close\r\n\r\n{body}",
+                    body.len()
+                );
+                stream.write_all(response.as_bytes()).unwrap();
+            }
+        });
+
+        (format!("http://{address}"), request_count)
     }
 
     struct FixtureUpstream {

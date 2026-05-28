@@ -93,7 +93,7 @@ for help when the decision is existential enough that building either direction 
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 
-- 5. [ ] Real Stark catalog build and crawler hardening.
+- 5. [x] Real Stark catalog build and crawler hardening.
 
   Run `stark-parts catalog init` or `stark-parts catalog update` against Stark's real public website, debug and fix
   crawler or schema problems discovered by the live crawl, and commit the resulting deterministic JSON5 catalog

@@ -202,6 +202,7 @@ image URLs whose canonical host is in an explicit allowlist. The initial allowli
 
 ```text
 s3-stark-prod.s3.eu-central-1.amazonaws.com
+s3-stark-production.s3.eu-west-1.amazonaws.com
 ```
 
 Adding another image host requires updating this implementation spec. Configure the static app so image requests do not

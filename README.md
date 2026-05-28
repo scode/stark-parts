@@ -10,8 +10,6 @@ cargo test
 cargo clippy
 cargo fmt --all -- --check
 dprint check
-scripts/test-modernize-baseline.sh
-scripts/verify-modernize-baseline.sh
 ```
 
 `dprint` is required for local formatting checks. Install it with the upstream `dprint` installer or run the CI job if

@@ -46,8 +46,6 @@ cargo fmt --all -- --check
 cargo clippy
 cargo test
 dprint check
-scripts/test-modernize-baseline.sh
-scripts/verify-modernize-baseline.sh
 ```
 
 If a command cannot be run locally, report why instead of omitting it.

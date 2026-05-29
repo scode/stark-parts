@@ -12,6 +12,10 @@ const APP_TITLE: &str = "Stark Parts";
 const UNOFFICIAL_NOTICE: &str = "Unofficial catalog helper. Not endorsed by Stark. May contain errors. Stark's website remains the authoritative source.";
 const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
 const DETAIL_RENDER_LIMIT: usize = 50;
+// Tree virtualization depends on fixed-height rows. Keep this in sync with `.tree-node`.
+const TREE_ROW_HEIGHT_PX: usize = 36;
+const TREE_VIEWPORT_HEIGHT_PX: usize = 512;
+const TREE_OVERSCAN_ROWS: usize = 8;
 
 /// Static Leptos app for searching the committed Stark catalog.
 #[component]
@@ -190,10 +194,25 @@ fn CatalogTreeView(trees: Vec<ProjectedCatalogTree>) -> impl IntoView {
         return view! { <p class="empty-state">"No matching catalog entries."</p> }.into_any();
     }
 
-    let nodes = flatten_trees(&trees);
+    let nodes = Arc::new(flatten_trees(&trees));
+    let total_nodes = nodes.len();
+    let (scroll_top, set_scroll_top) = signal(0usize);
     view! {
-        <ol class="catalog-tree" aria-label="Catalog tree">
-            {nodes.into_iter().map(tree_node_view).collect_view()}
+        <ol
+            class="catalog-tree"
+            aria-label="Catalog tree"
+            style=format!("max-height: {TREE_VIEWPORT_HEIGHT_PX}px")
+            on:scroll=move |event| set_scroll_top.set(scroll_top_from_event(&event))
+        >
+            {move || {
+                let window = virtual_tree_window(total_nodes, scroll_top.get());
+                let visible_nodes = Arc::clone(&nodes);
+                view! {
+                    {(window.before_px > 0).then(|| tree_spacer_view(window.before_px))}
+                    {visible_nodes[window.start..window.end].iter().cloned().map(tree_node_view).collect_view()}
+                    {(window.after_px > 0).then(|| tree_spacer_view(window.after_px))}
+                }
+            }}
         </ol>
     }
     .into_any()
@@ -209,6 +228,63 @@ fn tree_node_view(node: FlatTreeNode) -> impl IntoView {
             {node.meta.map(|meta| view! { <span class="tree-meta">{meta}</span> })}
         </li>
     }
+}
+
+fn tree_spacer_view(height_px: usize) -> impl IntoView {
+    view! {
+        <li
+            class="tree-spacer"
+            aria-hidden="true"
+            style=format!("height: {height_px}px")
+        ></li>
+    }
+}
+
+fn virtual_tree_window(total_nodes: usize, scroll_top_px: usize) -> VirtualTreeWindow {
+    if total_nodes == 0 {
+        return VirtualTreeWindow {
+            start: 0,
+            end: 0,
+            before_px: 0,
+            after_px: 0,
+        };
+    }
+
+    let first_visible_row = (scroll_top_px / TREE_ROW_HEIGHT_PX).min(total_nodes - 1);
+    let visible_rows = TREE_VIEWPORT_HEIGHT_PX.div_ceil(TREE_ROW_HEIGHT_PX);
+    let start = first_visible_row.saturating_sub(TREE_OVERSCAN_ROWS);
+    let end = (first_visible_row + visible_rows + TREE_OVERSCAN_ROWS).min(total_nodes);
+
+    VirtualTreeWindow {
+        start,
+        end,
+        before_px: start * TREE_ROW_HEIGHT_PX,
+        after_px: (total_nodes - end) * TREE_ROW_HEIGHT_PX,
+    }
+}
+
+#[cfg(target_arch = "wasm32")]
+fn scroll_top_from_event(event: &leptos::ev::Event) -> usize {
+    use leptos::wasm_bindgen::JsCast;
+
+    event
+        .target()
+        .and_then(|target| target.dyn_into::<leptos::web_sys::HtmlElement>().ok())
+        .map(|element| element.scroll_top().max(0) as usize)
+        .unwrap_or_default()
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn scroll_top_from_event(_event: &leptos::ev::Event) -> usize {
+    0
+}
+
+#[derive(Debug, Eq, PartialEq)]
+struct VirtualTreeWindow {
+    start: usize,
+    end: usize,
+    before_px: usize,
+    after_px: usize,
 }
 
 #[component]
@@ -427,6 +503,7 @@ fn flatten_group(group: &ProjectedProductGroup, depth: usize, nodes: &mut Vec<Fl
     }
 }
 
+#[derive(Clone)]
 struct FlatTreeNode {
     depth: usize,
     kind: &'static str,
@@ -601,7 +678,6 @@ input[type="search"] {
   border-radius: 6px;
   list-style: none;
   margin: 0 0 1.25rem;
-  max-height: 32rem;
   overflow: auto;
   padding: 0.5rem 0;
 }
@@ -609,9 +685,11 @@ input[type="search"] {
 .tree-node {
   align-items: baseline;
   border-bottom: 1px solid #eef0e8;
+  box-sizing: border-box;
   display: flex;
   gap: 0.6rem;
-  min-height: 2rem;
+  height: 36px;
+  overflow: hidden;
   padding: 0.35rem 0.75rem 0.35rem calc(0.75rem + var(--depth) * 1.1rem);
 }
 
@@ -619,8 +697,20 @@ input[type="search"] {
   border-bottom: 0;
 }
 
+.tree-spacer {
+  display: block;
+  pointer-events: none;
+}
+
 .tree-node-bike .tree-label {
   font-weight: 800;
+}
+
+.tree-node .tree-label, .tree-node .tree-meta {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tree-node-article .tree-label, .tree-node-variant .tree-label {
@@ -916,6 +1006,50 @@ mod tests {
         assert!(html.contains(&expected_cards.to_string()));
         assert!(html.contains("details"));
         assert!(html.contains("Narrow the search to inspect the rest"));
+    }
+
+    #[test]
+    fn catalog_tree_mounts_only_the_initial_virtual_window() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "S".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let total_nodes = flatten_trees(&results.trees).len();
+        let html = CatalogTreeView(CatalogTreeViewProps {
+            trees: results.trees,
+        })
+        .to_html();
+
+        assert!(total_nodes > TREE_VIEWPORT_HEIGHT_PX / TREE_ROW_HEIGHT_PX);
+        assert!(
+            html.matches("class=\"tree-node ").count() < total_nodes,
+            "virtualized tree should not mount every flattened node"
+        );
+        assert!(html.contains("class=\"tree-spacer\""));
+    }
+
+    #[test]
+    fn virtual_tree_window_overscans_around_the_scroll_position() {
+        let window = virtual_tree_window(100, TREE_ROW_HEIGHT_PX * 40);
+
+        assert_eq!(window.start, 40 - TREE_OVERSCAN_ROWS);
+        assert_eq!(
+            window.end,
+            40 + TREE_VIEWPORT_HEIGHT_PX.div_ceil(TREE_ROW_HEIGHT_PX) + TREE_OVERSCAN_ROWS
+        );
+        assert_eq!(window.before_px, window.start * TREE_ROW_HEIGHT_PX);
+        assert_eq!(window.after_px, (100 - window.end) * TREE_ROW_HEIGHT_PX);
+    }
+
+    #[test]
+    fn virtual_tree_window_clamps_stale_scroll_positions() {
+        let window = virtual_tree_window(10, TREE_ROW_HEIGHT_PX * 1_000);
+
+        assert!(window.start <= window.end);
+        assert!(window.end <= 10);
+        assert_eq!(window.after_px, 0);
     }
 
     #[test]

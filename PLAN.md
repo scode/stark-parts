@@ -124,7 +124,7 @@ for help when the decision is existential enough that building either direction 
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 
-- 7. [ ] Static Leptos search UI.
+- 7. [x] Static Leptos search UI.
 
   Implement the actual browser experience: unofficial warning banner, bike filter controls, search box, live-updating
   tree, result details, visible catalog generation/source metadata, stale-data warnings for price and availability,

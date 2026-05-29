@@ -324,6 +324,7 @@ fn first_stark_link(row: &SearchResultRow) -> Option<String> {
         .and_then(|variant| variant.stark_url.clone())
         .or_else(|| row.article.stark_url.clone())
         .or_else(|| row.product_group.stark_url.clone())
+        .or_else(|| bike_spare_parts_url(&row.bike_variant_id))
 }
 
 fn first_image_url(row: &SearchResultRow) -> Option<String> {
@@ -332,6 +333,15 @@ fn first_image_url(row: &SearchResultRow) -> Option<String> {
         .and_then(|variant| variant.image_urls.first().cloned())
         .or_else(|| row.article.image_urls.first().cloned())
         .or_else(|| row.product_group.image_urls.first().cloned())
+}
+
+fn bike_spare_parts_url(bike_variant_id: &str) -> Option<String> {
+    bike_variant_id
+        .bytes()
+        .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_'))
+        .then(|| {
+            format!("https://starkfuture.com/parts-and-accessories/spare-parts/{bike_variant_id}")
+        })
 }
 
 fn format_price(price: &stark_parts_catalog::Price) -> String {
@@ -733,6 +743,38 @@ mod tests {
     }
 
     #[test]
+    fn web_app_source_has_no_runtime_catalog_network_client() {
+        let lib_source = include_str!("lib.rs");
+        let main_source = include_str!("main.rs");
+        let manifest = include_str!("../Cargo.toml");
+        let app_source = lib_source
+            .split("#[cfg(test)]")
+            .next()
+            .expect("library source should contain app code before tests");
+
+        assert!(app_source.contains("include_str!(\"../../../catalog/stark-parts.json5\")"));
+        for source in [app_source, main_source, manifest] {
+            assert!(!source.contains(concat!("gloo_", "net")));
+            assert!(!source.contains(concat!("req", "west")));
+            assert!(!source.contains(concat!("web_sys::", "Request")));
+            assert!(!source.contains(concat!(".", "fetch")));
+        }
+    }
+
+    #[test]
+    fn static_entrypoint_builds_the_web_binary() {
+        let index_html = include_str!("../../../index.html");
+        let trunk_config = include_str!("../../../Trunk.toml");
+        let web_main = include_str!("main.rs");
+
+        assert!(index_html.contains("data-trunk"));
+        assert!(index_html.contains("crates/stark-parts-web/Cargo.toml"));
+        assert!(index_html.contains("data-bin=\"stark-parts-web\""));
+        assert!(trunk_config.contains("target = \"index.html\""));
+        assert!(web_main.contains("mount_to_body(stark_parts_web::App)"));
+    }
+
+    #[test]
     fn result_details_render_fallbacks_and_stale_warning() {
         let catalog = load_catalog();
         let index = SearchIndex::from_catalog(&catalog);
@@ -748,6 +790,18 @@ mod tests {
         assert!(html.contains("Accessories"));
         assert!(html.contains("loading=\"lazy\""));
         assert!(html.contains("referrerpolicy=\"no-referrer\""));
+        assert!(html.contains("https://starkfuture.com/parts-and-accessories/spare-parts/"));
+        assert!(html.contains("View on Stark"));
+    }
+
+    #[test]
+    fn stark_link_fallback_rejects_unsafe_bike_ids() {
+        assert_eq!(
+            bike_spare_parts_url("varg-sm").as_deref(),
+            Some("https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm")
+        );
+        assert_eq!(bike_spare_parts_url("javascript:alert(1)"), None);
+        assert_eq!(bike_spare_parts_url("../varg-sm"), None);
     }
 
     #[test]

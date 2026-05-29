@@ -46,6 +46,10 @@ cargo fmt --all -- --check
 cargo clippy
 cargo test
 dprint check
+npm ci
+NO_COLOR=true trunk build --release
+npx playwright install --with-deps chromium
+npx playwright test
 ```
 
 If a command cannot be run locally, report why instead of omitting it.

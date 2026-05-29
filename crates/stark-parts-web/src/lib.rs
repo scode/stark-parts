@@ -11,6 +11,7 @@ use std::sync::Arc;
 const APP_TITLE: &str = "Stark Parts";
 const UNOFFICIAL_NOTICE: &str = "Unofficial catalog helper. Not endorsed by Stark. May contain errors. Stark's website remains the authoritative source.";
 const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
+const DETAIL_RENDER_LIMIT: usize = 50;
 
 /// Static Leptos app for searching the committed Stark catalog.
 #[component]
@@ -212,11 +213,17 @@ fn tree_node_view(node: FlatTreeNode) -> impl IntoView {
 
 #[component]
 fn ResultDetails(rows: Vec<SearchResultRow>) -> impl IntoView {
+    let total_rows = rows.len();
     view! {
         <section class="details" aria-label="Result details">
             <h2>"Details"</h2>
+            {(total_rows > DETAIL_RENDER_LIMIT).then(|| view! {
+                <p class="detail-limit" role="status">
+                    "Showing the first " {DETAIL_RENDER_LIMIT} " of " {total_rows} " details. Narrow the search to inspect the rest."
+                </p>
+            })}
             <div class="detail-grid">
-                {rows.into_iter().map(result_card).collect_view()}
+                {rows.into_iter().take(DETAIL_RENDER_LIMIT).map(result_card).collect_view()}
             </div>
         </section>
     }
@@ -631,6 +638,11 @@ input[type="search"] {
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 }
 
+.detail-limit {
+  color: #4e5b53;
+  margin-bottom: 0.75rem;
+}
+
 .result-card {
   background: #ffffff;
   border: 1px solid #dfe2d6;
@@ -864,7 +876,27 @@ mod tests {
     }
 
     #[test]
-    fn result_details_render_every_visible_row() {
+    fn result_details_render_all_rows_under_the_limit() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "SMX1-TOOLBOX".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let expected_cards = results.rows.len();
+        let html = ResultDetails(ResultDetailsProps { rows: results.rows }).to_html();
+
+        assert!(expected_cards > 0);
+        assert!(expected_cards < DETAIL_RENDER_LIMIT);
+        assert_eq!(
+            html.matches("class=\"result-card\"").count(),
+            expected_cards
+        );
+        assert!(!html.contains("Narrow the search to inspect the rest"));
+    }
+
+    #[test]
+    fn result_details_cap_broad_rows_with_narrow_prompt() {
         let catalog = load_catalog();
         let index = SearchIndex::from_catalog(&catalog);
         let results = index.search(&SearchRequest {
@@ -874,10 +906,37 @@ mod tests {
         let expected_cards = results.rows.len();
         let html = ResultDetails(ResultDetailsProps { rows: results.rows }).to_html();
 
-        assert!(expected_cards > 25);
+        assert!(expected_cards > DETAIL_RENDER_LIMIT);
         assert_eq!(
             html.matches("class=\"result-card\"").count(),
-            expected_cards
+            DETAIL_RENDER_LIMIT
         );
+        assert!(html.contains("Showing the first"));
+        assert!(html.contains(&DETAIL_RENDER_LIMIT.to_string()));
+        assert!(html.contains(&expected_cards.to_string()));
+        assert!(html.contains("details"));
+        assert!(html.contains("Narrow the search to inspect the rest"));
+    }
+
+    #[test]
+    fn result_details_render_all_rows_at_the_limit() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "SMX1".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let rows = results
+            .rows
+            .into_iter()
+            .take(DETAIL_RENDER_LIMIT)
+            .collect::<Vec<_>>();
+        let html = ResultDetails(ResultDetailsProps { rows }).to_html();
+
+        assert_eq!(
+            html.matches("class=\"result-card\"").count(),
+            DETAIL_RENDER_LIMIT
+        );
+        assert!(!html.contains("Narrow the search to inspect the rest"));
     }
 }

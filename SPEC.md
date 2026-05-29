@@ -96,6 +96,10 @@ dealer:
 - an immediately visible one-click link to a canonical HTTPS Stark-owned page where the part can be viewed, whenever
   that link can be determined
 
+For broad searches, the page may cap the number of rendered detail cards as long as it keeps the full match count and
+catalog tree visible, explains that only the first details are being shown, and tells the user to narrow the search to
+inspect the rest. This cap is a rendering constraint, not a search constraint.
+
 The site should prefer human-readable display strings over localization keys. If a display string is missing, it must
 fall back to stable codes or localization keys rather than hiding the result.
 

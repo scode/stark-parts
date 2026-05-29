@@ -6,12 +6,14 @@
 //! smaller contract for search and rendering.
 
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 use std::fmt::Write as _;
 use time::OffsetDateTime;
 use time::format_description::well_known::Rfc3339;
 use url::Url;
 
 const SCHEMA_VERSION: u32 = 1;
+const MAX_CATEGORY_DEPTH: usize = 32;
 const ALLOWED_IMAGE_HOSTS: &[&str] = &["s3-stark-prod.s3.eu-central-1.amazonaws.com"];
 const ALLOWED_STARK_LINK_HOSTS: &[&str] = &["starkfuture.com", "www.starkfuture.com"];
 
@@ -93,6 +95,7 @@ pub struct ProductGroup {
     pub display_name: Option<String>,
     pub description: Option<String>,
     pub localization_key: Option<String>,
+    pub description_localization_key: Option<String>,
     pub stark_url: Option<String>,
     pub image_urls: Vec<String>,
     pub articles: Vec<Article>,
@@ -106,6 +109,7 @@ pub struct Article {
     pub display_name: Option<String>,
     pub description: Option<String>,
     pub localization_key: Option<String>,
+    pub description_localization_key: Option<String>,
     pub stark_url: Option<String>,
     pub image_urls: Vec<String>,
     pub kit_memberships: Vec<String>,
@@ -133,6 +137,7 @@ pub struct AttributeSelection {
     pub code: String,
     pub option_code: String,
     pub option_display_name: Option<String>,
+    pub option_localization_key: Option<String>,
 }
 
 /// Storefront price data captured during an offline catalog update.
@@ -198,6 +203,401 @@ pub enum UrlValidationError {
     Fragment,
     #[error("URL host is not allowed")]
     Host,
+}
+
+/// Configuration shared by the trait-backed crawler core and later HTTP client.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct CrawlConfig {
+    pub api_base_url: String,
+    pub country: String,
+    pub language: String,
+    pub generated_at: String,
+    pub root_path: String,
+}
+
+impl CrawlConfig {
+    pub fn us_storefront(generated_at: impl Into<String>) -> Self {
+        Self {
+            api_base_url: "https://api.starkfuture.com/v2".to_owned(),
+            country: "US".to_owned(),
+            language: "en".to_owned(),
+            generated_at: generated_at.into(),
+            root_path: "SP".to_owned(),
+        }
+    }
+}
+
+/// Upstream access boundary for Stark catalog data.
+///
+/// Tests implement this trait with fixtures. The real HTTP client in the next
+/// plan step should be a thin adapter around these calls, so traversal and
+/// schema transformation stay independent from networking.
+pub trait UpstreamCatalog {
+    fn bike_variants(&self) -> UpstreamResult<Vec<UpstreamBikeVariant>>;
+
+    fn categories(&self, tag: &str, path: &str) -> UpstreamResult<Vec<UpstreamCategory>>;
+
+    fn products(
+        &self,
+        tag: &str,
+        category_code: &str,
+    ) -> UpstreamResult<Vec<UpstreamProductSummary>>;
+
+    fn product_detail(
+        &self,
+        tag: &str,
+        country: &str,
+        product_code: &str,
+    ) -> UpstreamResult<UpstreamProductDetail>;
+}
+
+pub type UpstreamResult<T> = Result<T, UpstreamError>;
+
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
+#[error("{message}")]
+pub struct UpstreamError {
+    message: String,
+}
+
+impl UpstreamError {
+    pub fn new(message: impl Into<String>) -> Self {
+        Self {
+            message: message.into(),
+        }
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum CrawlError {
+    #[error("upstream catalog request failed: {0}")]
+    Upstream(#[from] UpstreamError),
+    #[error("upstream discovery returned no bike variants")]
+    NoBikeVariants,
+    #[error("upstream category code is not a safe path segment: {code}")]
+    UnsafeCategoryCode { code: String },
+    #[error("category traversal revisited path {path} for bike variant {tag}")]
+    CategoryCycle { tag: String, path: String },
+    #[error("category traversal exceeded max depth {max_depth} at path {path}")]
+    CategoryDepth { max_depth: usize, path: String },
+    #[error("catalog validation failed after crawl: {0}")]
+    Catalog(#[from] CatalogError),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamBikeVariant {
+    pub tag: String,
+    pub display_name: Option<String>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamCategory {
+    pub code: String,
+    pub name_key: Option<String>,
+    pub display_name: Option<String>,
+    pub image_url: Option<String>,
+    pub is_leaf: bool,
+    pub path: String,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamProductSummary {
+    pub code: String,
+    pub name_key: Option<String>,
+    pub description_key: Option<String>,
+    pub display_name: Option<String>,
+    pub description: Option<String>,
+    pub image_url: Option<String>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamProductDetail {
+    pub code: String,
+    pub name_key: Option<String>,
+    pub description_key: Option<String>,
+    pub display_name: Option<String>,
+    pub description: Option<String>,
+    pub feature_image_url: Option<String>,
+    pub articles: Vec<UpstreamArticleEntry>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamArticleEntry {
+    pub reference: Option<u32>,
+    pub article: UpstreamArticle,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamArticle {
+    pub code: String,
+    pub name_key: Option<String>,
+    pub description_key: Option<String>,
+    pub display_name: Option<String>,
+    pub description: Option<String>,
+    pub image_url: Option<String>,
+    pub tags: Vec<String>,
+    pub is_kit: bool,
+    pub kit_contain: Vec<String>,
+    pub variants: Vec<UpstreamArticleVariant>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamArticleVariant {
+    pub code: String,
+    pub skus: Vec<String>,
+    pub availability: Option<String>,
+    pub price: Option<UpstreamPrice>,
+    pub attributes: Vec<UpstreamAttributeSelection>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamPrice {
+    pub total_minor: i64,
+    pub currency: String,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UpstreamAttributeSelection {
+    pub attribute_code: String,
+    pub option_code: String,
+    pub option_display_name: Option<String>,
+    pub option_name_key: Option<String>,
+}
+
+/// Crawl all discovered bike variants through the upstream trait.
+pub fn crawl_catalog(
+    client: &impl UpstreamCatalog,
+    config: &CrawlConfig,
+) -> Result<Catalog, CrawlError> {
+    let variants = client.bike_variants()?;
+    if variants.is_empty() {
+        return Err(CrawlError::NoBikeVariants);
+    }
+
+    let bike_variants = variants
+        .iter()
+        .map(|variant| BikeVariant {
+            id: variant.tag.clone(),
+            code: variant.tag.clone(),
+            display_name: variant.display_name.clone(),
+        })
+        .collect::<Vec<_>>();
+
+    let mut catalog_trees = Vec::with_capacity(variants.len());
+    for variant in &variants {
+        let mut visited_paths = HashSet::new();
+        let categories = crawl_categories(
+            client,
+            config,
+            &variant.tag,
+            &config.root_path,
+            Vec::new(),
+            &mut visited_paths,
+        )?;
+        catalog_trees.push(BikeCatalogTree {
+            bike_variant_id: variant.tag.clone(),
+            categories,
+        });
+    }
+
+    let catalog = Catalog {
+        metadata: CatalogMetadata {
+            schema_version: SCHEMA_VERSION,
+            generated_at: config.generated_at.clone(),
+            source: SourceMetadata {
+                api_base_url: config.api_base_url.clone(),
+                country: config.country.clone(),
+                language: config.language.clone(),
+                endpoints: vec![
+                    SourceEndpoint {
+                        method: "GET".to_owned(),
+                        path: "/store/categories".to_owned(),
+                    },
+                    SourceEndpoint {
+                        method: "GET".to_owned(),
+                        path: "/store/products".to_owned(),
+                    },
+                    SourceEndpoint {
+                        method: "GET".to_owned(),
+                        path: "/store/products/{code}".to_owned(),
+                    },
+                ],
+            },
+        },
+        bike_variants,
+        catalog_trees,
+    };
+
+    validate_catalog(&catalog)?;
+    Ok(catalog)
+}
+
+fn crawl_categories(
+    client: &impl UpstreamCatalog,
+    config: &CrawlConfig,
+    tag: &str,
+    request_path: &str,
+    parent_path: Vec<String>,
+    visited_paths: &mut HashSet<String>,
+) -> Result<Vec<CategoryNode>, CrawlError> {
+    if parent_path.len() >= MAX_CATEGORY_DEPTH {
+        return Err(CrawlError::CategoryDepth {
+            max_depth: MAX_CATEGORY_DEPTH,
+            path: request_path.to_owned(),
+        });
+    }
+    if !visited_paths.insert(request_path.to_owned()) {
+        return Err(CrawlError::CategoryCycle {
+            tag: tag.to_owned(),
+            path: request_path.to_owned(),
+        });
+    }
+
+    let upstream_categories = client.categories(tag, request_path)?;
+    let mut categories = Vec::with_capacity(upstream_categories.len());
+
+    for upstream in upstream_categories {
+        if !is_safe_path_segment(&upstream.code) {
+            return Err(CrawlError::UnsafeCategoryCode {
+                code: upstream.code,
+            });
+        }
+
+        let mut path = parent_path.clone();
+        path.push(upstream.code.clone());
+
+        let (child_categories, product_groups) = if upstream.is_leaf {
+            let products = client.products(tag, &upstream.code)?;
+            let mut groups = Vec::with_capacity(products.len());
+            for product in products {
+                let detail = client.product_detail(tag, &config.country, &product.code)?;
+                groups.push(product_group_from_upstream(product, detail));
+            }
+            (Vec::new(), groups)
+        } else {
+            let next_request_path = format!("{request_path}/{}", upstream.code);
+            (
+                crawl_categories(
+                    client,
+                    config,
+                    tag,
+                    &next_request_path,
+                    path.clone(),
+                    visited_paths,
+                )?,
+                Vec::new(),
+            )
+        };
+
+        categories.push(CategoryNode {
+            code: upstream.code,
+            path,
+            display_name: upstream.display_name,
+            localization_key: upstream.name_key,
+            categories: child_categories,
+            product_groups,
+        });
+    }
+
+    Ok(categories)
+}
+
+fn is_safe_path_segment(segment: &str) -> bool {
+    !segment.is_empty()
+        && segment
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'-'))
+}
+
+fn product_group_from_upstream(
+    summary: UpstreamProductSummary,
+    detail: UpstreamProductDetail,
+) -> ProductGroup {
+    let image_urls = detail
+        .feature_image_url
+        .or(summary.image_url)
+        .into_iter()
+        .collect();
+
+    ProductGroup {
+        code: detail.code,
+        display_name: detail.display_name.or(summary.display_name),
+        description: detail.description.or(summary.description),
+        localization_key: detail.name_key.or(summary.name_key),
+        description_localization_key: detail.description_key.or(summary.description_key),
+        stark_url: None,
+        image_urls,
+        articles: detail
+            .articles
+            .into_iter()
+            .map(|entry| article_from_upstream(entry.article))
+            .collect(),
+    }
+}
+
+fn article_from_upstream(article: UpstreamArticle) -> Article {
+    Article {
+        code: article.code,
+        display_name: article.display_name,
+        description: article.description,
+        localization_key: article.name_key,
+        description_localization_key: article.description_key,
+        stark_url: None,
+        image_urls: article.image_url.into_iter().collect(),
+        kit_memberships: Vec::new(),
+        kit_contents: article.kit_contain,
+        variants: article
+            .variants
+            .into_iter()
+            .flat_map(article_variants_from_upstream)
+            .collect(),
+    }
+}
+
+fn article_variants_from_upstream(variant: UpstreamArticleVariant) -> Vec<ArticleVariant> {
+    let price = variant.price.map(|price| Price {
+        amount_minor: price.total_minor,
+        currency: price.currency,
+    });
+    let availability = variant.availability.map(|status| Availability {
+        status,
+        quantity: None,
+    });
+    let attributes = variant
+        .attributes
+        .into_iter()
+        .map(|attribute| AttributeSelection {
+            code: attribute.attribute_code,
+            option_code: attribute.option_code,
+            option_display_name: attribute.option_display_name,
+            option_localization_key: attribute.option_name_key,
+        })
+        .collect::<Vec<_>>();
+
+    if variant.skus.is_empty() {
+        return vec![ArticleVariant {
+            code: variant.code,
+            sku: None,
+            stark_url: None,
+            image_urls: Vec::new(),
+            attributes,
+            price,
+            availability,
+        }];
+    }
+
+    variant
+        .skus
+        .into_iter()
+        .map(|sku| ArticleVariant {
+            code: variant.code.clone(),
+            sku: Some(sku),
+            stark_url: None,
+            image_urls: Vec::new(),
+            attributes: attributes.clone(),
+            price: price.clone(),
+            availability: availability.clone(),
+        })
+        .collect()
 }
 
 /// Parse committed JSON5 and enforce the catalog contract used by later steps.
@@ -552,6 +952,12 @@ fn write_product_groups(
                 "localization_key",
                 &group.localization_key,
             )?;
+            write_optional_string_after(
+                out,
+                indent + 2,
+                "description_localization_key",
+                &group.description_localization_key,
+            )?;
             write_optional_string_after(out, indent + 2, "stark_url", &group.stark_url)?;
             out.push_str(",\n");
             write_string_array_field(out, indent + 2, "image_urls", &group.image_urls)?;
@@ -589,6 +995,12 @@ fn write_articles(
                 indent + 2,
                 "localization_key",
                 &article.localization_key,
+            )?;
+            write_optional_string_after(
+                out,
+                indent + 2,
+                "description_localization_key",
+                &article.description_localization_key,
             )?;
             write_optional_string_after(out, indent + 2, "stark_url", &article.stark_url)?;
             out.push_str(",\n");
@@ -668,6 +1080,10 @@ fn write_attributes(
             if let Some(display_name) = &attribute.option_display_name {
                 out.push_str(",\n");
                 write_string_field(out, indent + 2, "option_display_name", display_name)?;
+            }
+            if let Some(localization_key) = &attribute.option_localization_key {
+                out.push_str(",\n");
+                write_string_field(out, indent + 2, "option_localization_key", localization_key)?;
             }
             out.push('\n');
             indent_line(out, indent + 1);
@@ -790,6 +1206,8 @@ fn indent_line(out: &mut String, indent: usize) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::cell::RefCell;
+    use std::collections::HashMap;
 
     #[test]
     fn parses_json5_comments_and_round_trips_to_deterministic_bytes() {
@@ -805,6 +1223,7 @@ mod tests {
                     price: { currency: "USD", amount_minor: 1299 },
                     attributes: [{
                       option_display_name: "Black",
+                      option_localization_key: "catalog.option.black",
                       option_code: "black",
                       code: "color",
                   }],
@@ -817,6 +1236,7 @@ mod tests {
                   kit_memberships: ["frame-service-kit"],
                   image_urls: ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/washer-article.png"],
                   stark_url: "https://www.starkfuture.com/us-US/parts/washer",
+                  description_localization_key: "catalog.article.washer.description",
                   localization_key: "catalog.article.washer",
                   description: "Replacement washer",
                   display_name: "Washer",
@@ -824,6 +1244,7 @@ mod tests {
                 }],
                 image_urls: ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/washer.png"],
                 stark_url: "https://www.starkfuture.com/us-US/parts/washer?sku=SP-123",
+                description_localization_key: "catalog.group.fasteners.description",
                 localization_key: "catalog.group.fasteners",
                 description: "Fastener group",
                 display_name: "Fasteners",
@@ -971,6 +1392,328 @@ mod tests {
         assert!(formatted.contains("generated_at: \"2026-05-26T12:34:56.123Z\""));
     }
 
+    #[test]
+    fn crawler_discovers_variants_and_traverses_branch_and_leaf_categories() {
+        let client = FixtureUpstream::representative();
+        let catalog =
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")).unwrap();
+
+        assert_eq!(
+            catalog.bike_variants,
+            vec![
+                BikeVariant {
+                    id: "varg-ex".to_owned(),
+                    code: "varg-ex".to_owned(),
+                    display_name: Some("Varg EX".to_owned()),
+                },
+                BikeVariant {
+                    id: "varg-sm".to_owned(),
+                    code: "varg-sm".to_owned(),
+                    display_name: Some("Varg SM".to_owned()),
+                },
+            ]
+        );
+        assert_eq!(
+            client.calls(),
+            vec![
+                "bike_variants",
+                "categories:varg-ex:SP",
+                "categories:varg-ex:SP/brakes",
+                "products:varg-ex:brakes_front_brake",
+                "detail:varg-ex:US:14_disc",
+                "categories:varg-sm:SP",
+            ]
+        );
+
+        let brakes = &catalog.catalog_trees[0].categories[0];
+        assert_eq!(brakes.code, "brakes");
+        assert_eq!(brakes.path, vec!["brakes"]);
+        let front_brake = &brakes.categories[0];
+        assert_eq!(front_brake.code, "brakes_front_brake");
+        assert_eq!(front_brake.path, vec!["brakes", "brakes_front_brake"]);
+        assert_eq!(front_brake.product_groups[0].articles[0].variants.len(), 2);
+        assert_eq!(
+            front_brake.product_groups[0].articles[0].variants[0].sku,
+            Some("SMX1-BR-FW-260".to_owned())
+        );
+        assert_eq!(
+            front_brake.product_groups[0].articles[0].variants[1].sku,
+            Some("I14580-060012-08-P".to_owned())
+        );
+        assert_eq!(
+            front_brake.product_groups[0].display_name,
+            Some("Front disc".to_owned())
+        );
+        assert_eq!(
+            front_brake.product_groups[0].description_localization_key,
+            Some("spare_parts_product_14_disc_description".to_owned())
+        );
+        assert_eq!(
+            front_brake.product_groups[0].image_urls,
+            vec![
+                "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/Disc.webp"
+            ]
+        );
+        assert_eq!(
+            front_brake.product_groups[0].articles[0].description_localization_key,
+            Some("spare_parts_product_disc_260mm_description".to_owned())
+        );
+        assert_eq!(
+            front_brake.product_groups[0].articles[0].variants[0].attributes[0]
+                .option_localization_key,
+            Some("spare_parts_attribute_option_260mm_name".to_owned())
+        );
+    }
+
+    #[test]
+    fn crawler_preserves_region_labeled_parts_instead_of_filtering_by_tags() {
+        let client = FixtureUpstream::representative();
+        let catalog =
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")).unwrap();
+        let article =
+            &catalog.catalog_trees[0].categories[0].categories[0].product_groups[0].articles[0];
+
+        assert_eq!(article.code, "disc_260mm");
+        assert_eq!(article.kit_contents, vec!["bolt_m6"]);
+        assert_eq!(article.variants[0].price.as_ref().unwrap().currency, "USD");
+        assert_eq!(
+            article.variants[0].availability.as_ref().unwrap().status,
+            "AVAILABLE_HQ"
+        );
+    }
+
+    #[test]
+    fn crawler_reports_upstream_errors() {
+        let mut client = FixtureUpstream::representative();
+        client.categories.insert(
+            ("varg-ex".to_owned(), "SP".to_owned()),
+            Err(UpstreamError::new("category failed")),
+        );
+
+        assert!(matches!(
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")),
+            Err(CrawlError::Upstream(_))
+        ));
+    }
+
+    #[test]
+    fn crawler_requires_variant_discovery() {
+        let mut client = FixtureUpstream::representative();
+        client.bike_variants.clear();
+
+        assert!(matches!(
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")),
+            Err(CrawlError::NoBikeVariants)
+        ));
+    }
+
+    #[test]
+    fn crawler_uses_trusted_request_path_for_recursion() {
+        let mut client = FixtureUpstream::representative();
+        client.categories.insert(
+            ("varg-ex".to_owned(), "SP/brakes/controls".to_owned()),
+            Ok(Vec::new()),
+        );
+        let categories = client
+            .categories
+            .get_mut(&("varg-ex".to_owned(), "SP/brakes".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap();
+        categories[0].is_leaf = false;
+        categories[0].code = "controls".to_owned();
+        categories[0].path = "SP/not-the-real-parent".to_owned();
+
+        let catalog =
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")).unwrap();
+
+        assert_eq!(
+            client.calls(),
+            vec![
+                "bike_variants",
+                "categories:varg-ex:SP",
+                "categories:varg-ex:SP/brakes",
+                "categories:varg-ex:SP/brakes/controls",
+                "categories:varg-sm:SP",
+            ]
+        );
+        assert_eq!(
+            catalog.catalog_trees[0].categories[0].categories[0].path,
+            vec!["brakes", "controls"]
+        );
+    }
+
+    #[test]
+    fn crawler_rejects_unsafe_category_codes() {
+        let mut client = FixtureUpstream::representative();
+        client
+            .categories
+            .get_mut(&("varg-ex".to_owned(), "SP".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap()[0]
+            .code = "../brakes".to_owned();
+
+        assert!(matches!(
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")),
+            Err(CrawlError::UnsafeCategoryCode { .. })
+        ));
+    }
+
+    #[test]
+    fn crawler_detects_revisited_category_paths() {
+        let mut client = FixtureUpstream::representative();
+        client
+            .categories
+            .get_mut(&("varg-ex".to_owned(), "SP/brakes".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap()
+            .clear();
+        client
+            .categories
+            .get_mut(&("varg-ex".to_owned(), "SP".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap()
+            .push(UpstreamCategory {
+                code: "brakes".to_owned(),
+                name_key: Some("duplicate".to_owned()),
+                display_name: Some("Duplicate brakes".to_owned()),
+                image_url: None,
+                is_leaf: false,
+                path: "SP".to_owned(),
+            });
+
+        assert!(matches!(
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")),
+            Err(CrawlError::CategoryCycle { .. })
+        ));
+    }
+
+    #[test]
+    fn crawler_surfaces_post_crawl_catalog_validation_errors() {
+        let client = FixtureUpstream::representative();
+        let mut config = CrawlConfig::us_storefront("2026-05-26T12:34:56Z");
+        config.api_base_url = "http://api.starkfuture.com/v2".to_owned();
+
+        assert!(matches!(
+            crawl_catalog(&client, &config),
+            Err(CrawlError::Catalog(CatalogError::InvalidApiBaseUrl(_)))
+        ));
+    }
+
+    #[test]
+    fn crawler_keeps_variant_without_skus() {
+        let mut client = FixtureUpstream::representative();
+        let detail = client
+            .details
+            .get_mut(&("varg-ex".to_owned(), "US".to_owned(), "14_disc".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap();
+        detail.articles[0].article.variants[0].skus.clear();
+
+        let catalog =
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")).unwrap();
+        let variants = &catalog.catalog_trees[0].categories[0].categories[0].product_groups[0]
+            .articles[0]
+            .variants;
+
+        assert_eq!(variants.len(), 1);
+        assert_eq!(variants[0].sku, None);
+    }
+
+    #[test]
+    fn crawler_bounds_category_depth() {
+        let mut client = FixtureUpstream::representative();
+        let root_category = client
+            .categories
+            .get_mut(&("varg-ex".to_owned(), "SP".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap();
+        root_category[0].is_leaf = false;
+
+        for depth in 1..MAX_CATEGORY_DEPTH {
+            let path = format!("SP{}", "/brakes".repeat(depth));
+            let next_path = format!("{path}/brakes");
+            client.categories.insert(
+                ("varg-ex".to_owned(), path),
+                Ok(vec![UpstreamCategory {
+                    code: "brakes".to_owned(),
+                    name_key: Some("spare_parts_category_brakes_name".to_owned()),
+                    display_name: Some(format!("Brakes {depth}")),
+                    image_url: None,
+                    is_leaf: false,
+                    path: next_path,
+                }]),
+            );
+        }
+
+        assert!(matches!(
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")),
+            Err(CrawlError::CategoryDepth { .. })
+        ));
+    }
+
+    #[test]
+    fn crawler_uses_detail_image_before_summary_image() {
+        let mut client = FixtureUpstream::representative();
+        let detail = client
+            .details
+            .get_mut(&("varg-ex".to_owned(), "US".to_owned(), "14_disc".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap();
+        detail.feature_image_url =
+            Some("https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/DetailDisc.webp".to_owned());
+
+        let catalog =
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")).unwrap();
+        let product_group = &catalog.catalog_trees[0].categories[0].categories[0].product_groups[0];
+
+        assert_eq!(
+            product_group.image_urls,
+            vec![
+                "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/DetailDisc.webp"
+            ]
+        );
+    }
+
+    #[test]
+    fn crawler_falls_back_to_summary_text_when_detail_text_is_missing() {
+        let mut client = FixtureUpstream::representative();
+        let detail = client
+            .details
+            .get_mut(&("varg-ex".to_owned(), "US".to_owned(), "14_disc".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap();
+        detail.display_name = None;
+        detail.description = None;
+        detail.name_key = None;
+        detail.description_key = None;
+
+        let catalog =
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")).unwrap();
+        let product_group = &catalog.catalog_trees[0].categories[0].categories[0].product_groups[0];
+
+        assert_eq!(product_group.display_name, Some("Disc".to_owned()));
+        assert_eq!(
+            product_group.description,
+            Some("Front disc group".to_owned())
+        );
+        assert_eq!(
+            product_group.localization_key,
+            Some("spare_parts_product_14_disc_name".to_owned())
+        );
+        assert_eq!(
+            product_group.description_localization_key,
+            Some("spare_parts_product_14_disc_description".to_owned())
+        );
+    }
+
     fn representative_catalog() -> Catalog {
         Catalog {
             metadata: CatalogMetadata {
@@ -1004,6 +1747,7 @@ mod tests {
                         display_name: Some("Fasteners".to_owned()),
                         description: Some("Fastener group".to_owned()),
                         localization_key: Some("catalog.group.fasteners".to_owned()),
+                        description_localization_key: Some("catalog.group.fasteners.description".to_owned()),
                         stark_url: Some("https://www.starkfuture.com/us-US/parts/washer?sku=SP-123".to_owned()),
                         image_urls: vec![
                             "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/washer.png".to_owned(),
@@ -1013,6 +1757,7 @@ mod tests {
                             display_name: Some("Washer".to_owned()),
                             description: Some("Replacement washer".to_owned()),
                             localization_key: Some("catalog.article.washer".to_owned()),
+                            description_localization_key: Some("catalog.article.washer.description".to_owned()),
                             stark_url: Some("https://www.starkfuture.com/us-US/parts/washer".to_owned()),
                             image_urls: vec![
                                 "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/washer-article.png"
@@ -1034,6 +1779,7 @@ mod tests {
                                     code: "color".to_owned(),
                                     option_code: "black".to_owned(),
                                     option_display_name: Some("Black".to_owned()),
+                                    option_localization_key: Some("catalog.option.black".to_owned()),
                                 }],
                                 price: Some(Price {
                                     amount_minor: 1299,
@@ -1048,6 +1794,183 @@ mod tests {
                     }],
                 }],
             }],
+        }
+    }
+
+    struct FixtureUpstream {
+        bike_variants: Vec<UpstreamBikeVariant>,
+        categories: HashMap<(String, String), UpstreamResult<Vec<UpstreamCategory>>>,
+        products: HashMap<(String, String), UpstreamResult<Vec<UpstreamProductSummary>>>,
+        details: HashMap<(String, String, String), UpstreamResult<UpstreamProductDetail>>,
+        calls: RefCell<Vec<String>>,
+    }
+
+    impl FixtureUpstream {
+        fn representative() -> Self {
+            let mut categories = HashMap::new();
+            categories.insert(
+                ("varg-ex".to_owned(), "SP".to_owned()),
+                Ok(vec![UpstreamCategory {
+                    code: "brakes".to_owned(),
+                    name_key: Some("spare_parts_category_brakes_name".to_owned()),
+                    display_name: Some("Brakes".to_owned()),
+                    image_url: None,
+                    is_leaf: false,
+                    path: "SP".to_owned(),
+                }]),
+            );
+            categories.insert(
+                ("varg-ex".to_owned(), "SP/brakes".to_owned()),
+                Ok(vec![UpstreamCategory {
+                    code: "brakes_front_brake".to_owned(),
+                    name_key: Some("spare_parts_category_front_brake_name".to_owned()),
+                    display_name: Some("Front brake".to_owned()),
+                    image_url: None,
+                    is_leaf: true,
+                    path: "SP".to_owned(),
+                }]),
+            );
+            categories.insert(("varg-sm".to_owned(), "SP".to_owned()), Ok(Vec::new()));
+
+            let mut products = HashMap::new();
+            products.insert(
+                ("varg-ex".to_owned(), "brakes_front_brake".to_owned()),
+                Ok(vec![UpstreamProductSummary {
+                    code: "14_disc".to_owned(),
+                    name_key: Some("spare_parts_product_14_disc_name".to_owned()),
+                    description_key: Some("spare_parts_product_14_disc_description".to_owned()),
+                    display_name: Some("Disc".to_owned()),
+                    description: Some("Front disc group".to_owned()),
+                    image_url: Some(
+                        "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/Disc.webp"
+                            .to_owned(),
+                    ),
+                }]),
+            );
+
+            let mut details = HashMap::new();
+            details.insert(
+                ("varg-ex".to_owned(), "US".to_owned(), "14_disc".to_owned()),
+                Ok(UpstreamProductDetail {
+                    code: "14_disc".to_owned(),
+                    name_key: Some("spare_parts_product_14_disc_name".to_owned()),
+                    description_key: Some("spare_parts_product_14_disc_description".to_owned()),
+                    display_name: Some("Front disc".to_owned()),
+                    description: Some("Front brake disc".to_owned()),
+                    feature_image_url: None,
+                    articles: vec![UpstreamArticleEntry {
+                        reference: Some(14),
+                        article: UpstreamArticle {
+                            code: "disc_260mm".to_owned(),
+                            name_key: Some("spare_parts_product_disc_260mm_name".to_owned()),
+                            description_key: Some("spare_parts_product_disc_260mm_description".to_owned()),
+                            display_name: Some("260mm disc".to_owned()),
+                            description: Some("US labeled part that still fits the bike".to_owned()),
+                            image_url: Some(
+                                "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/Disc260.webp"
+                                    .to_owned(),
+                            ),
+                            tags: vec!["region-us".to_owned()],
+                            is_kit: false,
+                            kit_contain: vec!["bolt_m6".to_owned()],
+                            variants: vec![UpstreamArticleVariant {
+                                code: "disc_260mm-standard".to_owned(),
+                                skus: vec!["SMX1-BR-FW-260".to_owned(), "I14580-060012-08-P".to_owned()],
+                                availability: Some("AVAILABLE_HQ".to_owned()),
+                                price: Some(UpstreamPrice {
+                                    total_minor: 14900,
+                                    currency: "USD".to_owned(),
+                                }),
+                                attributes: vec![UpstreamAttributeSelection {
+                                    attribute_code: "disc_size".to_owned(),
+                                    option_code: "260mm".to_owned(),
+                                    option_display_name: None,
+                                    option_name_key: Some("spare_parts_attribute_option_260mm_name".to_owned()),
+                                }],
+                            }],
+                        },
+                    }],
+                }),
+            );
+
+            Self {
+                bike_variants: vec![
+                    UpstreamBikeVariant {
+                        tag: "varg-ex".to_owned(),
+                        display_name: Some("Varg EX".to_owned()),
+                    },
+                    UpstreamBikeVariant {
+                        tag: "varg-sm".to_owned(),
+                        display_name: Some("Varg SM".to_owned()),
+                    },
+                ],
+                categories,
+                products,
+                details,
+                calls: RefCell::new(Vec::new()),
+            }
+        }
+
+        fn calls(&self) -> Vec<String> {
+            self.calls.borrow().clone()
+        }
+    }
+
+    impl UpstreamCatalog for FixtureUpstream {
+        fn bike_variants(&self) -> UpstreamResult<Vec<UpstreamBikeVariant>> {
+            self.calls.borrow_mut().push("bike_variants".to_owned());
+            Ok(self.bike_variants.clone())
+        }
+
+        fn categories(&self, tag: &str, path: &str) -> UpstreamResult<Vec<UpstreamCategory>> {
+            self.calls
+                .borrow_mut()
+                .push(format!("categories:{tag}:{path}"));
+            self.categories
+                .get(&(tag.to_owned(), path.to_owned()))
+                .cloned()
+                .unwrap_or_else(|| {
+                    Err(UpstreamError::new(format!(
+                        "missing categories fixture for {tag} {path}"
+                    )))
+                })
+        }
+
+        fn products(
+            &self,
+            tag: &str,
+            category_code: &str,
+        ) -> UpstreamResult<Vec<UpstreamProductSummary>> {
+            self.calls
+                .borrow_mut()
+                .push(format!("products:{tag}:{category_code}"));
+            self.products
+                .get(&(tag.to_owned(), category_code.to_owned()))
+                .cloned()
+                .unwrap_or_else(|| {
+                    Err(UpstreamError::new(format!(
+                        "missing products fixture for {tag} {category_code}"
+                    )))
+                })
+        }
+
+        fn product_detail(
+            &self,
+            tag: &str,
+            country: &str,
+            product_code: &str,
+        ) -> UpstreamResult<UpstreamProductDetail> {
+            self.calls
+                .borrow_mut()
+                .push(format!("detail:{tag}:{country}:{product_code}"));
+            self.details
+                .get(&(tag.to_owned(), country.to_owned(), product_code.to_owned()))
+                .cloned()
+                .unwrap_or_else(|| {
+                    Err(UpstreamError::new(format!(
+                        "missing product detail fixture for {tag} {country} {product_code}"
+                    )))
+                })
         }
     }
 }

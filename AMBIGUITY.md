@@ -108,3 +108,21 @@ browser-test PR.
 
 Caveat: this does not mean the runtime app should depend on server rendering. The static runtime behavior remains
 controlled by `SPEC.md`; this is a testability choice for the scaffold.
+
+## 2026-05-28: Localization Extraction Timing
+
+Decision: the first committed live catalog keeps Stark localization keys and stable codes, but does not block step 5 on
+extracting English display strings from Stark's Next.js page payload.
+
+Why: the live catalog build exposed API-shape and transport problems that needed to be fixed before later search and UI
+work could build against real data. The generated catalog still has stable searchable identifiers and localization keys,
+and `SPEC.md` already requires the UI to fall back to codes or localization keys when display strings are missing.
+Adding page-payload localization extraction is still required by `IMPL_SPEC.md`, but it is a separate implementation
+problem from proving the real catalog crawl works end to end.
+
+Other reasonable options: implement localization extraction in this PR, relax `IMPL_SPEC.md`, or add a separate plan
+step before the search-index work. Keeping the requirement in `IMPL_SPEC.md` while recording the timing decision makes
+the remaining work visible without turning the live catalog build PR into a broader parser change.
+
+Caveat: search and UI work should revisit this before relying on localization-key fallbacks as the final user-facing
+experience.

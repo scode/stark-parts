@@ -109,7 +109,7 @@ for help when the decision is existential enough that building either direction 
 
   Final gate before PR: checks, `$pre-pr-review-swarm`, unambiguous fixes, `[x]`, stacked PR.
 
-- 6. [ ] Search index and tree projection.
+- 6. [x] Search index and tree projection.
 
   Build the browser-local search data model from the committed catalog. Implement normalization, matching, bike
   filtering, URL-state encoding/decoding, and tree projection from matching rows and ancestors without any UI

@@ -7,3 +7,5 @@ repository.workspace = true
 
 [dependencies]
 leptos.workspace = true
+stark-parts-catalog = { path = "../stark-parts-catalog", default-features = false }
+url.workspace = true

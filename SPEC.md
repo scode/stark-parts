@@ -93,8 +93,10 @@ dealer:
 - availability, when available in the committed data, with a stale-data warning
 - price and currency, when available in the committed data, with a stale-data warning
 - source image URL or rendered image, when available
-- an immediately visible one-click link to a canonical HTTPS Stark-owned page where the part can be viewed, whenever
-  that link can be determined
+- an immediately visible one-click link to the most specific canonical HTTPS Stark-owned page that can be determined for
+  the part. If the committed data does not contain an article- or SKU-specific URL, the link should point to the Stark
+  product-group page for that bike, category path, and product code. It must not fall back to the bike-level spare-parts
+  overview for a part-level result.
 
 For broad searches, the page may cap the number of rendered detail cards as long as it keeps the full match count and
 catalog tree visible, explains that only the first details are being shown, and tells the user to narrow the search to

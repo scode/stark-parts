@@ -18,7 +18,6 @@ use url::Url;
 
 const SCHEMA_VERSION: u32 = 1;
 const MAX_CATEGORY_DEPTH: usize = 32;
-#[cfg(feature = "http")]
 const STARK_SPARE_PARTS_URL: &str = "https://starkfuture.com/parts-and-accessories/spare-parts";
 pub const DEFAULT_CATALOG_PATH: &str = "catalog/stark-parts.json5";
 const ALLOWED_IMAGE_HOSTS: &[&str] = &[
@@ -285,6 +284,8 @@ pub enum CrawlError {
     NoBikeVariants,
     #[error("upstream category code is not a safe path segment: {code}")]
     UnsafeCategoryCode { code: String },
+    #[error("upstream product code is not a safe path segment: {code}")]
+    UnsafeProductCode { code: String },
     #[error("category traversal revisited path {path} for bike variant {tag}")]
     CategoryCycle { tag: String, path: String },
     #[error("category traversal exceeded max depth {max_depth} at path {path}")]
@@ -1093,8 +1094,14 @@ fn crawl_categories(
             let products = client.products(tag, &upstream.code)?;
             let mut groups = Vec::with_capacity(products.len());
             for product in products {
+                if !is_safe_path_segment(&product.code) {
+                    return Err(CrawlError::UnsafeProductCode { code: product.code });
+                }
                 let detail = client.product_detail(tag, &config.country, &product.code)?;
-                groups.push(product_group_from_upstream(product, detail));
+                if !is_safe_path_segment(&detail.code) {
+                    return Err(CrawlError::UnsafeProductCode { code: detail.code });
+                }
+                groups.push(product_group_from_upstream(tag, &path, product, detail));
             }
             (Vec::new(), groups)
         } else {
@@ -1133,6 +1140,8 @@ fn is_safe_path_segment(segment: &str) -> bool {
 }
 
 fn product_group_from_upstream(
+    bike_variant_id: &str,
+    category_path: &[String],
     summary: UpstreamProductSummary,
     detail: UpstreamProductDetail,
 ) -> ProductGroup {
@@ -1141,6 +1150,12 @@ fn product_group_from_upstream(
         .or(summary.image_url)
         .into_iter()
         .collect();
+    let stark_url = format!(
+        "{STARK_SPARE_PARTS_URL}/{}/{}/{}",
+        bike_variant_id,
+        category_path.join("/"),
+        detail.code
+    );
 
     ProductGroup {
         code: detail.code,
@@ -1148,7 +1163,7 @@ fn product_group_from_upstream(
         description: detail.description.or(summary.description),
         localization_key: detail.name_key.or(summary.name_key),
         description_localization_key: detail.description_key.or(summary.description_key),
-        stark_url: None,
+        stark_url: Some(stark_url),
         image_urls,
         articles: detail
             .articles
@@ -1912,6 +1927,7 @@ mod tests {
                 "generated tree for {} has no SKUs",
                 tree.bike_variant_id
             );
+            assert_product_group_urls_are_specific(&tree.bike_variant_id, &tree.categories);
         }
     }
 
@@ -2031,6 +2047,31 @@ mod tests {
         }
 
         (product_group_count, article_count, sku_count)
+    }
+
+    fn assert_product_group_urls_are_specific(bike_variant_id: &str, categories: &[CategoryNode]) {
+        for category in categories {
+            for group in &category.product_groups {
+                let url = group
+                    .stark_url
+                    .as_deref()
+                    .expect("generated product groups should have Stark URLs");
+                assert!(
+                    url.starts_with(&format!("{STARK_SPARE_PARTS_URL}/{bike_variant_id}/")),
+                    "product-group URL should include its bike variant: {url}"
+                );
+                assert!(
+                    url.ends_with(&format!("/{}", group.code)),
+                    "product-group URL should end with its product code: {url}"
+                );
+                assert_ne!(
+                    url,
+                    format!("{STARK_SPARE_PARTS_URL}/{bike_variant_id}"),
+                    "product-group URL must not be the bike overview"
+                );
+            }
+            assert_product_group_urls_are_specific(bike_variant_id, &category.categories);
+        }
     }
 
     #[test]
@@ -2199,6 +2240,12 @@ mod tests {
             ]
         );
         assert_eq!(
+            front_brake.product_groups[0].stark_url.as_deref(),
+            Some(
+                "https://starkfuture.com/parts-and-accessories/spare-parts/varg-ex/brakes/brakes_front_brake/14_disc"
+            )
+        );
+        assert_eq!(
             front_brake.product_groups[0].articles[0].description_localization_key,
             Some("spare_parts_product_disc_260mm_description".to_owned())
         );
@@ -2301,6 +2348,40 @@ mod tests {
         assert!(matches!(
             crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")),
             Err(CrawlError::UnsafeCategoryCode { .. })
+        ));
+    }
+
+    #[test]
+    fn crawler_rejects_unsafe_product_codes_before_building_stark_urls() {
+        let mut client = FixtureUpstream::representative();
+        client
+            .products
+            .get_mut(&("varg-ex".to_owned(), "brakes_front_brake".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap()[0]
+            .code = "../14_disc".to_owned();
+
+        assert!(matches!(
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")),
+            Err(CrawlError::UnsafeProductCode { .. })
+        ));
+    }
+
+    #[test]
+    fn crawler_rejects_unsafe_detail_codes_before_building_stark_urls() {
+        let mut client = FixtureUpstream::representative();
+        client
+            .details
+            .get_mut(&("varg-ex".to_owned(), "US".to_owned(), "14_disc".to_owned()))
+            .unwrap()
+            .as_mut()
+            .unwrap()
+            .code = "../14_disc".to_owned();
+
+        assert!(matches!(
+            crawl_catalog(&client, &CrawlConfig::us_storefront("2026-05-26T12:34:56Z")),
+            Err(CrawlError::UnsafeProductCode { .. })
         ));
     }
 
@@ -2571,6 +2652,12 @@ mod tests {
         );
         assert_eq!(product.display_name, Some("Seat".to_owned()));
         assert_eq!(product.description, Some("Seat assembly".to_owned()));
+        assert_eq!(
+            product.stark_url.as_deref(),
+            Some(
+                "https://starkfuture.com/parts-and-accessories/spare-parts/varg-ex/bodywork/9_seat"
+            )
+        );
         assert_eq!(
             product.articles[0].display_name,
             Some("Original Seat".to_owned())

@@ -232,6 +232,7 @@ pub struct ProjectedCategory {
 pub struct ProjectedProductGroup {
     pub code: String,
     pub display_name: Option<String>,
+    pub image_urls: Vec<String>,
     pub articles: Vec<ProjectedArticle>,
 }
 
@@ -239,6 +240,7 @@ pub struct ProjectedProductGroup {
 pub struct ProjectedArticle {
     pub code: String,
     pub display_name: Option<String>,
+    pub image_urls: Vec<String>,
     pub variants: Vec<ProjectedArticleVariant>,
 }
 
@@ -246,6 +248,7 @@ pub struct ProjectedArticle {
 pub struct ProjectedArticleVariant {
     pub code: String,
     pub sku: Option<String>,
+    pub image_urls: Vec<String>,
 }
 
 struct SearchRow {
@@ -279,6 +282,7 @@ fn project_group(group: &ProductGroup) -> ProjectedProductGroup {
     ProjectedProductGroup {
         code: group.code.clone(),
         display_name: group.display_name.clone(),
+        image_urls: group.image_urls.clone(),
         articles: group.articles.iter().map(project_article).collect(),
     }
 }
@@ -287,12 +291,14 @@ fn project_article(article: &Article) -> ProjectedArticle {
     ProjectedArticle {
         code: article.code.clone(),
         display_name: article.display_name.clone(),
+        image_urls: article.image_urls.clone(),
         variants: article
             .variants
             .iter()
             .map(|variant| ProjectedArticleVariant {
                 code: variant.code.clone(),
                 sku: variant.sku.clone(),
+                image_urls: variant.image_urls.clone(),
             })
             .collect(),
     }
@@ -530,6 +536,7 @@ fn project_rows(rows: &[&SearchRow]) -> Vec<ProjectedCatalogTree> {
             article.variants.push(ProjectedArticleVariant {
                 code: variant.code.clone(),
                 sku: variant.sku.clone(),
+                image_urls: variant.image_urls.clone(),
             });
         }
     }
@@ -595,6 +602,7 @@ fn get_or_insert_group<'a>(
     groups.push(ProjectedProductGroup {
         code: summary.code.clone(),
         display_name: summary.display_name.clone(),
+        image_urls: summary.image_urls.clone(),
         articles: Vec::new(),
     });
     groups.last_mut().expect("group was just inserted")
@@ -615,6 +623,7 @@ fn get_or_insert_article<'a>(
     group.articles.push(ProjectedArticle {
         code: summary.code.clone(),
         display_name: summary.display_name.clone(),
+        image_urls: summary.image_urls.clone(),
         variants: Vec::new(),
     });
     group
@@ -753,8 +762,20 @@ mod tests {
         assert_eq!(category.code, "brakes");
         assert_eq!(subcategory.code, "front_brake");
         assert_eq!(group.code, "disc_group");
+        assert_eq!(
+            group.image_urls,
+            ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/disc-group.png"]
+        );
         assert_eq!(article.code, "disc_260mm");
+        assert_eq!(
+            article.image_urls,
+            ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/disc-260mm.png"]
+        );
         assert_eq!(article.variants[0].sku.as_deref(), Some("SMX1-BR-FW-260"));
+        assert_eq!(
+            article.variants[0].image_urls,
+            ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/disc-variant.png"]
+        );
     }
 
     #[test]

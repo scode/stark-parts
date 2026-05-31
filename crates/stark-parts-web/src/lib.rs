@@ -13,7 +13,7 @@ const UNOFFICIAL_NOTICE: &str = "Unofficial catalog helper. Not endorsed by Star
 const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
 const DETAIL_RENDER_LIMIT: usize = 50;
 // Tree virtualization depends on fixed-height rows. Keep this in sync with `.tree-node`.
-const TREE_ROW_HEIGHT_PX: usize = 36;
+const TREE_ROW_HEIGHT_PX: usize = 100;
 const TREE_VIEWPORT_HEIGHT_PX: usize = 512;
 const TREE_OVERSCAN_ROWS: usize = 8;
 
@@ -220,6 +220,9 @@ fn tree_node_view(node: FlatTreeNode) -> impl IntoView {
             class=format!("tree-node tree-node-{}", node.kind)
             style=format!("--depth: {}", node.depth)
         >
+            {node.image_url.map(|url| view! {
+                <img class="tree-thumb" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
+            })}
             <span class="tree-label">{node.label}</span>
             {node.meta.map(|meta| view! { <span class="tree-meta">{meta}</span> })}
         </li>
@@ -432,6 +435,7 @@ fn flatten_trees(trees: &[ProjectedCatalogTree]) -> Vec<FlatTreeNode> {
                 .clone()
                 .unwrap_or_else(|| tree.bike_variant_id.clone()),
             meta: Some(tree.bike_variant_id.clone()),
+            image_url: None,
         });
         for category in &tree.categories {
             flatten_category(category, 1, &mut nodes);
@@ -449,6 +453,7 @@ fn flatten_category(category: &ProjectedCategory, depth: usize, nodes: &mut Vec<
             .clone()
             .unwrap_or_else(|| category.code.clone()),
         meta: Some(category.code.clone()),
+        image_url: None,
     });
     for child in &category.categories {
         flatten_category(child, depth + 1, nodes);
@@ -467,6 +472,7 @@ fn flatten_group(group: &ProjectedProductGroup, depth: usize, nodes: &mut Vec<Fl
             .clone()
             .unwrap_or_else(|| group.code.clone()),
         meta: Some(group.code.clone()),
+        image_url: group.image_urls.first().cloned(),
     });
     for article in &group.articles {
         nodes.push(FlatTreeNode {
@@ -477,6 +483,7 @@ fn flatten_group(group: &ProjectedProductGroup, depth: usize, nodes: &mut Vec<Fl
                 .clone()
                 .unwrap_or_else(|| article.code.clone()),
             meta: Some(article.code.clone()),
+            image_url: preferred_article_image(article, group),
         });
         for variant in &article.variants {
             nodes.push(FlatTreeNode {
@@ -484,9 +491,34 @@ fn flatten_group(group: &ProjectedProductGroup, depth: usize, nodes: &mut Vec<Fl
                 kind: "variant",
                 label: variant.sku.clone().unwrap_or_else(|| variant.code.clone()),
                 meta: Some(variant.code.clone()),
+                image_url: preferred_variant_image(variant, article, group),
             });
         }
     }
+}
+
+fn preferred_article_image(
+    article: &search::ProjectedArticle,
+    group: &ProjectedProductGroup,
+) -> Option<String> {
+    article
+        .image_urls
+        .first()
+        .or_else(|| group.image_urls.first())
+        .cloned()
+}
+
+fn preferred_variant_image(
+    variant: &search::ProjectedArticleVariant,
+    article: &search::ProjectedArticle,
+    group: &ProjectedProductGroup,
+) -> Option<String> {
+    variant
+        .image_urls
+        .first()
+        .or_else(|| article.image_urls.first())
+        .or_else(|| group.image_urls.first())
+        .cloned()
 }
 
 #[derive(Clone)]
@@ -495,6 +527,7 @@ struct FlatTreeNode {
     kind: &'static str,
     label: String,
     meta: Option<String>,
+    image_url: Option<String>,
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -669,12 +702,12 @@ input[type="search"] {
 }
 
 .tree-node {
-  align-items: baseline;
+  align-items: center;
   border-bottom: 1px solid #eef0e8;
   box-sizing: border-box;
   display: flex;
   gap: 0.6rem;
-  height: 36px;
+  height: 100px;
   overflow: hidden;
   padding: 0.35rem 0.75rem 0.35rem calc(0.75rem + var(--depth) * 1.1rem);
 }
@@ -686,6 +719,17 @@ input[type="search"] {
 .tree-spacer {
   display: block;
   pointer-events: none;
+}
+
+.tree-thumb {
+  background: #f7f8f5;
+  border: 1px solid #dfe2d6;
+  border-radius: 3px;
+  box-sizing: border-box;
+  flex: 0 0 84px;
+  height: 84px;
+  object-fit: contain;
+  width: 84px;
 }
 
 .tree-node-bike .tree-label {
@@ -884,6 +928,72 @@ mod tests {
             "https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm/accessories/1_toolbox"
         ));
         assert!(html.contains("View on Stark"));
+    }
+
+    #[test]
+    fn catalog_tree_renders_small_lazy_thumbnails() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "SMX1-TOOLBOX".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let html = CatalogTreeView(CatalogTreeViewProps {
+            trees: results.trees,
+        })
+        .to_html();
+
+        assert!(html.contains("class=\"tree-thumb\""));
+        assert!(html.contains("loading=\"lazy\""));
+        assert!(html.contains("referrerpolicy=\"no-referrer\""));
+        assert!(html.contains("260327_SpareParts"));
+    }
+
+    #[test]
+    fn tree_thumbnail_selection_falls_back_from_child_to_parent_images() {
+        let group = ProjectedProductGroup {
+            code: "group".to_owned(),
+            display_name: None,
+            image_urls: vec!["https://example.test/group.png".to_owned()],
+            articles: Vec::new(),
+        };
+        let article = search::ProjectedArticle {
+            code: "article".to_owned(),
+            display_name: None,
+            image_urls: vec!["https://example.test/article.png".to_owned()],
+            variants: Vec::new(),
+        };
+        let variant = search::ProjectedArticleVariant {
+            code: "variant".to_owned(),
+            sku: None,
+            image_urls: vec!["https://example.test/variant.png".to_owned()],
+        };
+        let article_without_image = search::ProjectedArticle {
+            image_urls: Vec::new(),
+            ..article.clone()
+        };
+        let variant_without_image = search::ProjectedArticleVariant {
+            image_urls: Vec::new(),
+            ..variant.clone()
+        };
+
+        assert_eq!(
+            preferred_article_image(&article_without_image, &group).as_deref(),
+            Some("https://example.test/group.png")
+        );
+        assert_eq!(
+            preferred_variant_image(&variant_without_image, &article, &group).as_deref(),
+            Some("https://example.test/article.png")
+        );
+        assert_eq!(
+            preferred_variant_image(&variant_without_image, &article_without_image, &group)
+                .as_deref(),
+            Some("https://example.test/group.png")
+        );
+        assert_eq!(
+            preferred_variant_image(&variant, &article, &group).as_deref(),
+            Some("https://example.test/variant.png")
+        );
     }
 
     #[test]

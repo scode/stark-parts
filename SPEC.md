@@ -75,9 +75,14 @@ wondering whether the catalog failed to load.
 
 ## Result Details
 
-Hovering a result row must show a detail card. On wide screens, the card must appear to the right of the result list; on
-narrow screens, it may stack below the result list so it remains usable. Each visible detail card should expose the data
-a user needs to identify the part before going back to Stark or a dealer:
+Hovering a result row must show that row's detail card. Once shown, the card must stay visible when the pointer moves
+elsewhere on the page. It may change only when the pointer enters another result row, or when the search results change
+and the displayed row is no longer present in the current results. The row whose card is shown must stay visually
+highlighted for as long as that card remains shown.
+
+On wide screens, the card must appear to the right of the result list; on narrow screens, it may stack below the result
+list so it remains usable. Each visible detail card should expose the data a user needs to identify the part before
+going back to Stark or a dealer:
 
 - display name, when available
 - code, when available

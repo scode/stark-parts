@@ -31,20 +31,13 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
     let (selected_bikes, set_selected_bikes) = signal(initial_request.selected_bike_variant_ids);
     let search_index = Arc::clone(&index);
     let search_input = NodeRef::<leptos::html::Input>::new();
-    #[cfg(target_arch = "wasm32")]
-    let current_results = move || {
+    let results = Memo::new(move |_| {
         search_index.search(&SearchRequest {
             query: query.get(),
             selected_bike_variant_ids: selected_bikes.get(),
         })
-    };
-    #[cfg(not(target_arch = "wasm32"))]
-    let current_results = move || {
-        search_index.search(&SearchRequest {
-            query: query.get_untracked(),
-            selected_bike_variant_ids: selected_bikes.get_untracked(),
-        })
-    };
+    });
+    let (selected_detail, set_selected_detail) = signal(None::<Arc<SearchResultRow>>);
 
     #[cfg(target_arch = "wasm32")]
     {
@@ -60,6 +53,15 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
     search_input.on_load(|input| {
         // Browsers may refuse programmatic focus for page-level reasons; the input remains usable either way.
         let _ = input.focus();
+    });
+
+    Effect::new(move |_| {
+        let results = results.get();
+        if let Some(detail) = selected_detail.get()
+            && !results.rows.iter().any(|row| row == detail.as_ref())
+        {
+            set_selected_detail.set(None);
+        }
     });
 
     view! {
@@ -98,10 +100,14 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
                 </aside>
                 <section class="results" aria-live="polite">
                     {move || {
-                        let results = current_results();
+                        let results = results.get();
                         view! {
                             <ResultSummary results=results.clone() />
-                            <SearchResultList rows=results.rows.clone() />
+                            <SearchResultList
+                                rows=results.rows.clone()
+                                selected_detail=selected_detail
+                                set_selected_detail=set_selected_detail
+                            />
                         }
                     }}
                 </section>
@@ -192,7 +198,11 @@ fn ResultSummary(results: SearchResults) -> impl IntoView {
 }
 
 #[component]
-fn SearchResultList(rows: Vec<SearchResultRow>) -> impl IntoView {
+fn SearchResultList(
+    rows: Vec<SearchResultRow>,
+    selected_detail: ReadSignal<Option<Arc<SearchResultRow>>>,
+    set_selected_detail: WriteSignal<Option<Arc<SearchResultRow>>>,
+) -> impl IntoView {
     if rows.is_empty() {
         return view! { <p class="empty-state">"No matching catalog entries."</p> }.into_any();
     }
@@ -200,9 +210,8 @@ fn SearchResultList(rows: Vec<SearchResultRow>) -> impl IntoView {
     let rows = Arc::new(rows.into_iter().map(Arc::new).collect::<Vec<_>>());
     let total_nodes = rows.len();
     let (scroll_top, set_scroll_top) = signal(0usize);
-    let (hovered_detail, set_hovered_detail) = signal(None::<Arc<SearchResultRow>>);
     view! {
-        <div class="result-list-with-detail" on:mouseleave=move |_| set_hovered_detail.set(None)>
+        <div class="result-list-with-detail">
             <ol
                 class="result-list"
                 aria-label="Result list"
@@ -215,14 +224,14 @@ fn SearchResultList(rows: Vec<SearchResultRow>) -> impl IntoView {
                     view! {
                         {(window.before_px > 0).then(|| result_spacer_view(window.before_px))}
                         {visible_rows[window.start..window.end].iter().cloned().map(|row| {
-                            result_row_view(row, set_hovered_detail)
+                            result_row_view(row, selected_detail, set_selected_detail)
                         }).collect_view()}
                         {(window.after_px > 0).then(|| result_spacer_view(window.after_px))}
                     }
                 }}
             </ol>
             <aside class="result-detail-popover" aria-label="Hovered part detail">
-                {move || hovered_detail.get().map(|row| result_card((*row).clone()))}
+                {move || selected_detail.get().map(|row| result_card((*row).clone()))}
             </aside>
         </div>
     }
@@ -231,7 +240,8 @@ fn SearchResultList(rows: Vec<SearchResultRow>) -> impl IntoView {
 
 fn result_row_view(
     row: Arc<SearchResultRow>,
-    set_hovered_detail: WriteSignal<Option<Arc<SearchResultRow>>>,
+    selected_detail: ReadSignal<Option<Arc<SearchResultRow>>>,
+    set_selected_detail: WriteSignal<Option<Arc<SearchResultRow>>>,
 ) -> impl IntoView {
     let label = row
         .article
@@ -241,11 +251,18 @@ fn result_row_view(
     let meta = row.variant.as_ref().and_then(|variant| variant.sku.clone());
     let image_url = first_image_url(&row);
     let detail = Some(Arc::clone(&row));
+    let active_row = Arc::clone(&row);
     view! {
         <li
-            class="result-row result-list-row"
+            class=move || {
+                if selected_detail.get().as_deref() == Some(active_row.as_ref()) {
+                    "result-row result-list-row result-row-active"
+                } else {
+                    "result-row result-list-row"
+                }
+            }
             style="--depth: 0"
-            on:mouseenter=move |_| set_hovered_detail.set(detail.clone())
+            on:mouseenter=move |_| set_selected_detail.set(detail.clone())
         >
             {image_url.map(|url| view! {
                 <img class="result-thumb" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
@@ -658,7 +675,7 @@ input[type="search"] {
   cursor: pointer;
 }
 
-.result-row:hover {
+.result-row:hover, .result-row-active {
   background: #f7f8f5;
 }
 
@@ -808,6 +825,33 @@ mod tests {
                 availability: None,
             }),
         }
+    }
+
+    fn search_result_list_html(rows: Vec<SearchResultRow>) -> String {
+        Owner::new().with(|| {
+            let (selected_detail, set_selected_detail) = signal(None::<Arc<SearchResultRow>>);
+            SearchResultList(SearchResultListProps {
+                rows,
+                selected_detail,
+                set_selected_detail,
+            })
+            .to_html()
+        })
+    }
+
+    fn search_result_list_html_with_selection(
+        rows: Vec<SearchResultRow>,
+        selected: SearchResultRow,
+    ) -> String {
+        Owner::new().with(|| {
+            let (selected_detail, set_selected_detail) = signal(Some(Arc::new(selected)));
+            SearchResultList(SearchResultListProps {
+                rows,
+                selected_detail,
+                set_selected_detail,
+            })
+            .to_html()
+        })
     }
 
     #[test]
@@ -969,7 +1013,7 @@ mod tests {
             selected_bike_variant_ids: vec!["varg-sm".to_owned()],
         });
         assert_eq!(results.rows.len(), 1);
-        let html = SearchResultList(SearchResultListProps { rows: results.rows }).to_html();
+        let html = search_result_list_html(results.rows);
 
         assert!(html.contains("<span class=\"result-label\">Stark VARG toolbox</span>"));
         assert!(html.contains("<span class=\"result-meta\">SMX1-TOOLBOX</span>"));
@@ -982,10 +1026,7 @@ mod tests {
 
     #[test]
     fn search_result_list_falls_back_to_article_code_without_display_name() {
-        let html = SearchResultList(SearchResultListProps {
-            rows: vec![minimal_result_row(None, Some("SKU-1"))],
-        })
-        .to_html();
+        let html = search_result_list_html(vec![minimal_result_row(None, Some("SKU-1"))]);
 
         assert!(html.contains("<span class=\"result-label\">article_code</span>"));
         assert!(html.contains("<span class=\"result-meta\">SKU-1</span>"));
@@ -993,14 +1034,20 @@ mod tests {
 
     #[test]
     fn search_result_list_omits_secondary_text_without_sku() {
-        let html = SearchResultList(SearchResultListProps {
-            rows: vec![minimal_result_row(Some("Readable article"), None)],
-        })
-        .to_html();
+        let html =
+            search_result_list_html(vec![minimal_result_row(Some("Readable article"), None)]);
 
         assert!(html.contains("<span class=\"result-label\">Readable article</span>"));
         assert!(!html.contains("class=\"result-meta\""));
         assert!(!html.contains("variant_code"));
+    }
+
+    #[test]
+    fn search_result_list_marks_selected_row_active() {
+        let selected = minimal_result_row(Some("Readable article"), Some("SKU-1"));
+        let html = search_result_list_html_with_selection(vec![selected.clone()], selected);
+
+        assert!(html.contains("class=\"result-row result-list-row result-row-active\""));
     }
 
     #[test]
@@ -1087,7 +1134,7 @@ mod tests {
             selected_bike_variant_ids: Vec::new(),
         });
         let total_nodes = results.rows.len();
-        let html = SearchResultList(SearchResultListProps { rows: results.rows }).to_html();
+        let html = search_result_list_html(results.rows);
 
         assert!(total_nodes > RESULT_VIEWPORT_HEIGHT_PX / RESULT_ROW_HEIGHT_PX);
         assert!(

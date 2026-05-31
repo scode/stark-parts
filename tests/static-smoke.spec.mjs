@@ -19,13 +19,20 @@ test("static app restores URL state and searches without Stark API calls", async
   await expect(page.getByText("Generated")).toBeVisible();
   await expect(page.getByText("US storefront")).toBeVisible();
   await expect(page.getByText("SSM1-P-FF-01-G").first()).toBeVisible();
+  await expect(page.locator(".tree-detail-popover .result-card")).toHaveCount(0);
+  await page.getByText("SSM1-P-FF-01-G").first().hover();
   await expect(page.getByText("Price and availability are from the committed catalog snapshot").first()).toBeVisible();
-  await expect(page.locator('img[loading="lazy"][referrerpolicy="no-referrer"]').first()).toBeAttached();
+  await expect(page.locator(".tree-detail-popover .part-image").first()).toBeAttached();
 
   await page.getByLabel("Search").fill("SMX1-TOOLBOX");
   await expect(page.getByText("SMX1-TOOLBOX").first()).toBeVisible();
+  await page.getByText("SMX1-TOOLBOX").first().hover();
 
-  const starkLinks = await page.locator("a.stark-link").evaluateAll((links) => links.map((link) => link.href));
+  const starkLinks = await page
+    .locator(".tree-detail-popover a.stark-link")
+    .evaluateAll((links) => links.map((link) => link.href));
+  await page.locator(".tree-detail-popover a.stark-link").first().hover();
+  await expect(page.locator(".tree-detail-popover a.stark-link").first()).toBeVisible();
   expect(starkLinks.length).toBeGreaterThan(0);
   for (const href of starkLinks) {
     const url = new URL(href);

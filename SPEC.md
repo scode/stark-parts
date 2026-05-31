@@ -84,8 +84,9 @@ wondering whether the catalog failed to load.
 
 ## Result Details
 
-Each visible part-level result should expose the data a user needs to identify the part before going back to Stark or a
-dealer:
+Hovering a tree row that corresponds to a concrete search result must show a detail card. On wide screens, the card must
+appear to the right of the tree; on narrow screens, it may stack below the tree so it remains usable. Each visible
+detail card should expose the data a user needs to identify the part before going back to Stark or a dealer:
 
 - display name, when available
 - code, when available
@@ -96,15 +97,15 @@ dealer:
 - kit membership or kit contents, when available
 - availability, when available in the committed data, with a stale-data warning
 - price and currency, when available in the committed data, with a stale-data warning
-- source image URL or rendered image, when available
+- source image URL or rendered image at the top of the card, when available
 - an immediately visible one-click link to the most specific canonical HTTPS Stark-owned page that can be determined for
   the part. If the committed data does not contain an article- or SKU-specific URL, the link should point to the Stark
   product-group page for that bike, category path, and product code. It must not fall back to the bike-level spare-parts
   overview for a part-level result.
 
-For broad searches, the page may cap the number of rendered detail cards as long as it keeps the full match count and
-catalog tree visible, explains that only the first details are being shown, and tells the user to narrow the search to
-inspect the rest. This cap is a rendering constraint, not a search constraint.
+For broad searches, the page may render detail cards only on demand as rows are hovered. This is a rendering constraint,
+not a search constraint: the full match count and catalog tree still need to reflect the complete browser-local search
+result.
 
 The site should prefer human-readable display strings over localization keys. If a display string is missing, it must
 fall back to stable codes or localization keys rather than hiding the result.

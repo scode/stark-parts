@@ -6,12 +6,12 @@ use search::{
     ProjectedProductGroup, SearchIndex, SearchRequest, SearchResultRow, SearchResults,
 };
 use stark_parts_catalog::{Catalog, CatalogMetadata, parse_catalog_json5};
+use std::collections::HashMap;
 use std::sync::Arc;
 
 const APP_TITLE: &str = "Stark Parts";
 const UNOFFICIAL_NOTICE: &str = "Unofficial catalog helper. Not endorsed by Stark. May contain errors. Stark's website remains the authoritative source.";
 const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
-const DETAIL_RENDER_LIMIT: usize = 50;
 // Tree virtualization depends on fixed-height rows. Keep this in sync with `.tree-node`.
 const TREE_ROW_HEIGHT_PX: usize = 100;
 const TREE_VIEWPORT_HEIGHT_PX: usize = 512;
@@ -102,8 +102,7 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
                         let results = current_results();
                         view! {
                             <ResultSummary results=results.clone() />
-                            <CatalogTreeView trees=results.trees.clone() />
-                            <ResultDetails rows=results.rows.clone() />
+                            <CatalogTreeView trees=results.trees.clone() rows=results.rows.clone() />
                         }
                     }}
                 </section>
@@ -194,40 +193,54 @@ fn ResultSummary(results: SearchResults) -> impl IntoView {
 }
 
 #[component]
-fn CatalogTreeView(trees: Vec<ProjectedCatalogTree>) -> impl IntoView {
+fn CatalogTreeView(trees: Vec<ProjectedCatalogTree>, rows: Vec<SearchResultRow>) -> impl IntoView {
     if trees.is_empty() {
         return view! { <p class="empty-state">"No matching catalog entries."</p> }.into_any();
     }
 
-    let nodes = Arc::new(flatten_trees(&trees));
+    let details = detail_rows_by_tree_key(rows);
+    let nodes = Arc::new(flatten_trees(&trees, &details));
     let total_nodes = nodes.len();
     let (scroll_top, set_scroll_top) = signal(0usize);
+    let (hovered_detail, set_hovered_detail) = signal(None::<Arc<SearchResultRow>>);
     view! {
-        <ol
-            class="catalog-tree"
-            aria-label="Catalog tree"
-            style=format!("max-height: {TREE_VIEWPORT_HEIGHT_PX}px")
-            on:scroll=move |event| set_scroll_top.set(scroll_top_from_event(&event))
-        >
-            {move || {
-                let window = virtual_tree_window(total_nodes, scroll_top.get());
-                let visible_nodes = Arc::clone(&nodes);
-                view! {
-                    {(window.before_px > 0).then(|| tree_spacer_view(window.before_px))}
-                    {visible_nodes[window.start..window.end].iter().cloned().map(tree_node_view).collect_view()}
-                    {(window.after_px > 0).then(|| tree_spacer_view(window.after_px))}
-                }
-            }}
-        </ol>
+        <div class="tree-with-detail" on:mouseleave=move |_| set_hovered_detail.set(None)>
+            <ol
+                class="catalog-tree"
+                aria-label="Catalog tree"
+                style=format!("max-height: {TREE_VIEWPORT_HEIGHT_PX}px")
+                on:scroll=move |event| set_scroll_top.set(scroll_top_from_event(&event))
+            >
+                {move || {
+                    let window = virtual_tree_window(total_nodes, scroll_top.get());
+                    let visible_nodes = Arc::clone(&nodes);
+                    view! {
+                        {(window.before_px > 0).then(|| tree_spacer_view(window.before_px))}
+                        {visible_nodes[window.start..window.end].iter().cloned().map(|node| {
+                            tree_node_view(node, set_hovered_detail)
+                        }).collect_view()}
+                        {(window.after_px > 0).then(|| tree_spacer_view(window.after_px))}
+                    }
+                }}
+            </ol>
+            <aside class="tree-detail-popover" aria-label="Hovered part detail">
+                {move || hovered_detail.get().map(|row| result_card((*row).clone()))}
+            </aside>
+        </div>
     }
     .into_any()
 }
 
-fn tree_node_view(node: FlatTreeNode) -> impl IntoView {
+fn tree_node_view(
+    node: FlatTreeNode,
+    set_hovered_detail: WriteSignal<Option<Arc<SearchResultRow>>>,
+) -> impl IntoView {
+    let detail = node.detail.clone();
     view! {
         <li
             class=format!("tree-node tree-node-{}", node.kind)
             style=format!("--depth: {}", node.depth)
+            on:mouseenter=move |_| set_hovered_detail.set(detail.clone())
         >
             {node.image_url.map(|url| view! {
                 <img class="tree-thumb" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
@@ -295,24 +308,6 @@ struct VirtualTreeWindow {
     after_px: usize,
 }
 
-#[component]
-fn ResultDetails(rows: Vec<SearchResultRow>) -> impl IntoView {
-    let total_rows = rows.len();
-    view! {
-        <section class="details" aria-label="Result details">
-            <h2>"Details"</h2>
-            {(total_rows > DETAIL_RENDER_LIMIT).then(|| view! {
-                <p class="detail-limit" role="status">
-                    "Showing the first " {DETAIL_RENDER_LIMIT} " of " {total_rows} " details. Narrow the search to inspect the rest."
-                </p>
-            })}
-            <div class="detail-grid">
-                {rows.into_iter().take(DETAIL_RENDER_LIMIT).map(result_card).collect_view()}
-            </div>
-        </section>
-    }
-}
-
 fn result_card(row: SearchResultRow) -> impl IntoView {
     let title = row
         .article
@@ -344,6 +339,9 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
 
     view! {
         <article class="result-card">
+            {image.map(|url| view! {
+                <img class="part-image" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
+            })}
             <div>
                 <h3>{title}</h3>
                 <p class="muted">{row.bike_display_name.clone().unwrap_or(row.bike_variant_id.clone())} " / " {group_name}</p>
@@ -364,9 +362,6 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
             </dl>
             <p class="stale-warning">"Price and availability are from the committed catalog snapshot."</p>
             {variant_attributes(variant.clone())}
-            {image.map(|url| view! {
-                <img class="part-image" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
-            })}
             {link.map(|url| view! {
                 <a class="stark-link" href=url target="_blank" rel="noopener noreferrer">"View on Stark"</a>
             })}
@@ -433,7 +428,10 @@ fn format_price(price: &stark_parts_catalog::Price) -> String {
     )
 }
 
-fn flatten_trees(trees: &[ProjectedCatalogTree]) -> Vec<FlatTreeNode> {
+fn flatten_trees(
+    trees: &[ProjectedCatalogTree],
+    details: &HashMap<DetailTreeKey, Arc<SearchResultRow>>,
+) -> Vec<FlatTreeNode> {
     let mut nodes = Vec::new();
     for tree in trees {
         nodes.push(FlatTreeNode {
@@ -445,15 +443,31 @@ fn flatten_trees(trees: &[ProjectedCatalogTree]) -> Vec<FlatTreeNode> {
                 .unwrap_or_else(|| tree.bike_variant_id.clone()),
             meta: Some(tree.bike_variant_id.clone()),
             image_url: None,
+            detail: None,
         });
         for category in &tree.categories {
-            flatten_category(category, 1, &mut nodes);
+            flatten_category(
+                category,
+                &tree.bike_variant_id,
+                &mut Vec::new(),
+                1,
+                details,
+                &mut nodes,
+            );
         }
     }
     nodes
 }
 
-fn flatten_category(category: &ProjectedCategory, depth: usize, nodes: &mut Vec<FlatTreeNode>) {
+fn flatten_category(
+    category: &ProjectedCategory,
+    bike_variant_id: &str,
+    category_path: &mut Vec<String>,
+    depth: usize,
+    details: &HashMap<DetailTreeKey, Arc<SearchResultRow>>,
+    nodes: &mut Vec<FlatTreeNode>,
+) {
+    category_path.push(category.code.clone());
     nodes.push(FlatTreeNode {
         depth,
         kind: "category",
@@ -463,16 +477,39 @@ fn flatten_category(category: &ProjectedCategory, depth: usize, nodes: &mut Vec<
             .unwrap_or_else(|| category.code.clone()),
         meta: Some(category.code.clone()),
         image_url: None,
+        detail: None,
     });
     for child in &category.categories {
-        flatten_category(child, depth + 1, nodes);
+        flatten_category(
+            child,
+            bike_variant_id,
+            category_path,
+            depth + 1,
+            details,
+            nodes,
+        );
     }
     for group in &category.product_groups {
-        flatten_group(group, depth + 1, nodes);
+        flatten_group(
+            group,
+            bike_variant_id,
+            category_path,
+            depth + 1,
+            details,
+            nodes,
+        );
     }
+    category_path.pop();
 }
 
-fn flatten_group(group: &ProjectedProductGroup, depth: usize, nodes: &mut Vec<FlatTreeNode>) {
+fn flatten_group(
+    group: &ProjectedProductGroup,
+    bike_variant_id: &str,
+    category_path: &[String],
+    depth: usize,
+    details: &HashMap<DetailTreeKey, Arc<SearchResultRow>>,
+    nodes: &mut Vec<FlatTreeNode>,
+) {
     nodes.push(FlatTreeNode {
         depth,
         kind: "group",
@@ -482,6 +519,7 @@ fn flatten_group(group: &ProjectedProductGroup, depth: usize, nodes: &mut Vec<Fl
             .unwrap_or_else(|| group.code.clone()),
         meta: Some(group.code.clone()),
         image_url: group.image_urls.first().cloned(),
+        detail: None,
     });
     for article in &group.articles {
         nodes.push(FlatTreeNode {
@@ -493,6 +531,14 @@ fn flatten_group(group: &ProjectedProductGroup, depth: usize, nodes: &mut Vec<Fl
                 .unwrap_or_else(|| article.code.clone()),
             meta: Some(article.code.clone()),
             image_url: preferred_article_image(article, group),
+            detail: details
+                .get(&DetailTreeKey::article(
+                    bike_variant_id,
+                    category_path,
+                    &group.code,
+                    &article.code,
+                ))
+                .cloned(),
         });
         for variant in &article.variants {
             nodes.push(FlatTreeNode {
@@ -501,7 +547,82 @@ fn flatten_group(group: &ProjectedProductGroup, depth: usize, nodes: &mut Vec<Fl
                 label: variant.sku.clone().unwrap_or_else(|| variant.code.clone()),
                 meta: Some(variant.code.clone()),
                 image_url: preferred_variant_image(variant, article, group),
+                detail: details
+                    .get(&DetailTreeKey::variant(
+                        bike_variant_id,
+                        category_path,
+                        &group.code,
+                        &article.code,
+                        &variant.code,
+                        variant.sku.as_deref(),
+                    ))
+                    .cloned(),
             });
+        }
+    }
+}
+
+fn detail_rows_by_tree_key(
+    rows: Vec<SearchResultRow>,
+) -> HashMap<DetailTreeKey, Arc<SearchResultRow>> {
+    rows.into_iter()
+        .map(|row| (DetailTreeKey::from_row(&row), Arc::new(row)))
+        .collect()
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct DetailTreeKey {
+    bike_variant_id: String,
+    category_path: Vec<String>,
+    product_group_code: String,
+    article_code: String,
+    variant_code: Option<String>,
+    variant_sku: Option<String>,
+}
+
+impl DetailTreeKey {
+    fn from_row(row: &SearchResultRow) -> Self {
+        Self {
+            bike_variant_id: row.bike_variant_id.clone(),
+            category_path: row.category_path.clone(),
+            product_group_code: row.product_group.code.clone(),
+            article_code: row.article.code.clone(),
+            variant_code: row.variant.as_ref().map(|variant| variant.code.clone()),
+            variant_sku: row.variant.as_ref().and_then(|variant| variant.sku.clone()),
+        }
+    }
+
+    fn article(
+        bike_variant_id: &str,
+        category_path: &[String],
+        product_group_code: &str,
+        article_code: &str,
+    ) -> Self {
+        Self {
+            bike_variant_id: bike_variant_id.to_owned(),
+            category_path: category_path.to_vec(),
+            product_group_code: product_group_code.to_owned(),
+            article_code: article_code.to_owned(),
+            variant_code: None,
+            variant_sku: None,
+        }
+    }
+
+    fn variant(
+        bike_variant_id: &str,
+        category_path: &[String],
+        product_group_code: &str,
+        article_code: &str,
+        variant_code: &str,
+        variant_sku: Option<&str>,
+    ) -> Self {
+        Self {
+            bike_variant_id: bike_variant_id.to_owned(),
+            category_path: category_path.to_vec(),
+            product_group_code: product_group_code.to_owned(),
+            article_code: article_code.to_owned(),
+            variant_code: Some(variant_code.to_owned()),
+            variant_sku: variant_sku.map(str::to_owned),
         }
     }
 }
@@ -537,6 +658,7 @@ struct FlatTreeNode {
     label: String,
     meta: Option<String>,
     image_url: Option<String>,
+    detail: Option<Arc<SearchResultRow>>,
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -705,12 +827,20 @@ input[type="search"] {
   margin-bottom: 0.75rem;
 }
 
+.tree-with-detail {
+  align-items: start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+  margin-bottom: 1.25rem;
+}
+
 .catalog-tree {
   background: #ffffff;
   border: 1px solid #dfe2d6;
   border-radius: 6px;
   list-style: none;
-  margin: 0 0 1.25rem;
+  margin: 0;
   overflow: auto;
   padding: 0.5rem 0;
 }
@@ -719,6 +849,7 @@ input[type="search"] {
   align-items: center;
   border-bottom: 1px solid #eef0e8;
   box-sizing: border-box;
+  cursor: default;
   display: flex;
   gap: 0.6rem;
   height: 100px;
@@ -728,6 +859,14 @@ input[type="search"] {
 
 .tree-node:last-child {
   border-bottom: 0;
+}
+
+.tree-node-article, .tree-node-variant {
+  cursor: pointer;
+}
+
+.tree-node:hover {
+  background: #f7f8f5;
 }
 
 .tree-spacer {
@@ -766,15 +905,12 @@ input[type="search"] {
   font-size: 0.85rem;
 }
 
-.detail-grid {
-  display: grid;
-  gap: 0.9rem;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-}
-
-.detail-limit {
-  color: #4e5b53;
-  margin-bottom: 0.75rem;
+.tree-detail-popover {
+  align-self: start;
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  position: sticky;
+  top: 1rem;
 }
 
 .result-card {
@@ -824,8 +960,12 @@ input[type="search"] {
 }
 
 @media (max-width: 760px) {
-  .toolbar, .layout {
+  .toolbar, .layout, .tree-with-detail {
     grid-template-columns: 1fr;
+  }
+
+  .tree-detail-popover {
+    position: static;
   }
 
   .filters {
@@ -841,6 +981,41 @@ input[type="search"] {
 mod tests {
     use super::*;
     use leptos::prelude::Owner;
+
+    fn minimal_result_row(variant_code: &str, sku: Option<&str>) -> SearchResultRow {
+        SearchResultRow {
+            bike_variant_id: "bike".to_owned(),
+            bike_code: Some("bike".to_owned()),
+            bike_display_name: Some("Bike".to_owned()),
+            category_path: vec!["category".to_owned()],
+            category_display_path: vec!["Category".to_owned()],
+            product_group: search::ProductGroupSummary {
+                code: "group".to_owned(),
+                display_name: Some("Group".to_owned()),
+                description: None,
+                stark_url: None,
+                image_urls: Vec::new(),
+            },
+            article: search::ArticleSummary {
+                code: "article".to_owned(),
+                display_name: Some("Article".to_owned()),
+                description: None,
+                stark_url: None,
+                image_urls: Vec::new(),
+                kit_memberships: Vec::new(),
+                kit_contents: Vec::new(),
+            },
+            variant: Some(ArticleVariantSummary {
+                code: variant_code.to_owned(),
+                sku: sku.map(str::to_owned),
+                stark_url: None,
+                image_urls: Vec::new(),
+                attributes: Vec::new(),
+                price: None,
+                availability: None,
+            }),
+        }
+    }
 
     #[test]
     fn app_component_renders_search_experience() {
@@ -871,7 +1046,7 @@ mod tests {
         assert!(!html.contains("<dt>API</dt>"));
         assert!(html.contains("Bike filters"));
         assert!(html.contains("Catalog tree"));
-        assert!(html.contains("Details"));
+        assert!(html.contains("Hovered part detail"));
         assert!(html.contains("SMX1-TOOLBOX"));
         assert!(!html.contains("disabled"));
     }
@@ -957,6 +1132,23 @@ mod tests {
     }
 
     #[test]
+    fn result_card_renders_image_before_text_details() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "SMX1-TOOLBOX".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let html = result_card(results.rows[0].clone()).to_html();
+        let image_position = html
+            .find("class=\"part-image\"")
+            .expect("part image should render");
+        let heading_position = html.find("<h3>").expect("heading should render");
+
+        assert!(image_position < heading_position);
+    }
+
+    #[test]
     fn catalog_tree_renders_small_lazy_thumbnails() {
         let catalog = load_catalog();
         let index = SearchIndex::from_catalog(&catalog);
@@ -966,6 +1158,7 @@ mod tests {
         });
         let html = CatalogTreeView(CatalogTreeViewProps {
             trees: results.trees,
+            rows: results.rows,
         })
         .to_html();
 
@@ -973,6 +1166,74 @@ mod tests {
         assert!(html.contains("loading=\"lazy\""));
         assert!(html.contains("referrerpolicy=\"no-referrer\""));
         assert!(html.contains("260327_SpareParts"));
+    }
+
+    #[test]
+    fn flattened_tree_attaches_detail_rows_to_part_nodes() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "SMX1-TOOLBOX".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let detail_rows = detail_rows_by_tree_key(results.rows.clone());
+        let nodes = flatten_trees(&results.trees, &detail_rows);
+
+        assert!(
+            nodes
+                .iter()
+                .any(|node| node.kind == "variant" && node.detail.is_some())
+        );
+        assert!(
+            nodes.iter().all(|node| {
+                matches!(node.kind, "article" | "variant") || node.detail.is_none()
+            })
+        );
+    }
+
+    #[test]
+    fn flattened_tree_attaches_detail_rows_to_variantless_articles() {
+        let row = SearchResultRow {
+            variant: None,
+            ..minimal_result_row("unused", None)
+        };
+        let trees = vec![ProjectedCatalogTree {
+            bike_variant_id: "bike".to_owned(),
+            bike_display_name: Some("Bike".to_owned()),
+            categories: vec![ProjectedCategory {
+                code: "category".to_owned(),
+                display_name: Some("Category".to_owned()),
+                categories: Vec::new(),
+                product_groups: vec![ProjectedProductGroup {
+                    code: "group".to_owned(),
+                    display_name: Some("Group".to_owned()),
+                    image_urls: Vec::new(),
+                    articles: vec![search::ProjectedArticle {
+                        code: "article".to_owned(),
+                        display_name: Some("Article".to_owned()),
+                        image_urls: Vec::new(),
+                        variants: Vec::new(),
+                    }],
+                }],
+            }],
+        }];
+        let detail_rows = detail_rows_by_tree_key(vec![row]);
+        let nodes = flatten_trees(&trees, &detail_rows);
+
+        assert!(
+            nodes
+                .iter()
+                .any(|node| node.kind == "article" && node.detail.is_some())
+        );
+    }
+
+    #[test]
+    fn detail_tree_keys_distinguish_variant_skus_when_codes_match() {
+        let first = minimal_result_row("duplicate-code", Some("SKU-A"));
+        let second = minimal_result_row("duplicate-code", Some("SKU-B"));
+        let detail_rows = detail_rows_by_tree_key(vec![first, second]);
+
+        assert_eq!(detail_rows.len(), 2);
     }
 
     #[test]
@@ -1098,49 +1359,6 @@ mod tests {
     }
 
     #[test]
-    fn result_details_render_all_rows_under_the_limit() {
-        let catalog = load_catalog();
-        let index = SearchIndex::from_catalog(&catalog);
-        let results = index.search(&SearchRequest {
-            query: "SMX1-TOOLBOX".to_owned(),
-            selected_bike_variant_ids: Vec::new(),
-        });
-        let expected_cards = results.rows.len();
-        let html = ResultDetails(ResultDetailsProps { rows: results.rows }).to_html();
-
-        assert!(expected_cards > 0);
-        assert!(expected_cards < DETAIL_RENDER_LIMIT);
-        assert_eq!(
-            html.matches("class=\"result-card\"").count(),
-            expected_cards
-        );
-        assert!(!html.contains("Narrow the search to inspect the rest"));
-    }
-
-    #[test]
-    fn result_details_cap_broad_rows_with_narrow_prompt() {
-        let catalog = load_catalog();
-        let index = SearchIndex::from_catalog(&catalog);
-        let results = index.search(&SearchRequest {
-            query: "SMX1".to_owned(),
-            selected_bike_variant_ids: Vec::new(),
-        });
-        let expected_cards = results.rows.len();
-        let html = ResultDetails(ResultDetailsProps { rows: results.rows }).to_html();
-
-        assert!(expected_cards > DETAIL_RENDER_LIMIT);
-        assert_eq!(
-            html.matches("class=\"result-card\"").count(),
-            DETAIL_RENDER_LIMIT
-        );
-        assert!(html.contains("Showing the first"));
-        assert!(html.contains(&DETAIL_RENDER_LIMIT.to_string()));
-        assert!(html.contains(&expected_cards.to_string()));
-        assert!(html.contains("details"));
-        assert!(html.contains("Narrow the search to inspect the rest"));
-    }
-
-    #[test]
     fn catalog_tree_mounts_only_the_initial_virtual_window() {
         let catalog = load_catalog();
         let index = SearchIndex::from_catalog(&catalog);
@@ -1148,9 +1366,10 @@ mod tests {
             query: "S".to_owned(),
             selected_bike_variant_ids: Vec::new(),
         });
-        let total_nodes = flatten_trees(&results.trees).len();
+        let total_nodes = flatten_trees(&results.trees, &HashMap::new()).len();
         let html = CatalogTreeView(CatalogTreeViewProps {
             trees: results.trees,
+            rows: Vec::new(),
         })
         .to_html();
 
@@ -1182,27 +1401,5 @@ mod tests {
         assert!(window.start <= window.end);
         assert!(window.end <= 10);
         assert_eq!(window.after_px, 0);
-    }
-
-    #[test]
-    fn result_details_render_all_rows_at_the_limit() {
-        let catalog = load_catalog();
-        let index = SearchIndex::from_catalog(&catalog);
-        let results = index.search(&SearchRequest {
-            query: "SMX1".to_owned(),
-            selected_bike_variant_ids: Vec::new(),
-        });
-        let rows = results
-            .rows
-            .into_iter()
-            .take(DETAIL_RENDER_LIMIT)
-            .collect::<Vec<_>>();
-        let html = ResultDetails(ResultDetailsProps { rows }).to_html();
-
-        assert_eq!(
-            html.matches("class=\"result-card\"").count(),
-            DETAIL_RENDER_LIMIT
-        );
-        assert!(!html.contains("Narrow the search to inspect the rest"));
     }
 }

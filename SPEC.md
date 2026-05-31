@@ -23,7 +23,8 @@ The first screen must be the search experience. A user should be able to load th
 type a search query, and immediately see the matching catalog tree.
 
 The page title must stay at the top left of the header. The search field is the primary control and must appear directly
-under that title, before catalog metadata.
+under that title, before catalog metadata. When the page loads, the search field must receive keyboard focus
+automatically.
 
 The site must be static at runtime. Loading and searching the catalog must not require a server, database, remote API
 call, or any remote RPC. The catalog data used by the browser is committed in this repository and served as static site

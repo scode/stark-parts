@@ -278,7 +278,16 @@ fn result_row_view(
             on:mouseenter=move |_| set_selected_detail.set(detail.clone())
         >
             {image_url.map(|url| view! {
-                <img class="result-thumb" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
+                <span class="result-thumb-frame" aria-hidden="true">
+                    <img
+                        class="result-thumb"
+                        src=url
+                        alt=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                        on:error=mark_image_failed
+                    />
+                </span>
             })}
             <span class="result-label">{label}</span>
             {meta.map(|meta| view! { <span class="result-meta">{meta}</span> })}
@@ -376,7 +385,16 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
     view! {
         <article class="result-card">
             {image.map(|url| view! {
-                <img class="part-image" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
+                <figure class="part-image-frame">
+                    <img
+                        class="part-image"
+                        src=url
+                        alt=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                        on:error=mark_image_failed
+                    />
+                </figure>
             })}
             <div class="result-card-heading">
                 <h3>{title}</h3>
@@ -477,6 +495,32 @@ fn first_image_url(row: &SearchResultRow) -> Option<String> {
         .or_else(|| row.article.image_urls.first().cloned())
         .or_else(|| row.product_group.image_urls.first().cloned())
 }
+
+#[cfg(target_arch = "wasm32")]
+fn mark_image_failed(event: leptos::ev::ErrorEvent) {
+    use leptos::wasm_bindgen::JsCast;
+
+    let Some(target) = event.target() else {
+        return;
+    };
+    let Ok(image) = target.dyn_into::<leptos::web_sys::HtmlElement>() else {
+        return;
+    };
+    let Some(parent) = image.parent_element() else {
+        return;
+    };
+
+    let parent_classes = parent.class_name();
+    if !parent_classes
+        .split_ascii_whitespace()
+        .any(|class| class == "image-frame-missing")
+    {
+        parent.set_class_name(&format!("{parent_classes} image-frame-missing"));
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn mark_image_failed(_event: leptos::ev::ErrorEvent) {}
 
 fn format_price(price: &stark_parts_catalog::Price) -> String {
     format!(
@@ -737,16 +781,43 @@ input[type="search"] {
   pointer-events: none;
 }
 
-.result-thumb {
+.result-thumb-frame {
+  align-items: center;
   background: #f3f5f0;
   border: 1px solid #dfe2d6;
   border-radius: 5px;
   box-sizing: border-box;
+  color: #68736c;
+  display: flex;
   flex: 0 0 72px;
   height: 72px;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 72px;
+}
+
+.result-thumb-frame::after, .part-image-frame::after {
+  content: "No image";
+  display: none;
+  font-size: 0.72rem;
+}
+
+.image-frame-missing::after {
+  display: block;
+}
+
+.result-thumb {
+  background: #f3f5f0;
+  height: 100%;
   object-fit: contain;
   padding: 0.15rem;
-  width: 72px;
+  position: absolute;
+  width: 100%;
+}
+
+.image-frame-missing .result-thumb, .image-frame-missing .part-image {
+  display: none;
 }
 
 .result-row .result-label, .result-row .result-meta {
@@ -817,12 +888,29 @@ input[type="search"] {
   padding-left: 1.1rem;
 }
 
-.part-image {
+.part-image-frame {
+  align-items: center;
+  aspect-ratio: 4 / 3;
+  background: #f3f5f0;
   border: 1px solid #dfe2d6;
   border-radius: 4px;
+  box-sizing: border-box;
+  color: #68736c;
+  display: flex;
+  justify-content: center;
+  margin: 0;
   max-height: 12rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.part-image {
+  background: #f3f5f0;
+  height: 100%;
   max-width: 100%;
   object-fit: contain;
+  position: relative;
+  width: 100%;
 }
 
 .stark-link {
@@ -1059,6 +1147,7 @@ mod tests {
         assert!(html.contains("SKU"));
         assert!(html.contains("Category path"));
         assert!(html.contains("Accessories"));
+        assert!(html.contains("class=\"part-image-frame\""));
         assert!(html.contains("loading=\"lazy\""));
         assert!(html.contains("referrerpolicy=\"no-referrer\""));
         assert!(html.contains(
@@ -1133,6 +1222,7 @@ mod tests {
         assert!(html.contains("<span class=\"result-label\">Stark VARG toolbox</span>"));
         assert!(html.contains("<span class=\"result-meta\">SMX1-TOOLBOX</span>"));
         assert!(!html.contains("1_toolbox_kamasa_stark_varg</span>"));
+        assert!(html.contains("class=\"result-thumb-frame\""));
         assert!(html.contains("class=\"result-thumb\""));
         assert!(html.contains("loading=\"lazy\""));
         assert!(html.contains("referrerpolicy=\"no-referrer\""));

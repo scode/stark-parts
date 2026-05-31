@@ -108,6 +108,9 @@ going back to Stark or a dealer:
   product-group page for that bike, category path, and product code. It must not fall back to the bike-level spare-parts
   overview for a part-level result.
 
+Image frames should keep their layout stable when remote images are slow or fail to load, and failed images should show
+a fallback state instead of a broken-image icon.
+
 The detail card should present the image, title, compatibility subtitle, and Stark link before the detail fields. SKU,
 price, and availability should be grouped as primary facts ahead of lower-level catalog metadata.
 

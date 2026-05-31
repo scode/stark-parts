@@ -196,9 +196,68 @@ pub struct AttributeSummary {
 
 struct SearchRow {
     bike_variant_id: String,
+    search_text: SearchText,
+    result: SearchResultRow,
+}
+
+struct SearchText {
+    exact_part: SearchTextBucket,
+    product_group: SearchTextBucket,
+    context: SearchTextBucket,
+    combined: SearchTextBucket,
+}
+
+impl SearchText {
+    fn from_result(result: &SearchResultRow) -> Self {
+        let exact_part_fields = exact_part_searchable_fields(result);
+        let product_group_fields = product_group_searchable_fields(result);
+        let context_fields = context_searchable_fields(result);
+        let combined_fields = exact_part_fields
+            .iter()
+            .chain(product_group_fields.iter())
+            .chain(context_fields.iter())
+            .cloned()
+            .collect();
+
+        Self {
+            exact_part: SearchTextBucket::from_fields(exact_part_fields),
+            product_group: SearchTextBucket::from_fields(product_group_fields),
+            context: SearchTextBucket::from_fields(context_fields),
+            combined: SearchTextBucket::from_fields(combined_fields),
+        }
+    }
+
+    fn matches(&self, query_tokens: &[String], compact_query: &str) -> bool {
+        let buckets = [&self.exact_part, &self.product_group, &self.context];
+        query_tokens
+            .iter()
+            .all(|token| buckets.iter().any(|bucket| bucket.contains_token(token)))
+            || self.combined.matches_compact(compact_query)
+    }
+}
+
+struct SearchTextBucket {
     normalized_text: String,
     compact_text: String,
-    result: SearchResultRow,
+}
+
+impl SearchTextBucket {
+    fn from_fields(fields: Vec<String>) -> Self {
+        let searchable_text = fields.join(" ");
+
+        Self {
+            normalized_text: normalize_tokens(&searchable_text).join(" "),
+            compact_text: compact_search_text(&searchable_text),
+        }
+    }
+
+    fn contains_token(&self, token: &str) -> bool {
+        self.normalized_text.contains(token)
+    }
+
+    fn matches_compact(&self, compact_query: &str) -> bool {
+        !compact_query.is_empty() && self.compact_text.contains(compact_query)
+    }
 }
 
 fn collect_category_rows(
@@ -322,12 +381,11 @@ fn search_row_from_variant(
         },
         variant: variant.map(article_variant_summary),
     };
-    let searchable_text = searchable_fields(&result).join(" ");
+    let search_text = SearchText::from_result(&result);
 
     SearchRow {
         bike_variant_id: bike_variant_id.to_owned(),
-        normalized_text: normalize_tokens(&searchable_text).join(" "),
-        compact_text: compact_search_text(&searchable_text),
+        search_text,
         result,
     }
 }
@@ -400,21 +458,8 @@ impl SearchResultKey {
     }
 }
 
-fn searchable_fields(result: &SearchResultRow) -> Vec<String> {
+fn exact_part_searchable_fields(result: &SearchResultRow) -> Vec<String> {
     let mut fields = Vec::new();
-    fields.push(result.bike_variant_id.clone());
-    push_optional(&mut fields, &result.bike_code);
-    push_optional(&mut fields, &result.bike_display_name);
-    for bike in &result.compatible_bikes {
-        fields.push(bike.id.clone());
-        fields.push(bike.code.clone());
-        push_optional(&mut fields, &bike.display_name);
-    }
-    fields.extend(result.category_path.iter().cloned());
-    fields.extend(result.category_display_path.iter().cloned());
-    fields.push(result.product_group.code.clone());
-    push_optional(&mut fields, &result.product_group.display_name);
-    push_optional(&mut fields, &result.product_group.description);
     fields.push(result.article.code.clone());
     push_optional(&mut fields, &result.article.display_name);
     push_optional(&mut fields, &result.article.description);
@@ -432,6 +477,29 @@ fn searchable_fields(result: &SearchResultRow) -> Vec<String> {
     fields
 }
 
+fn product_group_searchable_fields(result: &SearchResultRow) -> Vec<String> {
+    let mut fields = Vec::new();
+    fields.push(result.product_group.code.clone());
+    push_optional(&mut fields, &result.product_group.display_name);
+    push_optional(&mut fields, &result.product_group.description);
+    fields
+}
+
+fn context_searchable_fields(result: &SearchResultRow) -> Vec<String> {
+    let mut fields = Vec::new();
+    fields.push(result.bike_variant_id.clone());
+    push_optional(&mut fields, &result.bike_code);
+    push_optional(&mut fields, &result.bike_display_name);
+    for bike in &result.compatible_bikes {
+        fields.push(bike.id.clone());
+        fields.push(bike.code.clone());
+        push_optional(&mut fields, &bike.display_name);
+    }
+    fields.extend(result.category_path.iter().cloned());
+    fields.extend(result.category_display_path.iter().cloned());
+    fields
+}
+
 fn push_optional(fields: &mut Vec<String>, value: &Option<String>) {
     if let Some(value) = value {
         fields.push(value.clone());
@@ -443,10 +511,7 @@ fn row_matches_query(row: &SearchRow, query_tokens: &[String], compact_query: &s
         return true;
     }
 
-    query_tokens
-        .iter()
-        .all(|token| row.normalized_text.contains(token))
-        || (!compact_query.is_empty() && row.compact_text.contains(compact_query))
+    row.search_text.matches(query_tokens, compact_query)
 }
 
 fn normalize_tokens(input: &str) -> Vec<String> {
@@ -736,6 +801,78 @@ mod tests {
                 .as_ref()
                 .and_then(|variant| variant.sku.as_deref())
                 == Some("SMX1-TOOLBOX")
+        }));
+    }
+
+    #[test]
+    fn committed_catalog_matches_parts_through_group_descriptions() {
+        let catalog =
+            parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5")).unwrap();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "wiring harness".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+
+        assert!(results.rows.iter().any(|row| {
+            row.variant
+                .as_ref()
+                .and_then(|variant| variant.sku.as_deref())
+                == Some("SMX1-WH-F-01")
+                && row.article.display_name.as_deref() == Some("Frame cable holder")
+                && row.product_group.description.as_deref().is_some()
+        }));
+    }
+
+    #[test]
+    fn search_text_keeps_part_and_group_wording_separate() {
+        let index = SearchIndex::from_catalog(&fixture_catalog());
+        let row = index
+            .rows
+            .iter()
+            .find(|row| {
+                row.result
+                    .variant
+                    .as_ref()
+                    .and_then(|variant| variant.sku.as_deref())
+                    == Some("SMX1-BR-FW-260")
+            })
+            .expect("fixture should include the brake disc variant");
+
+        assert!(
+            row.search_text
+                .exact_part
+                .normalized_text
+                .contains("article")
+        );
+        assert!(!row.search_text.exact_part.normalized_text.contains("group"));
+        assert!(
+            row.search_text
+                .product_group
+                .normalized_text
+                .contains("group")
+        );
+        assert!(
+            !row.search_text
+                .product_group
+                .normalized_text
+                .contains("article")
+        );
+    }
+
+    #[test]
+    fn search_tokens_can_match_across_separate_text_sources() {
+        let index = SearchIndex::from_catalog(&fixture_catalog());
+        let results = index.search(&SearchRequest {
+            query: "article-only-description group-only-description".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+
+        assert!(results.rows.iter().any(|row| {
+            row.variant
+                .as_ref()
+                .and_then(|variant| variant.sku.as_deref())
+                == Some("SMX1-BR-FW-260")
         }));
     }
 

@@ -68,6 +68,10 @@ Search must match at least these fields when they exist in the committed catalog
 - attribute code, option code, and option display name
 - kit contents
 
+Product group names and descriptions must be searchable for the parts inside that group. For example, a part whose own
+name does not say "wiring harness" should still be eligible to match a "wiring harness" search when Stark presents it
+inside a wiring-harness product group.
+
 Search is case-insensitive. Punctuation in user input should not make common SKU searches fragile; for example,
 searching with or without hyphens should still find the same SKU when the normalized text is otherwise the same.
 

@@ -1,5 +1,11 @@
 {
   "private": true,
+  "scripts": {
+    "build": "NO_COLOR=true trunk build --release",
+    "dev": "NO_COLOR=true trunk serve --release --port 1420",
+    "vercel:build": "if [ -f \"$HOME/.cargo/env\" ]; then . \"$HOME/.cargo/env\"; fi; npm run build",
+    "vercel:install": "if ! command -v rustup >/dev/null 2>&1; then curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain none; fi; if [ -f \"$HOME/.cargo/env\" ]; then . \"$HOME/.cargo/env\"; fi; rustup toolchain install; cargo install trunk --version 0.21.14 --locked"
+  },
   "devDependencies": {
     "@playwright/test": "1.60.0",
     "http-server": "14.1.1"

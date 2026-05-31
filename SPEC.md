@@ -83,6 +83,9 @@ inside a wiring-harness product group.
 Search is case-insensitive. Punctuation in user input should not make common SKU searches fragile; for example,
 searching with or without hyphens should still find the same SKU when the normalized text is otherwise the same.
 
+Rows should show concise match feedback when the visible part name or SKU does not explain why the row matched. For
+example, a row matched through inherited product-group wording should say which group matched.
+
 When a row matches, its detail card must include enough context for the result to make sense, including bike
 compatibility and category path when those fields exist in the committed catalog.
 

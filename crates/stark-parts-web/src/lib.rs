@@ -337,8 +337,15 @@ fn result_row_view(
                     />
                 </span>
             })}
-            <span class="result-label">{label}</span>
-            {meta.map(|meta| view! { <span class="result-meta">{meta}</span> })}
+            <span class="result-text">
+                <span class="result-primary-line">
+                    <span class="result-label">{label}</span>
+                    {meta.map(|meta| view! { <span class="result-meta">{meta}</span> })}
+                </span>
+                {row.match_feedback.clone().map(|feedback| view! {
+                    <span class="result-match">{feedback}</span>
+                })}
+            </span>
         </li>
     }
 }
@@ -912,11 +919,29 @@ input[type="search"] {
   display: none;
 }
 
-.result-row .result-label, .result-row .result-meta {
+.result-text {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.result-primary-line {
+  align-items: baseline;
+  display: flex;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.result-row .result-label, .result-row .result-meta, .result-row .result-match {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.result-match {
+  color: #3f7f57;
+  font-size: 0.8rem;
 }
 
 .result-meta, .muted {
@@ -1048,6 +1073,7 @@ mod tests {
             }],
             category_path: vec!["category".to_owned()],
             category_display_path: vec!["Category".to_owned()],
+            match_feedback: None,
             product_group: search::ProductGroupSummary {
                 code: "group".to_owned(),
                 display_name: Some("Group".to_owned()),

@@ -99,5 +99,9 @@ test("static app restores URL state and searches without Stark API calls", async
   await expect(page.locator(".result-detail-popover .result-card")).toHaveCount(0);
   await expect(page.locator(".result-row-active")).toHaveCount(0);
 
+  await page.getByLabel("Search").fill("wiring harness");
+  await expect(page.getByText("Frame cable holder").first()).toBeVisible();
+  await expect(page.getByText("matched group: Wiring harness").first()).toBeVisible();
+
   expect(catalogApiRequests).toEqual([]);
 });

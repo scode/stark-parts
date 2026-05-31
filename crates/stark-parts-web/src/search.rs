@@ -72,8 +72,8 @@ impl SearchIndex {
             if !selected_all_bikes && !selected_bikes.contains(&row.bike_variant_id) {
                 continue;
             }
-            if row_matches_query(row, &query_tokens, &compact_query) {
-                matched_rows.push(row);
+            if let Some(match_source) = row_match_source(row, &query_tokens, &compact_query) {
+                matched_rows.push((row, match_source));
             }
         }
 
@@ -154,6 +154,7 @@ pub struct SearchResultRow {
     pub product_group: ProductGroupSummary,
     pub article: ArticleSummary,
     pub variant: Option<ArticleVariantSummary>,
+    pub match_feedback: Option<String>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -234,6 +235,19 @@ impl SearchText {
             .all(|token| buckets.iter().any(|bucket| bucket.contains_token(token)))
             || self.combined.matches_compact(compact_query)
     }
+
+    fn feedback_source(&self, query_tokens: &[String], compact_query: &str) -> Option<MatchSource> {
+        if self.exact_part.matches_query(query_tokens, compact_query) {
+            return None;
+        }
+        if self
+            .product_group
+            .matches_query(query_tokens, compact_query)
+        {
+            return Some(MatchSource::ProductGroup);
+        }
+        None
+    }
 }
 
 struct SearchTextBucket {
@@ -258,6 +272,16 @@ impl SearchTextBucket {
     fn matches_compact(&self, compact_query: &str) -> bool {
         !compact_query.is_empty() && self.compact_text.contains(compact_query)
     }
+
+    fn matches_query(&self, query_tokens: &[String], compact_query: &str) -> bool {
+        query_tokens.iter().all(|token| self.contains_token(token))
+            || self.matches_compact(compact_query)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum MatchSource {
+    ProductGroup,
 }
 
 fn collect_category_rows(
@@ -380,6 +404,7 @@ fn search_row_from_variant(
             kit_contents: article.kit_contents.clone(),
         },
         variant: variant.map(article_variant_summary),
+        match_feedback: None,
     };
     let search_text = SearchText::from_result(&result);
 
@@ -410,17 +435,20 @@ fn article_variant_summary(variant: &ArticleVariant) -> ArticleVariantSummary {
     }
 }
 
-fn merge_result_rows(rows: Vec<&SearchRow>) -> Vec<SearchResultRow> {
+fn merge_result_rows(rows: Vec<(&SearchRow, Option<MatchSource>)>) -> Vec<SearchResultRow> {
     let mut merged = Vec::<SearchResultRow>::new();
     let mut indexes = HashMap::<SearchResultKey, usize>::new();
 
-    for row in rows {
+    for (row, match_source) in rows {
         let key = SearchResultKey::from(&row.result);
         if let Some(index) = indexes.get(&key).copied() {
             merge_compatible_bikes(&mut merged[index], &row.result);
+            merge_match_feedback(&mut merged[index], row, match_source);
         } else {
+            let mut result = row.result.clone();
+            result.match_feedback = match_source.and_then(|source| match_feedback(row, source));
             indexes.insert(key, merged.len());
-            merged.push(row.result.clone());
+            merged.push(result);
         }
     }
 
@@ -435,6 +463,31 @@ fn merge_compatible_bikes(target: &mut SearchResultRow, source: &SearchResultRow
             .any(|existing| existing.id == bike.id)
         {
             target.compatible_bikes.push(bike.clone());
+        }
+    }
+}
+
+fn merge_match_feedback(
+    target: &mut SearchResultRow,
+    source: &SearchRow,
+    match_source: Option<MatchSource>,
+) {
+    if target.match_feedback.is_none() {
+        target.match_feedback =
+            match_source.and_then(|source_kind| match_feedback(source, source_kind));
+    }
+}
+
+fn match_feedback(row: &SearchRow, source: MatchSource) -> Option<String> {
+    match source {
+        MatchSource::ProductGroup => {
+            let label = row
+                .result
+                .product_group
+                .display_name
+                .as_ref()
+                .unwrap_or(&row.result.product_group.code);
+            Some(format!("matched group: {label}"))
         }
     }
 }
@@ -506,12 +559,20 @@ fn push_optional(fields: &mut Vec<String>, value: &Option<String>) {
     }
 }
 
-fn row_matches_query(row: &SearchRow, query_tokens: &[String], compact_query: &str) -> bool {
+fn row_match_source(
+    row: &SearchRow,
+    query_tokens: &[String],
+    compact_query: &str,
+) -> Option<Option<MatchSource>> {
     if query_tokens.is_empty() && compact_query.is_empty() {
-        return true;
+        return Some(None);
     }
 
-    row.search_text.matches(query_tokens, compact_query)
+    if !row.search_text.matches(query_tokens, compact_query) {
+        return None;
+    }
+
+    Some(row.search_text.feedback_source(query_tokens, compact_query))
 }
 
 fn normalize_tokens(input: &str) -> Vec<String> {
@@ -822,6 +883,31 @@ mod tests {
                 && row.article.display_name.as_deref() == Some("Frame cable holder")
                 && row.product_group.description.as_deref().is_some()
         }));
+    }
+
+    #[test]
+    fn group_description_matches_explain_the_source() {
+        let index = SearchIndex::from_catalog(&fixture_catalog());
+        let results = index.search(&SearchRequest {
+            query: "group-only-description".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+
+        let row = results
+            .rows
+            .iter()
+            .find(|row| {
+                row.variant
+                    .as_ref()
+                    .and_then(|variant| variant.sku.as_deref())
+                    == Some("SMX1-BR-FW-260")
+            })
+            .expect("group description should match the brake disc variant");
+
+        assert_eq!(
+            row.match_feedback.as_deref(),
+            Some("matched group: Disc group")
+        );
     }
 
     #[test]

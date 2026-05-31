@@ -12,7 +12,7 @@ const APP_TITLE: &str = "Stark Parts";
 const UNOFFICIAL_NOTICE: &str = "Unofficial catalog helper. Not endorsed by Stark. May contain errors. Stark's website remains the authoritative source.";
 const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
 // Result virtualization depends on fixed-height rows. Keep this in sync with `.result-row`.
-const RESULT_ROW_HEIGHT_PX: usize = 100;
+const RESULT_ROW_HEIGHT_PX: usize = 88;
 const RESULT_VIEWPORT_HEIGHT_PX: usize = 512;
 const RESULT_OVERSCAN_ROWS: usize = 8;
 
@@ -528,10 +528,15 @@ const APP_CSS: &str = r#"
 }
 
 body {
+  background: #ecefea;
   margin: 0;
 }
 
 .app-shell {
+  background: #f7f8f5;
+  box-shadow: 0 0 0 1px rgba(23, 32, 38, 0.04);
+  margin: 0 auto;
+  max-width: 1500px;
   min-height: 100vh;
 }
 
@@ -657,8 +662,8 @@ input[type="search"] {
 .result-list-with-detail {
   align-items: start;
   display: grid;
-  gap: 1rem;
-  grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, 28rem);
   margin-bottom: 1.25rem;
 }
 
@@ -675,13 +680,14 @@ input[type="search"] {
 .result-row {
   align-items: center;
   border-bottom: 1px solid #eef0e8;
+  border-left: 4px solid transparent;
   box-sizing: border-box;
   cursor: default;
   display: flex;
-  gap: 0.6rem;
-  height: 100px;
+  gap: 0.75rem;
+  height: 88px;
   overflow: hidden;
-  padding: 0.35rem 0.75rem 0.35rem calc(0.75rem + var(--depth) * 1.1rem);
+  padding: 0.4rem 0.85rem 0.4rem calc(0.65rem + var(--depth) * 1.1rem);
 }
 
 .result-row:last-child {
@@ -692,8 +698,13 @@ input[type="search"] {
   cursor: pointer;
 }
 
-.result-row:hover, .result-row-active {
-  background: #f7f8f5;
+.result-row:hover {
+  background: #f6f8f2;
+}
+
+.result-row-active {
+  background: #eef5ec;
+  border-left-color: #3f7f57;
 }
 
 .result-spacer {
@@ -702,14 +713,15 @@ input[type="search"] {
 }
 
 .result-thumb {
-  background: #f7f8f5;
+  background: #f3f5f0;
   border: 1px solid #dfe2d6;
-  border-radius: 3px;
+  border-radius: 5px;
   box-sizing: border-box;
-  flex: 0 0 84px;
-  height: 84px;
+  flex: 0 0 72px;
+  height: 72px;
   object-fit: contain;
-  width: 84px;
+  padding: 0.15rem;
+  width: 72px;
 }
 
 .result-row .result-label, .result-row .result-meta {
@@ -726,19 +738,21 @@ input[type="search"] {
 
 .result-detail-popover {
   align-self: start;
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100vh - 2.5rem);
+  min-width: 0;
   overflow: auto;
   position: sticky;
-  top: 1rem;
+  top: 1.25rem;
 }
 
 .result-card {
   background: #ffffff;
-  border: 1px solid #dfe2d6;
-  border-radius: 6px;
+  border: 1px solid #cfd6cc;
+  border-radius: 7px;
+  box-shadow: 0 12px 30px rgba(23, 32, 38, 0.08);
   display: grid;
   gap: 0.75rem;
-  padding: 0.9rem;
+  padding: 1rem;
 }
 
 .detail-list {
@@ -979,6 +993,11 @@ mod tests {
         assert!(index_html.contains("/_vercel/insights/script.js"));
         assert!(trunk_config.contains("target = \"index.html\""));
         assert!(web_main.contains("mount_to_body(stark_parts_web::App)"));
+    }
+
+    #[test]
+    fn virtualized_row_height_matches_css() {
+        assert!(APP_CSS.contains(&format!("height: {RESULT_ROW_HEIGHT_PX}px;")));
     }
 
     #[test]

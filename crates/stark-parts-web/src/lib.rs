@@ -346,6 +346,9 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
                 <h3>{title}</h3>
                 <p class="muted">{row.bike_display_name.clone().unwrap_or(row.bike_variant_id.clone())} " / " {group_name}</p>
             </div>
+            {link.map(|url| view! {
+                <a class="stark-link" href=url target="_blank" rel="noopener noreferrer">"View on Stark"</a>
+            })}
             <dl class="detail-list">
                 <DetailItem label="Code" value=row.article.code.clone() />
                 <DetailItem label="Category path" value=category_path />
@@ -362,9 +365,6 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
             </dl>
             <p class="stale-warning">"Price and availability are from the committed catalog snapshot."</p>
             {variant_attributes(variant.clone())}
-            {link.map(|url| view! {
-                <a class="stark-link" href=url target="_blank" rel="noopener noreferrer">"View on Stark"</a>
-            })}
         </article>
     }
 }
@@ -1146,6 +1146,25 @@ mod tests {
         let heading_position = html.find("<h3>").expect("heading should render");
 
         assert!(image_position < heading_position);
+    }
+
+    #[test]
+    fn result_card_renders_stark_link_after_title_before_fields() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "SMX1-TOOLBOX".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let html = result_card(results.rows[0].clone()).to_html();
+        let subtitle_position = html
+            .find("class=\"muted\"")
+            .expect("subtitle should render");
+        let link_position = html.find("View on Stark").expect("link should render");
+        let fields_position = html.find("<dl").expect("detail fields should render");
+
+        assert!(subtitle_position < link_position);
+        assert!(link_position < fields_position);
     }
 
     #[test]

@@ -57,8 +57,8 @@ state.
 The web app is implemented in Rust using Leptos.
 
 The app should be built as a static client-side site. It loads the entire committed catalog data set as a static asset
-or compiled-in data during initial page load or app initialization, then performs filtering and tree updates in the
-browser.
+or compiled-in data during initial page load or app initialization, then performs filtering and result-list updates in
+the browser.
 
 The search index should be derived from the committed catalog state, not from a live Stark endpoint. The implementation
 may precompute normalized search text during the offline catalog update if that keeps browser code simpler and makes
@@ -195,7 +195,10 @@ Each index row should include denormalized ancestor text:
 - attributes
 - kit data
 
-The renderer can then rebuild the visible tree from matching rows and their ancestors.
+The renderer should show matching rows as a flat virtualized result list. Repeated occurrences of the same article or
+variant across bike catalog trees should merge into one visible result with bike compatibility attached. Ancestor fields
+remain denormalized into each row so the detail card can show bike, category, product group, article, and SKU context
+without rebuilding a visible catalog tree.
 
 Remote images may be loaded by the browser as images, but they must stay out of the catalog data path. Only keep HTTPS
 image URLs whose canonical host is in an explicit allowlist. The initial allowlist is:
@@ -206,8 +209,8 @@ s3-stark-production.s3.eu-west-1.amazonaws.com
 ```
 
 Adding another image host requires updating this implementation spec. Configure the static app so image requests do not
-leak more referrer information than needed. Do not gate initial render, search indexing, tree updates, or input handling
-on image fetches or image decode completion.
+leak more referrer information than needed. Do not gate initial render, search indexing, result-list updates, or input
+handling on image fetches or image decode completion.
 
 ## Network Behavior
 
@@ -223,7 +226,7 @@ That constraint should be easy to test. The app code should not contain Stark AP
 be able to fail if runtime fetches are made to Stark catalog endpoints.
 
 The web app also should not perform query-time catalog fetches from any other endpoint. Tests should be able to assert
-that search input, tree expansion, bike filter changes, and result selection do not trigger network requests for more
+that search input, result hover, bike filter changes, and result selection do not trigger network requests for more
 catalog data.
 
 ## Validation
@@ -236,7 +239,7 @@ The first implementation should include tests for the parts that are easiest to 
 - parsing representative Stark category, product, article, variant, price, and availability payloads
 - crawler behavior through a mocked upstream catalog client
 - search normalization, especially case, punctuation, and SKU hyphen behavior
-- tree pruning from search results
+- flat result-list filtering from search rows
 
 Tests must not mutate process-wide environment variables. Prefer dependency injection for paths, network clients,
 clocks, and logging sinks.

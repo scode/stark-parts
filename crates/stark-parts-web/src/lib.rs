@@ -2,20 +2,19 @@ pub mod search;
 
 use leptos::prelude::*;
 use search::{
-    ArticleVariantSummary, BikeVariantSummary, ProjectedCatalogTree, ProjectedCategory,
-    ProjectedProductGroup, SearchIndex, SearchRequest, SearchResultRow, SearchResults,
+    ArticleVariantSummary, BikeVariantSummary, SearchIndex, SearchRequest, SearchResultRow,
+    SearchResults,
 };
 use stark_parts_catalog::{Catalog, CatalogMetadata, parse_catalog_json5};
-use std::collections::HashMap;
 use std::sync::Arc;
 
 const APP_TITLE: &str = "Stark Parts";
 const UNOFFICIAL_NOTICE: &str = "Unofficial catalog helper. Not endorsed by Stark. May contain errors. Stark's website remains the authoritative source.";
 const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
-// Tree virtualization depends on fixed-height rows. Keep this in sync with `.tree-node`.
-const TREE_ROW_HEIGHT_PX: usize = 100;
-const TREE_VIEWPORT_HEIGHT_PX: usize = 512;
-const TREE_OVERSCAN_ROWS: usize = 8;
+// Result virtualization depends on fixed-height rows. Keep this in sync with `.result-row`.
+const RESULT_ROW_HEIGHT_PX: usize = 100;
+const RESULT_VIEWPORT_HEIGHT_PX: usize = 512;
+const RESULT_OVERSCAN_ROWS: usize = 8;
 
 /// Static Leptos app for searching the committed Stark catalog.
 #[component]
@@ -102,7 +101,7 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
                         let results = current_results();
                         view! {
                             <ResultSummary results=results.clone() />
-                            <CatalogTreeView trees=results.trees.clone() rows=results.rows.clone() />
+                            <SearchResultList rows=results.rows.clone() />
                         }
                     }}
                 </section>
@@ -193,37 +192,36 @@ fn ResultSummary(results: SearchResults) -> impl IntoView {
 }
 
 #[component]
-fn CatalogTreeView(trees: Vec<ProjectedCatalogTree>, rows: Vec<SearchResultRow>) -> impl IntoView {
-    if trees.is_empty() {
+fn SearchResultList(rows: Vec<SearchResultRow>) -> impl IntoView {
+    if rows.is_empty() {
         return view! { <p class="empty-state">"No matching catalog entries."</p> }.into_any();
     }
 
-    let details = detail_rows_by_tree_key(rows);
-    let nodes = Arc::new(flatten_trees(&trees, &details));
-    let total_nodes = nodes.len();
+    let rows = Arc::new(rows.into_iter().map(Arc::new).collect::<Vec<_>>());
+    let total_nodes = rows.len();
     let (scroll_top, set_scroll_top) = signal(0usize);
     let (hovered_detail, set_hovered_detail) = signal(None::<Arc<SearchResultRow>>);
     view! {
-        <div class="tree-with-detail" on:mouseleave=move |_| set_hovered_detail.set(None)>
+        <div class="result-list-with-detail" on:mouseleave=move |_| set_hovered_detail.set(None)>
             <ol
-                class="catalog-tree"
-                aria-label="Catalog tree"
-                style=format!("max-height: {TREE_VIEWPORT_HEIGHT_PX}px")
+                class="result-list"
+                aria-label="Result list"
+                style=format!("max-height: {RESULT_VIEWPORT_HEIGHT_PX}px")
                 on:scroll=move |event| set_scroll_top.set(scroll_top_from_event(&event))
             >
                 {move || {
-                    let window = virtual_tree_window(total_nodes, scroll_top.get());
-                    let visible_nodes = Arc::clone(&nodes);
+                    let window = virtual_result_window(total_nodes, scroll_top.get());
+                    let visible_rows = Arc::clone(&rows);
                     view! {
-                        {(window.before_px > 0).then(|| tree_spacer_view(window.before_px))}
-                        {visible_nodes[window.start..window.end].iter().cloned().map(|node| {
-                            tree_node_view(node, set_hovered_detail)
+                        {(window.before_px > 0).then(|| result_spacer_view(window.before_px))}
+                        {visible_rows[window.start..window.end].iter().cloned().map(|row| {
+                            result_row_view(row, set_hovered_detail)
                         }).collect_view()}
-                        {(window.after_px > 0).then(|| tree_spacer_view(window.after_px))}
+                        {(window.after_px > 0).then(|| result_spacer_view(window.after_px))}
                     }
                 }}
             </ol>
-            <aside class="tree-detail-popover" aria-label="Hovered part detail">
+            <aside class="result-detail-popover" aria-label="Hovered part detail">
                 {move || hovered_detail.get().map(|row| result_card((*row).clone()))}
             </aside>
         </div>
@@ -231,39 +229,46 @@ fn CatalogTreeView(trees: Vec<ProjectedCatalogTree>, rows: Vec<SearchResultRow>)
     .into_any()
 }
 
-fn tree_node_view(
-    node: FlatTreeNode,
+fn result_row_view(
+    row: Arc<SearchResultRow>,
     set_hovered_detail: WriteSignal<Option<Arc<SearchResultRow>>>,
 ) -> impl IntoView {
-    let detail = node.detail.clone();
+    let label = row
+        .article
+        .display_name
+        .clone()
+        .unwrap_or_else(|| row.article.code.clone());
+    let meta = row.variant.as_ref().and_then(|variant| variant.sku.clone());
+    let image_url = first_image_url(&row);
+    let detail = Some(Arc::clone(&row));
     view! {
         <li
-            class=format!("tree-node tree-node-{}", node.kind)
-            style=format!("--depth: {}", node.depth)
+            class="result-row result-list-row"
+            style="--depth: 0"
             on:mouseenter=move |_| set_hovered_detail.set(detail.clone())
         >
-            {node.image_url.map(|url| view! {
-                <img class="tree-thumb" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
+            {image_url.map(|url| view! {
+                <img class="result-thumb" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
             })}
-            <span class="tree-label">{node.label}</span>
-            {node.meta.map(|meta| view! { <span class="tree-meta">{meta}</span> })}
+            <span class="result-label">{label}</span>
+            {meta.map(|meta| view! { <span class="result-meta">{meta}</span> })}
         </li>
     }
 }
 
-fn tree_spacer_view(height_px: usize) -> impl IntoView {
+fn result_spacer_view(height_px: usize) -> impl IntoView {
     view! {
         <li
-            class="tree-spacer"
+            class="result-spacer"
             aria-hidden="true"
             style=format!("height: {height_px}px")
         ></li>
     }
 }
 
-fn virtual_tree_window(total_nodes: usize, scroll_top_px: usize) -> VirtualTreeWindow {
+fn virtual_result_window(total_nodes: usize, scroll_top_px: usize) -> VirtualResultWindow {
     if total_nodes == 0 {
-        return VirtualTreeWindow {
+        return VirtualResultWindow {
             start: 0,
             end: 0,
             before_px: 0,
@@ -271,16 +276,16 @@ fn virtual_tree_window(total_nodes: usize, scroll_top_px: usize) -> VirtualTreeW
         };
     }
 
-    let first_visible_row = (scroll_top_px / TREE_ROW_HEIGHT_PX).min(total_nodes - 1);
-    let visible_rows = TREE_VIEWPORT_HEIGHT_PX.div_ceil(TREE_ROW_HEIGHT_PX);
-    let start = first_visible_row.saturating_sub(TREE_OVERSCAN_ROWS);
-    let end = (first_visible_row + visible_rows + TREE_OVERSCAN_ROWS).min(total_nodes);
+    let first_visible_row = (scroll_top_px / RESULT_ROW_HEIGHT_PX).min(total_nodes - 1);
+    let visible_rows = RESULT_VIEWPORT_HEIGHT_PX.div_ceil(RESULT_ROW_HEIGHT_PX);
+    let start = first_visible_row.saturating_sub(RESULT_OVERSCAN_ROWS);
+    let end = (first_visible_row + visible_rows + RESULT_OVERSCAN_ROWS).min(total_nodes);
 
-    VirtualTreeWindow {
+    VirtualResultWindow {
         start,
         end,
-        before_px: start * TREE_ROW_HEIGHT_PX,
-        after_px: (total_nodes - end) * TREE_ROW_HEIGHT_PX,
+        before_px: start * RESULT_ROW_HEIGHT_PX,
+        after_px: (total_nodes - end) * RESULT_ROW_HEIGHT_PX,
     }
 }
 
@@ -301,7 +306,7 @@ fn scroll_top_from_event(_event: &leptos::ev::Event) -> usize {
 }
 
 #[derive(Debug, Eq, PartialEq)]
-struct VirtualTreeWindow {
+struct VirtualResultWindow {
     start: usize,
     end: usize,
     before_px: usize,
@@ -336,6 +341,7 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
         .map(|availability| availability.status.clone());
     let link = first_stark_link(&row);
     let image = first_image_url(&row);
+    let compatible_bikes = compatible_bikes_text(&row);
 
     view! {
         <article class="result-card">
@@ -344,7 +350,7 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
             })}
             <div>
                 <h3>{title}</h3>
-                <p class="muted">{row.bike_display_name.clone().unwrap_or(row.bike_variant_id.clone())} " / " {group_name}</p>
+                <p class="muted">{compatible_bikes} " / " {group_name}</p>
             </div>
             {link.map(|url| view! {
                 <a class="stark-link" href=url target="_blank" rel="noopener noreferrer">"View on Stark"</a>
@@ -367,6 +373,26 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
             {variant_attributes(variant.clone())}
         </article>
     }
+}
+
+fn compatible_bikes_text(row: &SearchResultRow) -> String {
+    if row.compatible_bikes.is_empty() {
+        return row
+            .bike_display_name
+            .clone()
+            .or_else(|| row.bike_code.clone())
+            .unwrap_or_else(|| row.bike_variant_id.clone());
+    }
+
+    row.compatible_bikes
+        .iter()
+        .map(|bike| {
+            bike.display_name
+                .clone()
+                .unwrap_or_else(|| bike.code.clone())
+        })
+        .collect::<Vec<_>>()
+        .join(", ")
 }
 
 #[component]
@@ -426,239 +452,6 @@ fn format_price(price: &stark_parts_catalog::Price) -> String {
         price.currency,
         price.amount_minor as f64 / 100.0
     )
-}
-
-fn flatten_trees(
-    trees: &[ProjectedCatalogTree],
-    details: &HashMap<DetailTreeKey, Arc<SearchResultRow>>,
-) -> Vec<FlatTreeNode> {
-    let mut nodes = Vec::new();
-    for tree in trees {
-        nodes.push(FlatTreeNode {
-            depth: 0,
-            kind: "bike",
-            label: tree
-                .bike_display_name
-                .clone()
-                .unwrap_or_else(|| tree.bike_variant_id.clone()),
-            meta: Some(tree.bike_variant_id.clone()),
-            image_url: None,
-            detail: None,
-        });
-        for category in &tree.categories {
-            flatten_category(
-                category,
-                &tree.bike_variant_id,
-                &mut Vec::new(),
-                1,
-                details,
-                &mut nodes,
-            );
-        }
-    }
-    nodes
-}
-
-fn flatten_category(
-    category: &ProjectedCategory,
-    bike_variant_id: &str,
-    category_path: &mut Vec<String>,
-    depth: usize,
-    details: &HashMap<DetailTreeKey, Arc<SearchResultRow>>,
-    nodes: &mut Vec<FlatTreeNode>,
-) {
-    category_path.push(category.code.clone());
-    nodes.push(FlatTreeNode {
-        depth,
-        kind: "category",
-        label: category
-            .display_name
-            .clone()
-            .unwrap_or_else(|| category.code.clone()),
-        meta: Some(category.code.clone()),
-        image_url: None,
-        detail: None,
-    });
-    for child in &category.categories {
-        flatten_category(
-            child,
-            bike_variant_id,
-            category_path,
-            depth + 1,
-            details,
-            nodes,
-        );
-    }
-    for group in &category.product_groups {
-        flatten_group(
-            group,
-            bike_variant_id,
-            category_path,
-            depth + 1,
-            details,
-            nodes,
-        );
-    }
-    category_path.pop();
-}
-
-fn flatten_group(
-    group: &ProjectedProductGroup,
-    bike_variant_id: &str,
-    category_path: &[String],
-    depth: usize,
-    details: &HashMap<DetailTreeKey, Arc<SearchResultRow>>,
-    nodes: &mut Vec<FlatTreeNode>,
-) {
-    nodes.push(FlatTreeNode {
-        depth,
-        kind: "group",
-        label: group
-            .display_name
-            .clone()
-            .unwrap_or_else(|| group.code.clone()),
-        meta: Some(group.code.clone()),
-        image_url: group.image_urls.first().cloned(),
-        detail: None,
-    });
-    for article in &group.articles {
-        nodes.push(FlatTreeNode {
-            depth: depth + 1,
-            kind: "article",
-            label: article
-                .display_name
-                .clone()
-                .unwrap_or_else(|| article.code.clone()),
-            meta: Some(article.code.clone()),
-            image_url: preferred_article_image(article, group),
-            detail: details
-                .get(&DetailTreeKey::article(
-                    bike_variant_id,
-                    category_path,
-                    &group.code,
-                    &article.code,
-                ))
-                .cloned(),
-        });
-        for variant in &article.variants {
-            nodes.push(FlatTreeNode {
-                depth: depth + 2,
-                kind: "variant",
-                label: variant.sku.clone().unwrap_or_else(|| variant.code.clone()),
-                meta: Some(variant.code.clone()),
-                image_url: preferred_variant_image(variant, article, group),
-                detail: details
-                    .get(&DetailTreeKey::variant(
-                        bike_variant_id,
-                        category_path,
-                        &group.code,
-                        &article.code,
-                        &variant.code,
-                        variant.sku.as_deref(),
-                    ))
-                    .cloned(),
-            });
-        }
-    }
-}
-
-fn detail_rows_by_tree_key(
-    rows: Vec<SearchResultRow>,
-) -> HashMap<DetailTreeKey, Arc<SearchResultRow>> {
-    rows.into_iter()
-        .map(|row| (DetailTreeKey::from_row(&row), Arc::new(row)))
-        .collect()
-}
-
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-struct DetailTreeKey {
-    bike_variant_id: String,
-    category_path: Vec<String>,
-    product_group_code: String,
-    article_code: String,
-    variant_code: Option<String>,
-    variant_sku: Option<String>,
-}
-
-impl DetailTreeKey {
-    fn from_row(row: &SearchResultRow) -> Self {
-        Self {
-            bike_variant_id: row.bike_variant_id.clone(),
-            category_path: row.category_path.clone(),
-            product_group_code: row.product_group.code.clone(),
-            article_code: row.article.code.clone(),
-            variant_code: row.variant.as_ref().map(|variant| variant.code.clone()),
-            variant_sku: row.variant.as_ref().and_then(|variant| variant.sku.clone()),
-        }
-    }
-
-    fn article(
-        bike_variant_id: &str,
-        category_path: &[String],
-        product_group_code: &str,
-        article_code: &str,
-    ) -> Self {
-        Self {
-            bike_variant_id: bike_variant_id.to_owned(),
-            category_path: category_path.to_vec(),
-            product_group_code: product_group_code.to_owned(),
-            article_code: article_code.to_owned(),
-            variant_code: None,
-            variant_sku: None,
-        }
-    }
-
-    fn variant(
-        bike_variant_id: &str,
-        category_path: &[String],
-        product_group_code: &str,
-        article_code: &str,
-        variant_code: &str,
-        variant_sku: Option<&str>,
-    ) -> Self {
-        Self {
-            bike_variant_id: bike_variant_id.to_owned(),
-            category_path: category_path.to_vec(),
-            product_group_code: product_group_code.to_owned(),
-            article_code: article_code.to_owned(),
-            variant_code: Some(variant_code.to_owned()),
-            variant_sku: variant_sku.map(str::to_owned),
-        }
-    }
-}
-
-fn preferred_article_image(
-    article: &search::ProjectedArticle,
-    group: &ProjectedProductGroup,
-) -> Option<String> {
-    article
-        .image_urls
-        .first()
-        .or_else(|| group.image_urls.first())
-        .cloned()
-}
-
-fn preferred_variant_image(
-    variant: &search::ProjectedArticleVariant,
-    article: &search::ProjectedArticle,
-    group: &ProjectedProductGroup,
-) -> Option<String> {
-    variant
-        .image_urls
-        .first()
-        .or_else(|| article.image_urls.first())
-        .or_else(|| group.image_urls.first())
-        .cloned()
-}
-
-#[derive(Clone)]
-struct FlatTreeNode {
-    depth: usize,
-    kind: &'static str,
-    label: String,
-    meta: Option<String>,
-    image_url: Option<String>,
-    detail: Option<Arc<SearchResultRow>>,
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -827,7 +620,7 @@ input[type="search"] {
   margin-bottom: 0.75rem;
 }
 
-.tree-with-detail {
+.result-list-with-detail {
   align-items: start;
   display: grid;
   gap: 1rem;
@@ -835,7 +628,7 @@ input[type="search"] {
   margin-bottom: 1.25rem;
 }
 
-.catalog-tree {
+.result-list {
   background: #ffffff;
   border: 1px solid #dfe2d6;
   border-radius: 6px;
@@ -845,7 +638,7 @@ input[type="search"] {
   padding: 0.5rem 0;
 }
 
-.tree-node {
+.result-row {
   align-items: center;
   border-bottom: 1px solid #eef0e8;
   box-sizing: border-box;
@@ -857,24 +650,24 @@ input[type="search"] {
   padding: 0.35rem 0.75rem 0.35rem calc(0.75rem + var(--depth) * 1.1rem);
 }
 
-.tree-node:last-child {
+.result-row:last-child {
   border-bottom: 0;
 }
 
-.tree-node-article, .tree-node-variant {
+.result-list-row {
   cursor: pointer;
 }
 
-.tree-node:hover {
+.result-row:hover {
   background: #f7f8f5;
 }
 
-.tree-spacer {
+.result-spacer {
   display: block;
   pointer-events: none;
 }
 
-.tree-thumb {
+.result-thumb {
   background: #f7f8f5;
   border: 1px solid #dfe2d6;
   border-radius: 3px;
@@ -885,27 +678,19 @@ input[type="search"] {
   width: 84px;
 }
 
-.tree-node-bike .tree-label {
-  font-weight: 800;
-}
-
-.tree-node .tree-label, .tree-node .tree-meta {
+.result-row .result-label, .result-row .result-meta {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.tree-node-article .tree-label, .tree-node-variant .tree-label {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
-.tree-meta, .muted {
+.result-meta, .muted {
   color: #68736c;
   font-size: 0.85rem;
 }
 
-.tree-detail-popover {
+.result-detail-popover {
   align-self: start;
   max-height: calc(100vh - 2rem);
   overflow: auto;
@@ -960,11 +745,11 @@ input[type="search"] {
 }
 
 @media (max-width: 760px) {
-  .toolbar, .layout, .tree-with-detail {
+  .toolbar, .layout, .result-list-with-detail {
     grid-template-columns: 1fr;
   }
 
-  .tree-detail-popover {
+  .result-detail-popover {
     position: static;
   }
 
@@ -982,11 +767,19 @@ mod tests {
     use super::*;
     use leptos::prelude::Owner;
 
-    fn minimal_result_row(variant_code: &str, sku: Option<&str>) -> SearchResultRow {
+    fn minimal_result_row(
+        article_display_name: Option<&str>,
+        sku: Option<&str>,
+    ) -> SearchResultRow {
         SearchResultRow {
             bike_variant_id: "bike".to_owned(),
             bike_code: Some("bike".to_owned()),
             bike_display_name: Some("Bike".to_owned()),
+            compatible_bikes: vec![BikeVariantSummary {
+                id: "bike".to_owned(),
+                code: "bike".to_owned(),
+                display_name: Some("Bike".to_owned()),
+            }],
             category_path: vec!["category".to_owned()],
             category_display_path: vec!["Category".to_owned()],
             product_group: search::ProductGroupSummary {
@@ -997,8 +790,8 @@ mod tests {
                 image_urls: Vec::new(),
             },
             article: search::ArticleSummary {
-                code: "article".to_owned(),
-                display_name: Some("Article".to_owned()),
+                code: "article_code".to_owned(),
+                display_name: article_display_name.map(str::to_owned),
                 description: None,
                 stark_url: None,
                 image_urls: Vec::new(),
@@ -1006,7 +799,7 @@ mod tests {
                 kit_contents: Vec::new(),
             },
             variant: Some(ArticleVariantSummary {
-                code: variant_code.to_owned(),
+                code: "variant_code".to_owned(),
                 sku: sku.map(str::to_owned),
                 stark_url: None,
                 image_urls: Vec::new(),
@@ -1045,7 +838,7 @@ mod tests {
         assert!(!html.contains("api.starkfuture.com"));
         assert!(!html.contains("<dt>API</dt>"));
         assert!(html.contains("Bike filters"));
-        assert!(html.contains("Catalog tree"));
+        assert!(html.contains("Result list"));
         assert!(html.contains("Hovered part detail"));
         assert!(html.contains("SMX1-TOOLBOX"));
         assert!(!html.contains("disabled"));
@@ -1115,7 +908,7 @@ mod tests {
         let index = SearchIndex::from_catalog(&catalog);
         let results = index.search(&SearchRequest {
             query: "SMX1-TOOLBOX".to_owned(),
-            selected_bike_variant_ids: Vec::new(),
+            selected_bike_variant_ids: vec!["varg-sm".to_owned()],
         });
         let html = result_card(results.rows[0].clone()).to_html();
 
@@ -1137,7 +930,7 @@ mod tests {
         let index = SearchIndex::from_catalog(&catalog);
         let results = index.search(&SearchRequest {
             query: "SMX1-TOOLBOX".to_owned(),
-            selected_bike_variant_ids: Vec::new(),
+            selected_bike_variant_ids: vec!["varg-sm".to_owned()],
         });
         let html = result_card(results.rows[0].clone()).to_html();
         let image_position = html
@@ -1168,138 +961,46 @@ mod tests {
     }
 
     #[test]
-    fn catalog_tree_renders_small_lazy_thumbnails() {
+    fn search_result_list_renders_article_names_sku_and_lazy_thumbnails() {
         let catalog = load_catalog();
         let index = SearchIndex::from_catalog(&catalog);
         let results = index.search(&SearchRequest {
             query: "SMX1-TOOLBOX".to_owned(),
-            selected_bike_variant_ids: Vec::new(),
+            selected_bike_variant_ids: vec!["varg-sm".to_owned()],
         });
-        let html = CatalogTreeView(CatalogTreeViewProps {
-            trees: results.trees,
-            rows: results.rows,
-        })
-        .to_html();
+        assert_eq!(results.rows.len(), 1);
+        let html = SearchResultList(SearchResultListProps { rows: results.rows }).to_html();
 
-        assert!(html.contains("class=\"tree-thumb\""));
+        assert!(html.contains("<span class=\"result-label\">Stark VARG toolbox</span>"));
+        assert!(html.contains("<span class=\"result-meta\">SMX1-TOOLBOX</span>"));
+        assert!(!html.contains("1_toolbox_kamasa_stark_varg</span>"));
+        assert!(html.contains("class=\"result-thumb\""));
         assert!(html.contains("loading=\"lazy\""));
         assert!(html.contains("referrerpolicy=\"no-referrer\""));
         assert!(html.contains("260327_SpareParts"));
     }
 
     #[test]
-    fn flattened_tree_attaches_detail_rows_to_part_nodes() {
-        let catalog = load_catalog();
-        let index = SearchIndex::from_catalog(&catalog);
-        let results = index.search(&SearchRequest {
-            query: "SMX1-TOOLBOX".to_owned(),
-            selected_bike_variant_ids: Vec::new(),
-        });
-        let detail_rows = detail_rows_by_tree_key(results.rows.clone());
-        let nodes = flatten_trees(&results.trees, &detail_rows);
+    fn search_result_list_falls_back_to_article_code_without_display_name() {
+        let html = SearchResultList(SearchResultListProps {
+            rows: vec![minimal_result_row(None, Some("SKU-1"))],
+        })
+        .to_html();
 
-        assert!(
-            nodes
-                .iter()
-                .any(|node| node.kind == "variant" && node.detail.is_some())
-        );
-        assert!(
-            nodes.iter().all(|node| {
-                matches!(node.kind, "article" | "variant") || node.detail.is_none()
-            })
-        );
+        assert!(html.contains("<span class=\"result-label\">article_code</span>"));
+        assert!(html.contains("<span class=\"result-meta\">SKU-1</span>"));
     }
 
     #[test]
-    fn flattened_tree_attaches_detail_rows_to_variantless_articles() {
-        let row = SearchResultRow {
-            variant: None,
-            ..minimal_result_row("unused", None)
-        };
-        let trees = vec![ProjectedCatalogTree {
-            bike_variant_id: "bike".to_owned(),
-            bike_display_name: Some("Bike".to_owned()),
-            categories: vec![ProjectedCategory {
-                code: "category".to_owned(),
-                display_name: Some("Category".to_owned()),
-                categories: Vec::new(),
-                product_groups: vec![ProjectedProductGroup {
-                    code: "group".to_owned(),
-                    display_name: Some("Group".to_owned()),
-                    image_urls: Vec::new(),
-                    articles: vec![search::ProjectedArticle {
-                        code: "article".to_owned(),
-                        display_name: Some("Article".to_owned()),
-                        image_urls: Vec::new(),
-                        variants: Vec::new(),
-                    }],
-                }],
-            }],
-        }];
-        let detail_rows = detail_rows_by_tree_key(vec![row]);
-        let nodes = flatten_trees(&trees, &detail_rows);
+    fn search_result_list_omits_secondary_text_without_sku() {
+        let html = SearchResultList(SearchResultListProps {
+            rows: vec![minimal_result_row(Some("Readable article"), None)],
+        })
+        .to_html();
 
-        assert!(
-            nodes
-                .iter()
-                .any(|node| node.kind == "article" && node.detail.is_some())
-        );
-    }
-
-    #[test]
-    fn detail_tree_keys_distinguish_variant_skus_when_codes_match() {
-        let first = minimal_result_row("duplicate-code", Some("SKU-A"));
-        let second = minimal_result_row("duplicate-code", Some("SKU-B"));
-        let detail_rows = detail_rows_by_tree_key(vec![first, second]);
-
-        assert_eq!(detail_rows.len(), 2);
-    }
-
-    #[test]
-    fn tree_thumbnail_selection_falls_back_from_child_to_parent_images() {
-        let group = ProjectedProductGroup {
-            code: "group".to_owned(),
-            display_name: None,
-            image_urls: vec!["https://example.test/group.png".to_owned()],
-            articles: Vec::new(),
-        };
-        let article = search::ProjectedArticle {
-            code: "article".to_owned(),
-            display_name: None,
-            image_urls: vec!["https://example.test/article.png".to_owned()],
-            variants: Vec::new(),
-        };
-        let variant = search::ProjectedArticleVariant {
-            code: "variant".to_owned(),
-            sku: None,
-            image_urls: vec!["https://example.test/variant.png".to_owned()],
-        };
-        let article_without_image = search::ProjectedArticle {
-            image_urls: Vec::new(),
-            ..article.clone()
-        };
-        let variant_without_image = search::ProjectedArticleVariant {
-            image_urls: Vec::new(),
-            ..variant.clone()
-        };
-
-        assert_eq!(
-            preferred_article_image(&article_without_image, &group).as_deref(),
-            Some("https://example.test/group.png")
-        );
-        assert_eq!(
-            preferred_variant_image(&variant_without_image, &article, &group).as_deref(),
-            Some("https://example.test/article.png")
-        );
-        assert_eq!(
-            preferred_variant_image(&variant_without_image, &article_without_image, &group)
-                .as_deref(),
-            Some("https://example.test/group.png")
-        );
-        assert_eq!(
-            preferred_variant_image(&variant, &article, &group).as_deref(),
-            Some("https://example.test/variant.png")
-        );
+        assert!(html.contains("<span class=\"result-label\">Readable article</span>"));
+        assert!(!html.contains("class=\"result-meta\""));
+        assert!(!html.contains("variant_code"));
     }
 
     #[test]
@@ -1378,44 +1079,40 @@ mod tests {
     }
 
     #[test]
-    fn catalog_tree_mounts_only_the_initial_virtual_window() {
+    fn search_result_list_mounts_only_the_initial_virtual_window() {
         let catalog = load_catalog();
         let index = SearchIndex::from_catalog(&catalog);
         let results = index.search(&SearchRequest {
             query: "S".to_owned(),
             selected_bike_variant_ids: Vec::new(),
         });
-        let total_nodes = flatten_trees(&results.trees, &HashMap::new()).len();
-        let html = CatalogTreeView(CatalogTreeViewProps {
-            trees: results.trees,
-            rows: Vec::new(),
-        })
-        .to_html();
+        let total_nodes = results.rows.len();
+        let html = SearchResultList(SearchResultListProps { rows: results.rows }).to_html();
 
-        assert!(total_nodes > TREE_VIEWPORT_HEIGHT_PX / TREE_ROW_HEIGHT_PX);
+        assert!(total_nodes > RESULT_VIEWPORT_HEIGHT_PX / RESULT_ROW_HEIGHT_PX);
         assert!(
-            html.matches("class=\"tree-node ").count() < total_nodes,
-            "virtualized tree should not mount every flattened node"
+            html.matches("class=\"result-row ").count() < total_nodes,
+            "virtualized results should not mount every result row"
         );
-        assert!(html.contains("class=\"tree-spacer\""));
+        assert!(html.contains("class=\"result-spacer\""));
     }
 
     #[test]
-    fn virtual_tree_window_overscans_around_the_scroll_position() {
-        let window = virtual_tree_window(100, TREE_ROW_HEIGHT_PX * 40);
+    fn virtual_result_window_overscans_around_the_scroll_position() {
+        let window = virtual_result_window(100, RESULT_ROW_HEIGHT_PX * 40);
 
-        assert_eq!(window.start, 40 - TREE_OVERSCAN_ROWS);
+        assert_eq!(window.start, 40 - RESULT_OVERSCAN_ROWS);
         assert_eq!(
             window.end,
-            40 + TREE_VIEWPORT_HEIGHT_PX.div_ceil(TREE_ROW_HEIGHT_PX) + TREE_OVERSCAN_ROWS
+            40 + RESULT_VIEWPORT_HEIGHT_PX.div_ceil(RESULT_ROW_HEIGHT_PX) + RESULT_OVERSCAN_ROWS
         );
-        assert_eq!(window.before_px, window.start * TREE_ROW_HEIGHT_PX);
-        assert_eq!(window.after_px, (100 - window.end) * TREE_ROW_HEIGHT_PX);
+        assert_eq!(window.before_px, window.start * RESULT_ROW_HEIGHT_PX);
+        assert_eq!(window.after_px, (100 - window.end) * RESULT_ROW_HEIGHT_PX);
     }
 
     #[test]
-    fn virtual_tree_window_clamps_stale_scroll_positions() {
-        let window = virtual_tree_window(10, TREE_ROW_HEIGHT_PX * 1_000);
+    fn virtual_result_window_clamps_stale_scroll_positions() {
+        let window = virtual_result_window(10, RESULT_ROW_HEIGHT_PX * 1_000);
 
         assert!(window.start <= window.end);
         assert!(window.end <= 10);

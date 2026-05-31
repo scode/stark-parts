@@ -19,7 +19,7 @@ http://127.0.0.1:1420
 
 This is a static Rust/Leptos web app backed by a committed JSON5 catalog. Runtime search does not call Stark's APIs, and
 there is no project-owned backend service. The browser loads the app and catalog snapshot, builds a local search index,
-and updates the tree/details view as the user types or changes bike filters.
+and updates the result list/details view as the user types or changes bike filters.
 
 The important pieces are:
 
@@ -44,12 +44,14 @@ That command may call Stark's public API, refresh `catalog/stark-parts.json5`, a
 After that, the web app consumes the committed file with `include_str!`, so search remains local to the browser.
 
 The search model is intentionally simple. It indexes article/variant rows with denormalized ancestor text: bike variant,
-category path, product group, article, SKU, attributes, and kit data. Matching rows are projected back into a catalog
-tree so a SKU result still appears under the bike, category, product group, and article that make it understandable.
+category path, product group, article, SKU, attributes, and kit data. Matching rows are shown as a flat list whose
+primary text is the human-readable article or part name, with SKU shown as the secondary scanning text when it exists.
+Repeated occurrences of the same article or variant across bike catalog trees are merged into one visible result with
+bike compatibility kept on the detail card.
 
 The UI exposes the catalog generation/source metadata, a persistent unofficial-site warning, multi-select bike filters,
-URL-restorable search state, hover detail cards for part-level tree rows, stale price/availability warnings, lazy remote
-images, and Stark links when a safe URL can be derived. Catalog strings are rendered as text, not raw HTML.
+URL-restorable search state, hover detail cards for result rows, stale price/availability warnings, lazy remote images,
+and Stark links when a safe URL can be derived. Catalog strings are rendered as text, not raw HTML.
 
 Useful local checks:
 

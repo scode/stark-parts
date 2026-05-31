@@ -20,7 +20,7 @@ unofficial, is not endorsed by Stark, may contain errors, and that Stark's own w
 banner must be visible on initial page load without hiding the search controls.
 
 The first screen must be the search experience. A user should be able to load the page, optionally choose bike variants,
-type a search query, and immediately see the matching catalog tree.
+type a search query, and immediately see the matching result list.
 
 The page title must stay at the top left of the header. The search field is the primary control and must appear directly
 under that title, before catalog metadata. When the page loads, the search field must receive keyboard focus
@@ -32,31 +32,23 @@ content.
 
 The supported catalog should include every Stark bike variant for which Stark exposes public parts catalog data.
 
-The catalog tree is rooted by bike variant. Bike filtering is multi-select. If no bike variant is selected, that is
-equivalent to selecting all committed bike variants. If one or more variants are selected, the tree shows only those
-variants.
+Bike filtering is multi-select. If no bike variant is selected, that is equivalent to selecting all committed bike
+variants. If one or more variants are selected, the result list shows only parts compatible with those variants.
 
-Within each bike root, the tree must reflect the parts catalog hierarchy:
-
-- bike variant
-- catalog category
-- catalog subcategory, when present
-- product group
-- article or part
-- variant/SKU, when present
-
-The tree may omit empty hierarchy levels when the source data does not provide them, but it must preserve the catalog
-structure that exists in the committed data.
+The result list is flat. Each row represents one concrete searchable part result, not one catalog hierarchy node and not
+one repeated bike-specific occurrence of the same result. The primary row text should be the human-readable article or
+part name, and the secondary muted text should be the SKU when one exists. Internal catalog codes are available in the
+detail card, but they should not be used as the primary scanning text in the result list.
 
 ## Search Behavior
 
-Search must update live as the user types. Each character typed into the search field must update the visible tree
-without requiring a submit button and without making any remote request.
+Search must update live as the user types. Each character typed into the search field must update the visible result
+list without requiring a submit button and without making any remote request.
 
-The entire app and committed catalog must be loaded during initial page load or app initialization. Search and tree
-updates must be browser-local after that point.
+The entire app and committed catalog must be loaded during initial page load or app initialization. Search and result
+list updates must be browser-local after that point.
 
-An empty search query shows the full tree for the selected bike variants.
+An empty search query shows the full result list for the selected bike variants.
 
 The current search state must be reflected in the page URL so searches can be bookmarked or shared. Loading a URL with
 search state must restore the query and selected bike variants.
@@ -75,18 +67,17 @@ Search must match at least these fields when they exist in the committed catalog
 Search is case-insensitive. Punctuation in user input should not make common SKU searches fragile; for example,
 searching with or without hyphens should still find the same SKU when the normalized text is otherwise the same.
 
-When a node matches, the tree must include enough ancestors for the result to make sense. For example, a matching SKU
-must still be shown under its bike, category path, product group, and article. A category match may show the category
-and its matching descendants; whether it expands every descendant by default is an open UI decision.
+When a row matches, its detail card must include enough context for the result to make sense, including bike
+compatibility and category path when those fields exist in the committed catalog.
 
 When no result matches the query and bike filters, the page must show a clear empty state. It should not leave the user
 wondering whether the catalog failed to load.
 
 ## Result Details
 
-Hovering a tree row that corresponds to a concrete search result must show a detail card. On wide screens, the card must
-appear to the right of the tree; on narrow screens, it may stack below the tree so it remains usable. Each visible
-detail card should expose the data a user needs to identify the part before going back to Stark or a dealer:
+Hovering a result row must show a detail card. On wide screens, the card must appear to the right of the result list; on
+narrow screens, it may stack below the result list so it remains usable. Each visible detail card should expose the data
+a user needs to identify the part before going back to Stark or a dealer:
 
 - display name, when available
 - code, when available
@@ -104,7 +95,7 @@ detail card should expose the data a user needs to identify the part before goin
   overview for a part-level result.
 
 For broad searches, the page may render detail cards only on demand as rows are hovered. This is a rendering constraint,
-not a search constraint: the full match count and catalog tree still need to reflect the complete browser-local search
+not a search constraint: the full match count and result list still need to reflect the complete browser-local search
 result.
 
 The site should prefer human-readable display strings over localization keys. If a display string is missing, it must
@@ -120,15 +111,16 @@ The browser must not call Stark's catalog APIs at runtime.
 
 The browser must not depend on a project-owned backend service at runtime.
 
-The browser must not lazily fetch additional catalog data in response to search input, tree expansion, bike filter
+The browser must not lazily fetch additional catalog data in response to search input, result hover, bike filter
 changes, or result selection. Those interactions must use the catalog data already loaded during initial page load or
 app initialization.
 
 The browser may load ordinary static assets that are part of the site build.
 
 Remote images may be lazy-loaded from HTTPS image hosts explicitly allowed by the implementation spec. Image loading
-must not block the app's initial render, search behavior, tree updates, or responsiveness to the next key press. A slow
-or failed image load must not prevent a user from searching, expanding results, or using the Stark link for a part.
+must not block the app's initial render, search behavior, result updates, or responsiveness to the next key press. A
+slow or failed image load must not prevent a user from searching, hovering result rows, or using the Stark link for a
+part.
 
 ## Catalog Freshness
 

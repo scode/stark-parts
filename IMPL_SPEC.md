@@ -65,6 +65,9 @@ static "Other" framework deployment: Vercel runs the Trunk release build and ser
 directory. That deployment path must not introduce Vercel Functions, runtime environment variables, or a backend
 dependency for the web app.
 
+Vercel Web Analytics may be loaded from the static HTML entrypoint with Vercel's hosted analytics script. Basic
+page-view analytics should not add React, Next.js, or npm analytics package integration to the Leptos app.
+
 The search index should be derived from the committed catalog state, not from a live Stark endpoint. The implementation
 may precompute normalized search text during the offline catalog update if that keeps browser code simpler and makes
 search behavior deterministic.

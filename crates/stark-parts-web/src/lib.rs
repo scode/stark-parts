@@ -976,6 +976,7 @@ mod tests {
         assert!(index_html.contains("data-trunk"));
         assert!(index_html.contains("crates/stark-parts-web/Cargo.toml"));
         assert!(index_html.contains("data-bin=\"stark-parts-web\""));
+        assert!(index_html.contains("/_vercel/insights/script.js"));
         assert!(trunk_config.contains("target = \"index.html\""));
         assert!(web_main.contains("mount_to_body(stark_parts_web::App)"));
     }

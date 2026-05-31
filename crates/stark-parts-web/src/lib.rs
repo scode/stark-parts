@@ -636,13 +636,34 @@ input[type="search"] {
 .bike-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
+  gap: 0.45rem;
 }
 
 .bike-option {
   align-items: center;
+  background: #ffffff;
+  border: 1px solid #cfd6cc;
+  border-radius: 999px;
+  color: #2f3a33;
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.7rem 0.25rem 0.55rem;
+}
+
+.bike-option:hover {
+  border-color: #9cac9b;
+}
+
+.bike-option:has(input:checked) {
+  background: #eef5ec;
+  border-color: #3f7f57;
+  color: #172026;
+}
+
+.bike-option input {
+  accent-color: #3f7f57;
+  margin: 0;
 }
 
 .bike-filter-default {

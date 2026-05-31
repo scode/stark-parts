@@ -5,8 +5,9 @@ Unofficial static search for the committed Stark parts catalog.
 ## Quickstart
 
 ```sh
+rustup toolchain install
 cargo install trunk --version 0.21.14 --locked
-NO_COLOR=true trunk serve --release --port 1420
+npm run dev
 ```
 
 Then open:
@@ -53,6 +54,16 @@ The UI exposes the catalog generation/source metadata, a persistent unofficial-s
 URL-restorable search state, hover detail cards for result rows, stale price/availability warnings, lazy remote images,
 and Stark links when a safe URL can be derived. Catalog strings are rendered as text, not raw HTML.
 
+## Vercel
+
+This repo is set up for Vercel Git deployments as a static site. Import the repository in Vercel, use the repo root as
+the project root, and select the "Other" framework preset. The build, dev, and output settings are checked in through
+`vercel.json`.
+
+The Vercel build installs Rust with `rustup`, uses the pinned toolchain in `rust-toolchain.toml`, installs the pinned
+Trunk version used by CI, runs `npm run build`, and serves the generated `dist/` directory. No Vercel environment
+variables are required for the static site.
+
 Useful local checks:
 
 ```sh
@@ -61,7 +72,8 @@ cargo clippy
 cargo test
 dprint check
 npm ci
-NO_COLOR=true trunk build --release
+npm run build
+vercel build
 npx playwright install --with-deps chromium
 npx playwright test
 ```

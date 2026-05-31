@@ -60,6 +60,11 @@ The app should be built as a static client-side site. It loads the entire commit
 or compiled-in data during initial page load or app initialization, then performs filtering and result-list updates in
 the browser.
 
+Vercel deployments should use the checked-in Vercel project configuration at the repository root. The project is a
+static "Other" framework deployment: Vercel runs the Trunk release build and serves only the generated `dist/`
+directory. That deployment path must not introduce Vercel Functions, runtime environment variables, or a backend
+dependency for the web app.
+
 The search index should be derived from the committed catalog state, not from a live Stark endpoint. The implementation
 may precompute normalized search text during the offline catalog update if that keeps browser code simpler and makes
 search behavior deterministic.

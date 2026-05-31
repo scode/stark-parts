@@ -31,6 +31,7 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
     let (query, set_query) = signal(initial_request.query);
     let (selected_bikes, set_selected_bikes) = signal(initial_request.selected_bike_variant_ids);
     let search_index = Arc::clone(&index);
+    let search_input = NodeRef::<leptos::html::Input>::new();
     #[cfg(target_arch = "wasm32")]
     let current_results = move || {
         search_index.search(&SearchRequest {
@@ -56,6 +57,12 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
         });
     }
 
+    #[cfg(target_arch = "wasm32")]
+    search_input.on_load(|input| {
+        // Browsers may refuse programmatic focus for page-level reasons; the input remains usable either way.
+        let _ = input.focus();
+    });
+
     view! {
         <main class="app-shell">
             <style>{APP_CSS}</style>
@@ -70,6 +77,8 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
                         <input
                             id="catalog-search"
                             type="search"
+                            autofocus
+                            node_ref=search_input
                             autocomplete="off"
                             placeholder="part, SKU, assembly, subsystem"
                             prop:value=move || query.get()
@@ -845,6 +854,7 @@ mod tests {
         assert!(html.contains(APP_TITLE));
         assert!(html.contains("Not endorsed by Stark"));
         assert!(html.contains("type=\"search\""));
+        assert!(html.contains("autofocus"));
         let title_position = html
             .find("<h1>Stark Parts</h1>")
             .expect("page title should render");

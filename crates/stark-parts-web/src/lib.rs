@@ -118,11 +118,12 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
 
 #[component]
 fn CatalogMetadataView(metadata: CatalogMetadata) -> impl IntoView {
+    let last_updated = catalog_last_updated_date(&metadata.generated_at);
     view! {
         <dl class="metadata" aria-label="Catalog metadata">
             <div>
-                <dt>"Generated"</dt>
-                <dd>{metadata.generated_at}</dd>
+                <dt>"Parts data last updated"</dt>
+                <dd>{last_updated}</dd>
             </div>
             <div>
                 <dt>"Source"</dt>
@@ -130,6 +131,14 @@ fn CatalogMetadataView(metadata: CatalogMetadata) -> impl IntoView {
             </div>
         </dl>
     }
+}
+
+fn catalog_last_updated_date(generated_at: &str) -> String {
+    generated_at
+        .split_once('T')
+        .map(|(date, _)| date)
+        .unwrap_or(generated_at)
+        .to_owned()
 }
 
 #[component]
@@ -931,6 +940,28 @@ mod tests {
             assert!(!source.contains(concat!("web_sys::", "Request")));
             assert!(!source.contains(concat!(".", "fetch")));
         }
+    }
+
+    #[test]
+    fn catalog_metadata_shows_last_updated_date_without_time() {
+        let html = CatalogMetadataView(CatalogMetadataViewProps {
+            metadata: CatalogMetadata {
+                schema_version: 1,
+                generated_at: "2026-05-26T12:34:56Z".to_owned(),
+                source: stark_parts_catalog::SourceMetadata {
+                    api_base_url: "https://api.starkfuture.com/v2".to_owned(),
+                    country: "US".to_owned(),
+                    language: "en".to_owned(),
+                    endpoints: Vec::new(),
+                },
+            },
+        })
+        .to_html();
+
+        assert!(html.contains("<dt>Parts data last updated</dt>"));
+        assert!(html.contains("<dd>2026-05-26</dd>"));
+        assert!(!html.contains("12:34:56"));
+        assert!(!html.contains("<dt>Generated</dt>"));
     }
 
     #[test]

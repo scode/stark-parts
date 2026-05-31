@@ -86,18 +86,15 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
                             on:input=move |event| set_query.set(event_target_value(&event))
                         />
                     </label>
-                </div>
-                <CatalogMetadataView metadata=metadata />
-            </header>
-            <section class="layout">
-                <aside class="filters" aria-label="Bike filters">
-                    <h2>"Bikes"</h2>
                     <BikeFilters
                         variants=index.bike_variants().to_vec()
                         selected_bikes=selected_bikes
                         set_selected_bikes=set_selected_bikes
                     />
-                </aside>
+                </div>
+                <CatalogMetadataView metadata=metadata />
+            </header>
+            <section class="layout">
                 <section class="results" aria-live="polite">
                     {move || {
                         let results = results.get();
@@ -148,42 +145,47 @@ fn BikeFilters(
     set_selected_bikes: WriteSignal<Vec<String>>,
 ) -> impl IntoView {
     view! {
-        <div class="bike-options">
-            <For
-                each=move || variants.clone()
-                key=|variant| variant.id.clone()
-                let:variant
-            >
-                {
-                    let id = variant.id.clone();
-                    let checked_id = id.clone();
-                    let label = variant.display_name.clone().unwrap_or_else(|| variant.code.clone());
-                    view! {
-                        <label class="bike-option">
-                            <input
-                                type="checkbox"
-                                value=id.clone()
-                                prop:checked=move || selected_bikes.get().contains(&checked_id)
-                                on:change=move |event| {
-                                    let checked = event_target_checked(&event);
-                                    let id = id.clone();
-                                    set_selected_bikes.update(move |selected| {
-                                        if checked {
-                                            if !selected.contains(&id) {
-                                                selected.push(id);
+        <section class="bike-filter-bar" aria-label="Bike filters">
+            <div class="bike-options">
+                <For
+                    each=move || variants.clone()
+                    key=|variant| variant.id.clone()
+                    let:variant
+                >
+                    {
+                        let id = variant.id.clone();
+                        let checked_id = id.clone();
+                        let label = variant.display_name.clone().unwrap_or_else(|| variant.code.clone());
+                        view! {
+                            <label class="bike-option">
+                                <input
+                                    type="checkbox"
+                                    value=id.clone()
+                                    prop:checked=move || selected_bikes.get().contains(&checked_id)
+                                    on:change=move |event| {
+                                        let checked = event_target_checked(&event);
+                                        let id = id.clone();
+                                        set_selected_bikes.update(move |selected| {
+                                            if checked {
+                                                if !selected.contains(&id) {
+                                                    selected.push(id);
+                                                }
+                                            } else {
+                                                selected.retain(|selected_id| selected_id != &id);
                                             }
-                                        } else {
-                                            selected.retain(|selected_id| selected_id != &id);
-                                        }
-                                    });
-                                }
-                            />
-                            <span>{label}</span>
-                        </label>
+                                        });
+                                    }
+                                />
+                                <span>{label}</span>
+                            </label>
+                        }
                     }
-                }
-            </For>
-        </div>
+                </For>
+            </div>
+            {move || selected_bikes.get().is_empty().then(|| view! {
+                <p class="bike-filter-default">"default: all bikes"</p>
+            })}
+        </section>
     }
 }
 
@@ -616,26 +618,32 @@ input[type="search"] {
 }
 
 .layout {
-  display: grid;
-  grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
-  gap: 1.25rem;
   padding: 1.25rem clamp(1rem, 3vw, 2rem) 2rem;
 }
 
-.filters {
-  border-right: 1px solid #dfe2d6;
-  padding-right: 1rem;
+.bike-filter-bar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
 }
 
 .bike-options {
-  display: grid;
-  gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
 }
 
 .bike-option {
   align-items: center;
   display: flex;
   gap: 0.5rem;
+}
+
+.bike-filter-default {
+  color: #68736c;
+  font-size: 0.85rem;
+  margin: 0;
 }
 
 .results {
@@ -778,13 +786,6 @@ input[type="search"] {
   .result-detail-popover {
     position: static;
   }
-
-  .filters {
-    border-right: 0;
-    border-bottom: 1px solid #dfe2d6;
-    padding-bottom: 1rem;
-    padding-right: 0;
-  }
 }
 "#;
 
@@ -891,6 +892,7 @@ mod tests {
         assert!(!html.contains("api.starkfuture.com"));
         assert!(!html.contains("<dt>API</dt>"));
         assert!(html.contains("Bike filters"));
+        assert!(html.contains("default: all bikes"));
         assert!(html.contains("Result list"));
         assert!(html.contains("Hovered part detail"));
         assert!(html.contains("SMX1-TOOLBOX"));
@@ -912,6 +914,7 @@ mod tests {
         assert!(html.contains("SMX1-TOOLBOX"));
         assert!(html.contains("matches"));
         assert!(html.contains("VARG SM"));
+        assert!(!html.contains("default: all bikes"));
     }
 
     #[test]

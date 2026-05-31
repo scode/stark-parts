@@ -108,6 +108,9 @@ going back to Stark or a dealer:
   product-group page for that bike, category path, and product code. It must not fall back to the bike-level spare-parts
   overview for a part-level result.
 
+The detail card should present the image, title, compatibility subtitle, and Stark link before the detail fields. SKU,
+price, and availability should be grouped as primary facts ahead of lower-level catalog metadata.
+
 For broad searches, the page may render detail cards only on demand as rows are hovered. This is a rendering constraint,
 not a search constraint: the full match count and result list still need to reflect the complete browser-local search
 result.

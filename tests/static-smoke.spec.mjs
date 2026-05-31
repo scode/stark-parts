@@ -16,6 +16,17 @@ test("static app restores URL state and searches without Stark API calls", async
   await expect(page.getByLabel("Search")).toHaveValue("SSM1-P-FF-01-G");
   await expect(page.getByLabel("Search")).toBeFocused();
   await expect(page.locator('input[type="checkbox"][value="varg-sm"]')).toBeChecked();
+  await expect(page.getByLabel("Bike filters")).toBeVisible();
+  const searchBox = await page.getByLabel("Search").boundingBox();
+  const bikeFilters = await page.getByLabel("Bike filters").boundingBox();
+  expect(searchBox).not.toBeNull();
+  expect(bikeFilters).not.toBeNull();
+  expect(bikeFilters.y).toBeGreaterThan(searchBox.y + searchBox.height);
+  await expect(page.getByText("default: all bikes")).toHaveCount(0);
+  await page.locator('input[type="checkbox"][value="varg-sm"]').uncheck();
+  await expect(page.getByText("default: all bikes")).toBeVisible();
+  await page.locator('input[type="checkbox"][value="varg-sm"]').check();
+  await expect(page.getByText("default: all bikes")).toHaveCount(0);
   await expect(page.getByText("Parts data last updated")).toBeVisible();
   await expect(page.getByText(/\d{4}-\d{2}-\d{2}/).first()).toBeVisible();
   await expect(page.getByText(/\d{2}:\d{2}:\d{2}/)).toHaveCount(0);

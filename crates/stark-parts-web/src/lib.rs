@@ -63,21 +63,21 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
                 <p>{UNOFFICIAL_NOTICE}</p>
             </section>
             <header class="toolbar">
-                <div>
+                <div class="primary-search">
                     <h1>{APP_TITLE}</h1>
-                    <CatalogMetadataView metadata=metadata />
+                    <label class="search-control" for="catalog-search">
+                        <span>"Search"</span>
+                        <input
+                            id="catalog-search"
+                            type="search"
+                            autocomplete="off"
+                            placeholder="part, SKU, assembly, subsystem"
+                            prop:value=move || query.get()
+                            on:input=move |event| set_query.set(event_target_value(&event))
+                        />
+                    </label>
                 </div>
-                <label class="search-control" for="catalog-search">
-                    <span>"Search"</span>
-                    <input
-                        id="catalog-search"
-                        type="search"
-                        autocomplete="off"
-                        placeholder="part, SKU, assembly, subsystem"
-                        prop:value=move || query.get()
-                        on:input=move |event| set_query.set(event_target_value(&event))
-                    />
-                </label>
+                <CatalogMetadataView metadata=metadata />
             </header>
             <section class="layout">
                 <aside class="filters" aria-label="Bike filters">
@@ -596,12 +596,12 @@ body {
 }
 
 .toolbar {
-  align-items: end;
+  align-items: start;
   background: #fffdf7;
   border-bottom: 1px solid #dfe2d6;
   display: grid;
   gap: 1rem;
-  grid-template-columns: minmax(0, 1fr) minmax(18rem, 34rem);
+  grid-template-columns: minmax(18rem, 34rem) minmax(0, 1fr);
   padding: 1rem clamp(1rem, 3vw, 2rem);
 }
 
@@ -621,6 +621,11 @@ h2 {
 h3 {
   font-size: 1rem;
   margin-bottom: 0.25rem;
+}
+
+.primary-search {
+  display: grid;
+  gap: 0.75rem;
 }
 
 .metadata {
@@ -840,6 +845,17 @@ mod tests {
         assert!(html.contains(APP_TITLE));
         assert!(html.contains("Not endorsed by Stark"));
         assert!(html.contains("type=\"search\""));
+        let title_position = html
+            .find("<h1>Stark Parts</h1>")
+            .expect("page title should render");
+        let search_position = html
+            .find("id=\"catalog-search\"")
+            .expect("search input should render");
+        let metadata_position = html
+            .find("Catalog metadata")
+            .expect("catalog metadata should render");
+        assert!(title_position < search_position);
+        assert!(search_position < metadata_position);
         assert!(html.contains("Catalog metadata"));
         assert!(!html.contains("api.starkfuture.com"));
         assert!(!html.contains("<dt>API</dt>"));

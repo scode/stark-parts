@@ -7,12 +7,11 @@ use url::form_urlencoded;
 
 /// Browser-local search index derived entirely from the committed catalog.
 ///
-/// The index is deliberately UI-agnostic. It knows how to normalize text,
-/// apply bike filters, and project matching rows back into the catalog tree,
-/// but it does not know anything about Leptos components or browser events.
+/// The index is deliberately UI-agnostic. It knows how to normalize text and
+/// apply bike filters, but it does not know anything about Leptos components
+/// or browser events.
 pub struct SearchIndex {
     bike_variants: Vec<BikeVariantSummary>,
-    full_trees: Vec<ProjectedCatalogTree>,
     rows: Vec<SearchRow>,
 }
 
@@ -33,14 +32,9 @@ impl SearchIndex {
             .map(|variant| (variant.id.clone(), variant.clone()))
             .collect::<HashMap<_, _>>();
 
-        let mut full_trees = Vec::new();
         let mut rows = Vec::new();
         for tree in &catalog.catalog_trees {
             let bike = bike_summaries.get(&tree.bike_variant_id);
-            full_trees.push(project_catalog_tree(
-                tree,
-                bike.and_then(|bike| bike.display_name.clone()),
-            ));
             collect_category_rows(
                 &tree.bike_variant_id,
                 bike.map(|bike| bike.code.as_str()),
@@ -53,7 +47,6 @@ impl SearchIndex {
 
         Self {
             bike_variants,
-            full_trees,
             rows,
         }
     }
@@ -63,7 +56,7 @@ impl SearchIndex {
         &self.bike_variants
     }
 
-    /// Search rows and project matching rows plus their ancestors as a tree.
+    /// Search rows in catalog order without doing any renderer-specific work.
     pub fn search(&self, request: &SearchRequest) -> SearchResults {
         let selected_bikes = request
             .selected_bike_variant_ids
@@ -84,21 +77,9 @@ impl SearchIndex {
             }
         }
 
-        let is_empty_query = query_tokens.is_empty() && compact_query.is_empty();
-        let trees = if is_empty_query {
-            self.full_trees
-                .iter()
-                .filter(|tree| selected_all_bikes || selected_bikes.contains(&tree.bike_variant_id))
-                .cloned()
-                .collect()
-        } else {
-            project_rows(&matched_rows)
-        };
-
         SearchResults {
-            is_empty_query,
-            rows: matched_rows.iter().map(|row| row.result.clone()).collect(),
-            trees,
+            is_empty_query: query_tokens.is_empty() && compact_query.is_empty(),
+            rows: merge_result_rows(matched_rows),
         }
     }
 }
@@ -148,12 +129,11 @@ pub struct BikeVariantSummary {
     pub display_name: Option<String>,
 }
 
-/// Search result rows plus the ancestor-preserving tree projection.
+/// Search result rows in the order the catalog exposes them.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SearchResults {
     pub is_empty_query: bool,
     pub rows: Vec<SearchResultRow>,
-    pub trees: Vec<ProjectedCatalogTree>,
 }
 
 impl SearchResults {
@@ -168,6 +148,7 @@ pub struct SearchResultRow {
     pub bike_variant_id: String,
     pub bike_code: Option<String>,
     pub bike_display_name: Option<String>,
+    pub compatible_bikes: Vec<BikeVariantSummary>,
     pub category_path: Vec<String>,
     pub category_display_path: Vec<String>,
     pub product_group: ProductGroupSummary,
@@ -213,95 +194,11 @@ pub struct AttributeSummary {
     pub option_display_name: Option<String>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ProjectedCatalogTree {
-    pub bike_variant_id: String,
-    pub bike_display_name: Option<String>,
-    pub categories: Vec<ProjectedCategory>,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ProjectedCategory {
-    pub code: String,
-    pub display_name: Option<String>,
-    pub categories: Vec<ProjectedCategory>,
-    pub product_groups: Vec<ProjectedProductGroup>,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ProjectedProductGroup {
-    pub code: String,
-    pub display_name: Option<String>,
-    pub image_urls: Vec<String>,
-    pub articles: Vec<ProjectedArticle>,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ProjectedArticle {
-    pub code: String,
-    pub display_name: Option<String>,
-    pub image_urls: Vec<String>,
-    pub variants: Vec<ProjectedArticleVariant>,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ProjectedArticleVariant {
-    pub code: String,
-    pub sku: Option<String>,
-    pub image_urls: Vec<String>,
-}
-
 struct SearchRow {
     bike_variant_id: String,
     normalized_text: String,
     compact_text: String,
     result: SearchResultRow,
-}
-
-fn project_catalog_tree(
-    tree: &stark_parts_catalog::BikeCatalogTree,
-    bike_display_name: Option<String>,
-) -> ProjectedCatalogTree {
-    ProjectedCatalogTree {
-        bike_variant_id: tree.bike_variant_id.clone(),
-        bike_display_name,
-        categories: tree.categories.iter().map(project_category).collect(),
-    }
-}
-
-fn project_category(category: &CategoryNode) -> ProjectedCategory {
-    ProjectedCategory {
-        code: category.code.clone(),
-        display_name: category.display_name.clone(),
-        categories: category.categories.iter().map(project_category).collect(),
-        product_groups: category.product_groups.iter().map(project_group).collect(),
-    }
-}
-
-fn project_group(group: &ProductGroup) -> ProjectedProductGroup {
-    ProjectedProductGroup {
-        code: group.code.clone(),
-        display_name: group.display_name.clone(),
-        image_urls: group.image_urls.clone(),
-        articles: group.articles.iter().map(project_article).collect(),
-    }
-}
-
-fn project_article(article: &Article) -> ProjectedArticle {
-    ProjectedArticle {
-        code: article.code.clone(),
-        display_name: article.display_name.clone(),
-        image_urls: article.image_urls.clone(),
-        variants: article
-            .variants
-            .iter()
-            .map(|variant| ProjectedArticleVariant {
-                code: variant.code.clone(),
-                sku: variant.sku.clone(),
-                image_urls: variant.image_urls.clone(),
-            })
-            .collect(),
-    }
 }
 
 fn collect_category_rows(
@@ -400,6 +297,11 @@ fn search_row_from_variant(
         bike_variant_id: bike_variant_id.to_owned(),
         bike_code: bike_code.map(str::to_owned),
         bike_display_name: bike_display_name.map(str::to_owned),
+        compatible_bikes: vec![BikeVariantSummary {
+            id: bike_variant_id.to_owned(),
+            code: bike_code.unwrap_or(bike_variant_id).to_owned(),
+            display_name: bike_display_name.map(str::to_owned),
+        }],
         category_path,
         category_display_path,
         product_group: ProductGroupSummary {
@@ -450,11 +352,64 @@ fn article_variant_summary(variant: &ArticleVariant) -> ArticleVariantSummary {
     }
 }
 
+fn merge_result_rows(rows: Vec<&SearchRow>) -> Vec<SearchResultRow> {
+    let mut merged = Vec::<SearchResultRow>::new();
+    let mut indexes = HashMap::<SearchResultKey, usize>::new();
+
+    for row in rows {
+        let key = SearchResultKey::from(&row.result);
+        if let Some(index) = indexes.get(&key).copied() {
+            merge_compatible_bikes(&mut merged[index], &row.result);
+        } else {
+            indexes.insert(key, merged.len());
+            merged.push(row.result.clone());
+        }
+    }
+
+    merged
+}
+
+fn merge_compatible_bikes(target: &mut SearchResultRow, source: &SearchResultRow) {
+    for bike in &source.compatible_bikes {
+        if !target
+            .compatible_bikes
+            .iter()
+            .any(|existing| existing.id == bike.id)
+        {
+            target.compatible_bikes.push(bike.clone());
+        }
+    }
+}
+
+#[derive(Debug, Eq, Hash, PartialEq)]
+struct SearchResultKey {
+    product_group_code: String,
+    article_code: String,
+    variant_code: Option<String>,
+    sku: Option<String>,
+}
+
+impl SearchResultKey {
+    fn from(row: &SearchResultRow) -> Self {
+        Self {
+            product_group_code: row.product_group.code.clone(),
+            article_code: row.article.code.clone(),
+            variant_code: row.variant.as_ref().map(|variant| variant.code.clone()),
+            sku: row.variant.as_ref().and_then(|variant| variant.sku.clone()),
+        }
+    }
+}
+
 fn searchable_fields(result: &SearchResultRow) -> Vec<String> {
     let mut fields = Vec::new();
     fields.push(result.bike_variant_id.clone());
     push_optional(&mut fields, &result.bike_code);
     push_optional(&mut fields, &result.bike_display_name);
+    for bike in &result.compatible_bikes {
+        fields.push(bike.id.clone());
+        fields.push(bike.code.clone());
+        push_optional(&mut fields, &bike.display_name);
+    }
     fields.extend(result.category_path.iter().cloned());
     fields.extend(result.category_display_path.iter().cloned());
     fields.push(result.product_group.code.clone());
@@ -510,128 +465,6 @@ fn compact_search_text(input: &str) -> String {
         .collect()
 }
 
-fn project_rows(rows: &[&SearchRow]) -> Vec<ProjectedCatalogTree> {
-    let mut trees = Vec::new();
-    for row in rows {
-        let tree = get_or_insert_tree(
-            &mut trees,
-            &row.result.bike_variant_id,
-            row.result.bike_display_name.clone(),
-        );
-        let categories = insert_category_path(
-            &mut tree.categories,
-            &row.result.category_path,
-            &row.result.category_display_path,
-        );
-        let group = get_or_insert_group(categories, &row.result.product_group);
-        let article = get_or_insert_article(group, &row.result.article);
-        let Some(variant) = &row.result.variant else {
-            continue;
-        };
-        if !article
-            .variants
-            .iter()
-            .any(|existing| existing.code == variant.code && existing.sku == variant.sku)
-        {
-            article.variants.push(ProjectedArticleVariant {
-                code: variant.code.clone(),
-                sku: variant.sku.clone(),
-                image_urls: variant.image_urls.clone(),
-            });
-        }
-    }
-    trees
-}
-
-fn get_or_insert_tree<'a>(
-    trees: &'a mut Vec<ProjectedCatalogTree>,
-    bike_variant_id: &str,
-    bike_display_name: Option<String>,
-) -> &'a mut ProjectedCatalogTree {
-    if let Some(index) = trees
-        .iter()
-        .position(|tree| tree.bike_variant_id == bike_variant_id)
-    {
-        return &mut trees[index];
-    }
-
-    trees.push(ProjectedCatalogTree {
-        bike_variant_id: bike_variant_id.to_owned(),
-        bike_display_name,
-        categories: Vec::new(),
-    });
-    trees.last_mut().expect("tree was just inserted")
-}
-
-fn insert_category_path<'a>(
-    categories: &'a mut Vec<ProjectedCategory>,
-    path: &[String],
-    display_path: &[String],
-) -> &'a mut Vec<ProjectedProductGroup> {
-    let mut current_categories = categories;
-    for (index, code) in path.iter().enumerate() {
-        let category_index = current_categories
-            .iter()
-            .position(|category| category.code == *code)
-            .unwrap_or_else(|| {
-                current_categories.push(ProjectedCategory {
-                    code: code.clone(),
-                    display_name: display_path.get(index).cloned(),
-                    categories: Vec::new(),
-                    product_groups: Vec::new(),
-                });
-                current_categories.len() - 1
-            });
-        if index + 1 == path.len() {
-            return &mut current_categories[category_index].product_groups;
-        }
-        current_categories = &mut current_categories[category_index].categories;
-    }
-
-    panic!("catalog rows must have at least one category")
-}
-
-fn get_or_insert_group<'a>(
-    groups: &'a mut Vec<ProjectedProductGroup>,
-    summary: &ProductGroupSummary,
-) -> &'a mut ProjectedProductGroup {
-    if let Some(index) = groups.iter().position(|group| group.code == summary.code) {
-        return &mut groups[index];
-    }
-
-    groups.push(ProjectedProductGroup {
-        code: summary.code.clone(),
-        display_name: summary.display_name.clone(),
-        image_urls: summary.image_urls.clone(),
-        articles: Vec::new(),
-    });
-    groups.last_mut().expect("group was just inserted")
-}
-
-fn get_or_insert_article<'a>(
-    group: &'a mut ProjectedProductGroup,
-    summary: &ArticleSummary,
-) -> &'a mut ProjectedArticle {
-    if let Some(index) = group
-        .articles
-        .iter()
-        .position(|article| article.code == summary.code)
-    {
-        return &mut group.articles[index];
-    }
-
-    group.articles.push(ProjectedArticle {
-        code: summary.code.clone(),
-        display_name: summary.display_name.clone(),
-        image_urls: summary.image_urls.clone(),
-        variants: Vec::new(),
-    });
-    group
-        .articles
-        .last_mut()
-        .expect("article was just inserted")
-}
-
 #[derive(Clone)]
 struct CategoryCrumb {
     code: String,
@@ -647,7 +480,7 @@ mod tests {
     };
 
     #[test]
-    fn empty_query_returns_full_tree_for_all_bikes() {
+    fn empty_query_returns_all_result_rows_for_all_bikes() {
         let index = SearchIndex::from_catalog(&fixture_catalog());
         let results = index.search(&SearchRequest::default());
 
@@ -655,14 +488,12 @@ mod tests {
         assert_eq!(results.rows.len(), 4);
         assert_eq!(
             results
-                .trees
+                .rows
                 .iter()
-                .map(|tree| tree.bike_variant_id.as_str())
+                .map(|row| row.bike_variant_id.as_str())
                 .collect::<Vec<_>>(),
-            ["varg-ex", "varg-sm"]
+            ["varg-ex", "varg-ex", "varg-ex", "varg-sm"]
         );
-        assert_eq!(results.trees[0].categories[1].code, "empty_category");
-        assert!(results.trees[0].categories[1].product_groups.is_empty());
     }
 
     #[test]
@@ -690,11 +521,11 @@ mod tests {
         assert_eq!(multi_selected.rows.len(), 4);
         assert_eq!(
             multi_selected
-                .trees
+                .rows
                 .iter()
-                .map(|tree| tree.bike_variant_id.as_str())
+                .map(|row| row.bike_variant_id.as_str())
                 .collect::<Vec<_>>(),
-            ["varg-ex", "varg-sm"]
+            ["varg-ex", "varg-ex", "varg-ex", "varg-sm"]
         );
         assert_eq!(multi_selected_with_missing.rows.len(), 1);
         assert!(
@@ -704,6 +535,49 @@ mod tests {
                 .all(|row| row.bike_variant_id == "varg-sm")
         );
         assert_eq!(unfiltered.rows.len(), 4);
+    }
+
+    #[test]
+    fn repeated_variants_across_bike_trees_render_as_one_result() {
+        let mut catalog = fixture_catalog();
+        catalog.catalog_trees[1].categories.push(CategoryNode {
+            code: "shared_brakes".to_owned(),
+            path: vec!["shared_brakes".to_owned()],
+            display_name: Some("Shared brakes".to_owned()),
+            localization_key: None,
+            categories: Vec::new(),
+            product_groups: vec![disc_group()],
+        });
+        let index = SearchIndex::from_catalog(&catalog);
+
+        let unfiltered = index.search(&SearchRequest {
+            query: "disc_260mm-standard".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let filtered = index.search(&SearchRequest {
+            query: "disc_260mm-standard".to_owned(),
+            selected_bike_variant_ids: vec!["varg-sm".to_owned()],
+        });
+
+        assert_eq!(unfiltered.rows.len(), 1);
+        assert_eq!(
+            unfiltered.rows[0]
+                .compatible_bikes
+                .iter()
+                .map(|bike| bike.id.as_str())
+                .collect::<Vec<_>>(),
+            ["varg-ex", "varg-sm"]
+        );
+        assert_eq!(filtered.rows.len(), 1);
+        assert_eq!(filtered.rows[0].bike_variant_id, "varg-sm");
+        assert_eq!(
+            filtered.rows[0]
+                .compatible_bikes
+                .iter()
+                .map(|bike| bike.id.as_str())
+                .collect::<Vec<_>>(),
+            ["varg-sm"]
+        );
     }
 
     #[test]
@@ -733,7 +607,7 @@ mod tests {
     }
 
     #[test]
-    fn no_result_query_returns_clear_empty_projection() {
+    fn no_result_query_returns_clear_empty_rows() {
         let index = SearchIndex::from_catalog(&fixture_catalog());
         let results = index.search(&SearchRequest {
             query: "does-not-exist".to_owned(),
@@ -741,45 +615,40 @@ mod tests {
         });
 
         assert!(!results.has_matches());
-        assert!(results.trees.is_empty());
+        assert!(results.rows.is_empty());
     }
 
     #[test]
-    fn projection_preserves_matching_row_ancestors() {
+    fn result_rows_preserve_context_needed_by_details() {
         let index = SearchIndex::from_catalog(&fixture_catalog());
         let results = index.search(&SearchRequest {
             query: "SMX1-BR-FW-260".to_owned(),
             selected_bike_variant_ids: Vec::new(),
         });
+        let row = &results.rows[0];
+        let variant = row.variant.as_ref().expect("query should match a variant");
 
-        let tree = &results.trees[0];
-        let category = &tree.categories[0];
-        let subcategory = &category.categories[0];
-        let group = &subcategory.product_groups[0];
-        let article = &group.articles[0];
-
-        assert_eq!(tree.bike_variant_id, "varg-ex");
-        assert_eq!(category.code, "brakes");
-        assert_eq!(subcategory.code, "front_brake");
-        assert_eq!(group.code, "disc_group");
+        assert_eq!(row.bike_variant_id, "varg-ex");
+        assert_eq!(row.category_path, ["brakes", "front_brake"]);
+        assert_eq!(row.product_group.code, "disc_group");
         assert_eq!(
-            group.image_urls,
+            row.product_group.image_urls,
             ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/disc-group.png"]
         );
-        assert_eq!(article.code, "disc_260mm");
+        assert_eq!(row.article.code, "disc_260mm");
         assert_eq!(
-            article.image_urls,
+            row.article.image_urls,
             ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/disc-260mm.png"]
         );
-        assert_eq!(article.variants[0].sku.as_deref(), Some("SMX1-BR-FW-260"));
+        assert_eq!(variant.sku.as_deref(), Some("SMX1-BR-FW-260"));
         assert_eq!(
-            article.variants[0].image_urls,
+            variant.image_urls,
             ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/disc-variant.png"]
         );
     }
 
     #[test]
-    fn variantless_articles_remain_searchable_and_projected() {
+    fn variantless_articles_remain_searchable() {
         let index = SearchIndex::from_catalog(&fixture_catalog());
         let results = index.search(&SearchRequest {
             query: "brake manual".to_owned(),
@@ -788,15 +657,7 @@ mod tests {
 
         assert_eq!(results.rows.len(), 1);
         assert!(results.rows[0].variant.is_none());
-        assert_eq!(
-            results.trees[0].categories[0].categories[0].product_groups[0].articles[0].code,
-            "brake_manual"
-        );
-        assert!(
-            results.trees[0].categories[0].categories[0].product_groups[0].articles[0]
-                .variants
-                .is_empty()
-        );
+        assert_eq!(results.rows[0].article.code, "brake_manual");
     }
 
     #[test]

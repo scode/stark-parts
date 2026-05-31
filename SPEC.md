@@ -135,8 +135,8 @@ page-load time.
 Catalog updates happen offline through the command line tool described in `IMPL_SPEC.md`. After an update, the generated
 JSON5 catalog file is committed like any other source file.
 
-The page should expose the catalog generation timestamp and enough source metadata for a user to understand how stale
-the data may be.
+The page should expose a "Parts data last updated" catalog date and enough source metadata for a user to understand how
+stale the data may be. The displayed date should omit time-of-day detail.
 
 ## Data Format Contract
 

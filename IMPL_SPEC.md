@@ -200,6 +200,11 @@ Each index row should include denormalized ancestor text:
 - attributes
 - kit data
 
+The search index should keep text buckets separate by source even when the first matching pass treats them the same. At
+minimum, exact article or variant wording should remain distinct from inherited product-group wording and broader
+context such as bike variant and category path. This preserves the data needed for later ranking work without changing
+the current deterministic matching behavior.
+
 The renderer should show matching rows as a flat virtualized result list. Repeated occurrences of the same article or
 variant across bike catalog trees should merge into one visible result with bike compatibility attached. Ancestor fields
 remain denormalized into each row so the detail card can show bike, category, product group, article, and SKU context

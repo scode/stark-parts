@@ -115,10 +115,6 @@ fn CatalogMetadataView(metadata: CatalogMetadata) -> impl IntoView {
                 <dt>"Source"</dt>
                 <dd>{metadata.source.country} " storefront, " {metadata.source.language}</dd>
             </div>
-            <div>
-                <dt>"API"</dt>
-                <dd>{metadata.source.api_base_url}</dd>
-            </div>
         </dl>
     }
 }
@@ -811,6 +807,8 @@ mod tests {
         assert!(html.contains("Not endorsed by Stark"));
         assert!(html.contains("type=\"search\""));
         assert!(html.contains("Catalog metadata"));
+        assert!(!html.contains("api.starkfuture.com"));
+        assert!(!html.contains("<dt>API</dt>"));
         assert!(html.contains("Bike filters"));
         assert!(html.contains("Catalog tree"));
         assert!(html.contains("Details"));

@@ -26,6 +26,9 @@ The page title must stay at the top left of the header. The search field is the 
 under that title, before catalog metadata. When the page loads, the search field must receive keyboard focus
 automatically.
 
+Catalog metadata must stay visible in the header but should be visually secondary to the title, search field, and bike
+filters.
+
 The bike filters must appear as a horizontal list of chip-style bike-name toggles immediately under the search field.
 They must not take horizontal space away from the result list. When no bike is selected, the filters must show
 `default: all bikes` to make the all-bikes default explicit. That text must disappear as soon as one or more bikes are

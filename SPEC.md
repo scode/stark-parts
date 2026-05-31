@@ -62,6 +62,11 @@ list updates must be browser-local after that point.
 
 An empty search query shows the full result list for the selected bike variants.
 
+Non-empty search results should be ranked by match quality rather than raw catalog order. Direct part matches such as
+SKU, article name, article code, variant code, and variant attributes should appear before matches found only in an
+article description. Article-description matches should appear before matches found only through inherited product-group
+wording, bike wording, or category context. Rows with the same match quality should keep their catalog-relative order.
+
 The current search state must be reflected in the page URL so searches can be bookmarked or shared. Loading a URL with
 search state must restore the query and selected bike variants.
 

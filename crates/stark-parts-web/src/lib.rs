@@ -403,7 +403,6 @@ fn first_stark_link(row: &SearchResultRow) -> Option<String> {
         .and_then(|variant| variant.stark_url.clone())
         .or_else(|| row.article.stark_url.clone())
         .or_else(|| row.product_group.stark_url.clone())
-        .or_else(|| bike_spare_parts_url(&row.bike_variant_id))
 }
 
 fn first_image_url(row: &SearchResultRow) -> Option<String> {
@@ -412,15 +411,6 @@ fn first_image_url(row: &SearchResultRow) -> Option<String> {
         .and_then(|variant| variant.image_urls.first().cloned())
         .or_else(|| row.article.image_urls.first().cloned())
         .or_else(|| row.product_group.image_urls.first().cloned())
-}
-
-fn bike_spare_parts_url(bike_variant_id: &str) -> Option<String> {
-    bike_variant_id
-        .bytes()
-        .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_'))
-        .then(|| {
-            format!("https://starkfuture.com/parts-and-accessories/spare-parts/{bike_variant_id}")
-        })
 }
 
 fn format_price(price: &stark_parts_catalog::Price) -> String {
@@ -890,18 +880,26 @@ mod tests {
         assert!(html.contains("Accessories"));
         assert!(html.contains("loading=\"lazy\""));
         assert!(html.contains("referrerpolicy=\"no-referrer\""));
-        assert!(html.contains("https://starkfuture.com/parts-and-accessories/spare-parts/"));
+        assert!(html.contains(
+            "https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm/accessories/1_toolbox"
+        ));
         assert!(html.contains("View on Stark"));
     }
 
     #[test]
-    fn stark_link_fallback_rejects_unsafe_bike_ids() {
-        assert_eq!(
-            bike_spare_parts_url("varg-sm").as_deref(),
-            Some("https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm")
-        );
-        assert_eq!(bike_spare_parts_url("javascript:alert(1)"), None);
-        assert_eq!(bike_spare_parts_url("../varg-sm"), None);
+    fn stark_link_does_not_fall_back_to_bike_overview() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "SMX1-TOOLBOX".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let mut row = results.rows[0].clone();
+        row.product_group.stark_url = None;
+        row.article.stark_url = None;
+        row.variant = None;
+
+        assert_eq!(first_stark_link(&row), None);
     }
 
     #[test]

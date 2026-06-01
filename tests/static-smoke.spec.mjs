@@ -45,6 +45,8 @@ test("static app restores URL state and searches without Stark API calls", async
   await page.getByText("SSM1-P-FF-01-G").first().hover();
   await expect(page.getByText("Price and availability are from the committed catalog snapshot").first()).toBeVisible();
   await expect(page.locator(".result-detail-popover .part-image").first()).toBeAttached();
+  await expect(page.locator(".result-detail-popover .part-image-frame.image-frame-missing").first()).toBeVisible();
+  await expect(page.locator(".result-thumb-frame.image-frame-missing").first()).toBeVisible();
 
   await page.getByLabel("Search").fill("SMX1-TOOLBOX");
   await expect(page.locator(".result-row")).toHaveCount(1);

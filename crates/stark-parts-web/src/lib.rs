@@ -605,7 +605,7 @@ body {
   background: #fffdf7;
   border-bottom: 1px solid #dfe2d6;
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
   grid-template-columns: minmax(18rem, 34rem) minmax(0, 1fr);
   padding: 1rem clamp(1rem, 3vw, 2rem);
 }
@@ -634,9 +634,13 @@ h3 {
 }
 
 .metadata {
+  align-self: start;
+  color: #3d4841;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  gap: 0.65rem 1rem;
+  justify-content: end;
   margin: 0;
 }
 

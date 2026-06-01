@@ -26,9 +26,10 @@ The page title must stay at the top left of the header. The search field is the 
 under that title, before catalog metadata. When the page loads, the search field must receive keyboard focus
 automatically.
 
-The bike filters must appear as a horizontal list of bike names immediately under the search field. They must not take
-horizontal space away from the result list. When no bike is selected, the filters must show `default: all bikes` to make
-the all-bikes default explicit. That text must disappear as soon as one or more bikes are selected.
+The bike filters must appear as a horizontal list of chip-style bike-name toggles immediately under the search field.
+They must not take horizontal space away from the result list. When no bike is selected, the filters must show
+`default: all bikes` to make the all-bikes default explicit. That text must disappear as soon as one or more bikes are
+selected.
 
 The site must be static at runtime. Loading and searching the catalog must not require a server, database, remote API
 call, or any remote RPC. The catalog data used by the browser is committed in this repository and served as static site

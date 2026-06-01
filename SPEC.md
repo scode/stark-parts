@@ -26,6 +26,8 @@ The page title must stay at the top left of the header. The search field is the 
 under that title, before catalog metadata. When the page loads, the search field must receive keyboard focus
 automatically.
 
+The browser tab must use a small Stark Parts favicon so the site is identifiable in tabs and bookmarks.
+
 Catalog metadata must stay visible in the header but should be visually secondary to the title, search field, and bike
 filters. It must include the catalog date, storefront source, feedback/contact address, and source-code link.
 

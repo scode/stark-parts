@@ -27,7 +27,7 @@ under that title, before catalog metadata. When the page loads, the search field
 automatically.
 
 Catalog metadata must stay visible in the header but should be visually secondary to the title, search field, and bike
-filters.
+filters. It must include the catalog date, storefront source, feedback/contact address, and source-code link.
 
 The bike filters must appear as a horizontal list of chip-style bike-name toggles immediately under the search field.
 They must not take horizontal space away from the result list. When no bike is selected, the filters must show

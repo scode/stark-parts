@@ -56,7 +56,11 @@ impl SearchIndex {
         &self.bike_variants
     }
 
-    /// Search rows in catalog order without doing any renderer-specific work.
+    /// Search rows without doing any renderer-specific work.
+    ///
+    /// Empty searches stay in catalog order because that is the only stable
+    /// ordering signal available. Non-empty searches are ordered by the source
+    /// of the match so direct part wording beats inherited catalog context.
     pub fn search(&self, request: &SearchRequest) -> SearchResults {
         let selected_bikes = request
             .selected_bike_variant_ids
@@ -67,18 +71,27 @@ impl SearchIndex {
         let compact_query = compact_search_text(&request.query);
         let selected_all_bikes = selected_bikes.is_empty();
 
+        let is_empty_query = query_tokens.is_empty() && compact_query.is_empty();
         let mut matched_rows = Vec::new();
-        for row in &self.rows {
+        for (catalog_order, row) in self.rows.iter().enumerate() {
             if !selected_all_bikes && !selected_bikes.contains(&row.bike_variant_id) {
                 continue;
             }
-            if let Some(match_source) = row_match_source(row, &query_tokens, &compact_query) {
-                matched_rows.push((row, match_source));
+            if let Some(search_match) = row_match(row, &query_tokens, &compact_query) {
+                matched_rows.push(MatchedSearchRow {
+                    row,
+                    search_match,
+                    catalog_order,
+                });
             }
         }
 
+        if !is_empty_query {
+            matched_rows.sort_by_key(|matched| (matched.search_match.rank, matched.catalog_order));
+        }
+
         SearchResults {
-            is_empty_query: query_tokens.is_empty() && compact_query.is_empty(),
+            is_empty_query,
             rows: merge_result_rows(matched_rows),
         }
     }
@@ -203,6 +216,8 @@ struct SearchRow {
 
 struct SearchText {
     exact_part: SearchTextBucket,
+    article_description: SearchTextBucket,
+    part_with_description: SearchTextBucket,
     product_group: SearchTextBucket,
     context: SearchTextBucket,
     combined: SearchTextBucket,
@@ -211,10 +226,17 @@ struct SearchText {
 impl SearchText {
     fn from_result(result: &SearchResultRow) -> Self {
         let exact_part_fields = exact_part_searchable_fields(result);
+        let article_description_fields = article_description_searchable_fields(result);
         let product_group_fields = product_group_searchable_fields(result);
         let context_fields = context_searchable_fields(result);
+        let part_with_description_fields = exact_part_fields
+            .iter()
+            .chain(article_description_fields.iter())
+            .cloned()
+            .collect();
         let combined_fields = exact_part_fields
             .iter()
+            .chain(article_description_fields.iter())
             .chain(product_group_fields.iter())
             .chain(context_fields.iter())
             .cloned()
@@ -222,6 +244,8 @@ impl SearchText {
 
         Self {
             exact_part: SearchTextBucket::from_fields(exact_part_fields),
+            article_description: SearchTextBucket::from_fields(article_description_fields),
+            part_with_description: SearchTextBucket::from_fields(part_with_description_fields),
             product_group: SearchTextBucket::from_fields(product_group_fields),
             context: SearchTextBucket::from_fields(context_fields),
             combined: SearchTextBucket::from_fields(combined_fields),
@@ -229,15 +253,40 @@ impl SearchText {
     }
 
     fn matches(&self, query_tokens: &[String], compact_query: &str) -> bool {
-        let buckets = [&self.exact_part, &self.product_group, &self.context];
+        let buckets = [
+            &self.exact_part,
+            &self.article_description,
+            &self.product_group,
+            &self.context,
+        ];
         query_tokens
             .iter()
             .all(|token| buckets.iter().any(|bucket| bucket.contains_token(token)))
             || self.combined.matches_compact(compact_query)
     }
 
-    fn feedback_source(&self, query_tokens: &[String], compact_query: &str) -> Option<MatchSource> {
+    fn rank(&self, query_tokens: &[String], compact_query: &str) -> SearchRank {
         if self.exact_part.matches_query(query_tokens, compact_query) {
+            SearchRank::ExactPart
+        } else if self
+            .article_description
+            .matches_query(query_tokens, compact_query)
+            || self
+                .part_with_description
+                .matches_query(query_tokens, compact_query)
+        {
+            SearchRank::ArticleDescription
+        } else {
+            SearchRank::InheritedContext
+        }
+    }
+
+    fn feedback_source(&self, query_tokens: &[String], compact_query: &str) -> Option<MatchSource> {
+        if self.exact_part.matches_query(query_tokens, compact_query)
+            || self
+                .article_description
+                .matches_query(query_tokens, compact_query)
+        {
             return None;
         }
         if self
@@ -282,6 +331,24 @@ impl SearchTextBucket {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum MatchSource {
     ProductGroup,
+}
+
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+enum SearchRank {
+    ExactPart,
+    ArticleDescription,
+    InheritedContext,
+}
+
+struct SearchMatch {
+    rank: SearchRank,
+    source: Option<MatchSource>,
+}
+
+struct MatchedSearchRow<'a> {
+    row: &'a SearchRow,
+    search_match: SearchMatch,
+    catalog_order: usize,
 }
 
 fn collect_category_rows(
@@ -435,18 +502,22 @@ fn article_variant_summary(variant: &ArticleVariant) -> ArticleVariantSummary {
     }
 }
 
-fn merge_result_rows(rows: Vec<(&SearchRow, Option<MatchSource>)>) -> Vec<SearchResultRow> {
+fn merge_result_rows(rows: Vec<MatchedSearchRow<'_>>) -> Vec<SearchResultRow> {
     let mut merged = Vec::<SearchResultRow>::new();
     let mut indexes = HashMap::<SearchResultKey, usize>::new();
 
-    for (row, match_source) in rows {
+    for matched in rows {
+        let row = matched.row;
         let key = SearchResultKey::from(&row.result);
         if let Some(index) = indexes.get(&key).copied() {
             merge_compatible_bikes(&mut merged[index], &row.result);
-            merge_match_feedback(&mut merged[index], row, match_source);
+            merge_match_feedback(&mut merged[index], row, matched.search_match.source);
         } else {
             let mut result = row.result.clone();
-            result.match_feedback = match_source.and_then(|source| match_feedback(row, source));
+            result.match_feedback = matched
+                .search_match
+                .source
+                .and_then(|source| match_feedback(row, source));
             indexes.insert(key, merged.len());
             merged.push(result);
         }
@@ -515,7 +586,6 @@ fn exact_part_searchable_fields(result: &SearchResultRow) -> Vec<String> {
     let mut fields = Vec::new();
     fields.push(result.article.code.clone());
     push_optional(&mut fields, &result.article.display_name);
-    push_optional(&mut fields, &result.article.description);
     if let Some(variant) = &result.variant {
         fields.push(variant.code.clone());
         push_optional(&mut fields, &variant.sku);
@@ -527,6 +597,12 @@ fn exact_part_searchable_fields(result: &SearchResultRow) -> Vec<String> {
     }
     fields.extend(result.article.kit_memberships.iter().cloned());
     fields.extend(result.article.kit_contents.iter().cloned());
+    fields
+}
+
+fn article_description_searchable_fields(result: &SearchResultRow) -> Vec<String> {
+    let mut fields = Vec::new();
+    push_optional(&mut fields, &result.article.description);
     fields
 }
 
@@ -559,20 +635,22 @@ fn push_optional(fields: &mut Vec<String>, value: &Option<String>) {
     }
 }
 
-fn row_match_source(
-    row: &SearchRow,
-    query_tokens: &[String],
-    compact_query: &str,
-) -> Option<Option<MatchSource>> {
+fn row_match(row: &SearchRow, query_tokens: &[String], compact_query: &str) -> Option<SearchMatch> {
     if query_tokens.is_empty() && compact_query.is_empty() {
-        return Some(None);
+        return Some(SearchMatch {
+            rank: SearchRank::InheritedContext,
+            source: None,
+        });
     }
 
     if !row.search_text.matches(query_tokens, compact_query) {
         return None;
     }
 
-    Some(row.search_text.feedback_source(query_tokens, compact_query))
+    Some(SearchMatch {
+        rank: row.search_text.rank(query_tokens, compact_query),
+        source: row.search_text.feedback_source(query_tokens, compact_query),
+    })
 }
 
 fn normalize_tokens(input: &str) -> Vec<String> {
@@ -886,6 +964,65 @@ mod tests {
     }
 
     #[test]
+    fn committed_catalog_ranks_direct_part_matches_before_group_matches() {
+        let catalog =
+            parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5")).unwrap();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "wiring harness".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+
+        assert_eq!(
+            results.rows[0].article.display_name.as_deref(),
+            Some("Wiring harness EX")
+        );
+    }
+
+    #[test]
+    fn search_ranks_direct_article_description_and_inherited_context_matches() {
+        let mut catalog = fixture_catalog();
+        catalog.catalog_trees[0].categories[0]
+            .product_groups
+            .extend([
+                ranking_group(
+                    "context_group",
+                    Some("needle marker direct"),
+                    "context_article",
+                    Some("Context fallback"),
+                    None,
+                    "CONTEXT-1",
+                ),
+                ranking_group(
+                    "description_group",
+                    None,
+                    "description_direct",
+                    Some("Description fallback"),
+                    Some("needle marker note"),
+                    "DESCRIPTION-1",
+                ),
+                ranking_group(
+                    "exact_group",
+                    None,
+                    "exact_article",
+                    Some("Needle marker direct"),
+                    None,
+                    "EXACT-1",
+                ),
+            ]);
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "needle marker direct".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+
+        assert_eq!(
+            results.rows.iter().take(3).map(row_sku).collect::<Vec<_>>(),
+            ["EXACT-1", "DESCRIPTION-1", "CONTEXT-1"]
+        );
+    }
+
+    #[test]
     fn group_description_matches_explain_the_source() {
         let index = SearchIndex::from_catalog(&fixture_catalog());
         let results = index.search(&SearchRequest {
@@ -925,13 +1062,20 @@ mod tests {
             })
             .expect("fixture should include the brake disc variant");
 
+        assert!(row.search_text.exact_part.normalized_text.contains("disc"));
         assert!(
             row.search_text
-                .exact_part
+                .article_description
                 .normalized_text
                 .contains("article")
         );
-        assert!(!row.search_text.exact_part.normalized_text.contains("group"));
+        assert!(
+            !row.search_text
+                .article_description
+                .normalized_text
+                .contains("group")
+        );
+        assert!(!row.search_text.exact_part.normalized_text.contains("only"));
         assert!(
             row.search_text
                 .product_group
@@ -976,6 +1120,13 @@ mod tests {
                 == Some(expected_sku)),
             "query {query:?} did not match {expected_sku}"
         );
+    }
+
+    fn row_sku(row: &SearchResultRow) -> &str {
+        row.variant
+            .as_ref()
+            .and_then(|variant| variant.sku.as_deref())
+            .expect("fixture row should have a SKU")
     }
 
     fn fixture_catalog() -> Catalog {
@@ -1122,6 +1273,37 @@ mod tests {
                 kit_memberships: Vec::new(),
                 kit_contents: Vec::new(),
                 variants: Vec::new(),
+            }],
+        }
+    }
+
+    fn ranking_group(
+        group_code: &str,
+        group_description: Option<&str>,
+        article_code: &str,
+        article_display_name: Option<&str>,
+        article_description: Option<&str>,
+        sku: &str,
+    ) -> ProductGroup {
+        ProductGroup {
+            code: group_code.to_owned(),
+            display_name: Some(group_code.to_owned()),
+            description: group_description.map(str::to_owned),
+            localization_key: None,
+            description_localization_key: None,
+            stark_url: None,
+            image_urls: Vec::new(),
+            articles: vec![Article {
+                code: article_code.to_owned(),
+                display_name: article_display_name.map(str::to_owned),
+                description: article_description.map(str::to_owned),
+                localization_key: None,
+                description_localization_key: None,
+                stark_url: None,
+                image_urls: Vec::new(),
+                kit_memberships: Vec::new(),
+                kit_contents: Vec::new(),
+                variants: vec![variant(article_code, sku)],
             }],
         }
     }

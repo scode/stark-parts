@@ -41,6 +41,12 @@ test("static app restores URL state and searches without Stark API calls", async
   await expect(page.getByText(/\d{4}-\d{2}-\d{2}/).first()).toBeVisible();
   await expect(page.getByText(/\d{2}:\d{2}:\d{2}/)).toHaveCount(0);
   await expect(page.getByText("US storefront")).toBeVisible();
+  await expect(page.getByText("Feedback/contact")).toBeVisible();
+  await expect(page.getByText("peter.schuller@infidyne.com")).toBeVisible();
+  await expect(page.getByRole("link", { name: "github.com/scode/stark-parts" })).toHaveAttribute(
+    "href",
+    "https://github.com/scode/stark-parts",
+  );
   await expect(page.getByText("SSM1-P-FF-01-G").first()).toBeVisible();
   await expect(page.locator(".result-detail-popover .result-card")).toHaveCount(0);
   await page.getByText("SSM1-P-FF-01-G").first().hover();

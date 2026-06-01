@@ -138,6 +138,14 @@ fn CatalogMetadataView(metadata: CatalogMetadata) -> impl IntoView {
                 <dt>"Source"</dt>
                 <dd>{metadata.source.country} " storefront, " {metadata.source.language}</dd>
             </div>
+            <div>
+                <dt>"Feedback/contact"</dt>
+                <dd>"peter.schuller@infidyne.com"</dd>
+            </div>
+            <div>
+                <dt>"Source code"</dt>
+                <dd><a href="https://github.com/scode/stark-parts">"github.com/scode/stark-parts"</a></dd>
+            </div>
         </dl>
     }
 }
@@ -1234,6 +1242,10 @@ mod tests {
 
         assert!(html.contains("<dt>Parts data last updated</dt>"));
         assert!(html.contains("<dd>2026-05-26</dd>"));
+        assert!(html.contains("<dt>Feedback/contact</dt>"));
+        assert!(html.contains("<dd>peter.schuller@infidyne.com</dd>"));
+        assert!(html.contains("<dt>Source code</dt>"));
+        assert!(html.contains("href=\"https://github.com/scode/stark-parts\""));
         assert!(!html.contains("12:34:56"));
         assert!(!html.contains("<dt>Generated</dt>"));
     }

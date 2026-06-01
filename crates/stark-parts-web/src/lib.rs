@@ -11,7 +11,6 @@ use stark_parts_catalog::{Catalog, CatalogMetadata, parse_catalog_json5};
 use std::sync::Arc;
 
 const APP_TITLE: &str = "Stark Parts";
-const UNOFFICIAL_NOTICE: &str = "Unofficial catalog helper. Not endorsed by Stark. May contain errors. Stark's website remains the authoritative source.";
 const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
 // Result virtualization depends on fixed-height rows. Keep this in sync with `.result-row`.
 const RESULT_ROW_HEIGHT_PX: usize = 88;
@@ -72,7 +71,9 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
         <main class="app-shell">
             <style>{APP_CSS}</style>
             <section class="notice" aria-label="Unofficial catalog notice">
-                <p>{UNOFFICIAL_NOTICE}</p>
+                <p>
+                    "Unofficial but " <em>"fast"</em> " parts catalog source. Not endorsed by Stark. May contain errors. Stark's website remains the authoritative source."
+                </p>
             </section>
             <header class="toolbar">
                 <div class="primary-search">
@@ -1143,6 +1144,7 @@ mod tests {
         });
 
         assert!(html.contains(APP_TITLE));
+        assert!(html.contains("Unofficial but <em>fast</em> parts catalog source"));
         assert!(html.contains("Not endorsed by Stark"));
         assert!(html.contains("type=\"search\""));
         assert!(html.contains("autofocus"));

@@ -21,7 +21,8 @@ test("static app restores URL state and searches without Stark API calls", async
   await page.goto("/?q=SSM1-P-FF-01-G&bike=varg-sm");
 
   expect(analyticsScriptRequests).toHaveLength(1);
-  await expect(page.getByText("Unofficial catalog helper")).toBeVisible();
+  await expect(page.getByText("Unofficial but fast parts catalog source")).toBeVisible();
+  await expect(page.locator(".notice em")).toHaveText("fast");
   await expect(page.getByLabel("Search")).toHaveValue("SSM1-P-FF-01-G");
   await expect(page.getByLabel("Search")).toBeFocused();
   await expect(page.locator('input[type="checkbox"][value="varg-sm"]')).toBeChecked();

@@ -1,3 +1,5 @@
+#![recursion_limit = "256"]
+
 pub mod search;
 
 use leptos::prelude::*;
@@ -376,20 +378,22 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
             {image.map(|url| view! {
                 <img class="part-image" src=url alt="" loading="lazy" referrerpolicy="no-referrer" />
             })}
-            <div>
+            <div class="result-card-heading">
                 <h3>{title}</h3>
                 <p class="muted">{compatible_bikes} " / " {group_name}</p>
+                {link.map(|url| view! {
+                    <a class="stark-link" href=url target="_blank" rel="noopener noreferrer">"View on Stark"</a>
+                })}
             </div>
-            {link.map(|url| view! {
-                <a class="stark-link" href=url target="_blank" rel="noopener noreferrer">"View on Stark"</a>
-            })}
+            <dl class="detail-list detail-list-primary">
+                {sku.map(|value| view! { <DetailItem label="SKU" value=value /> })}
+                {price.map(|value| view! { <DetailItem label="Price" value=value /> })}
+                {availability.map(|value| view! { <DetailItem label="Availability" value=value /> })}
+            </dl>
             <dl class="detail-list">
                 <DetailItem label="Code" value=row.article.code.clone() />
                 <DetailItem label="Category path" value=category_path />
-                {sku.map(|value| view! { <DetailItem label="SKU" value=value /> })}
                 {variant.as_ref().map(|variant| view! { <DetailItem label="Variant" value=variant.code.clone() /> })}
-                {price.map(|value| view! { <DetailItem label="Price" value=value /> })}
-                {availability.map(|value| view! { <DetailItem label="Availability" value=value /> })}
                 {(!row.article.kit_memberships.is_empty()).then(|| view! {
                     <DetailItem label="Kit membership" value=row.article.kit_memberships.join(", ") />
                 })}
@@ -576,7 +580,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin-bottom: 0.25rem;
 }
 
@@ -776,10 +780,30 @@ input[type="search"] {
   padding: 1rem;
 }
 
+.result-card-heading {
+  border-bottom: 1px solid #eef0e8;
+  display: grid;
+  gap: 0.35rem;
+  padding-bottom: 0.75rem;
+}
+
+.result-card-heading p {
+  margin-bottom: 0;
+}
+
 .detail-list {
   display: grid;
   gap: 0.45rem;
   margin: 0;
+}
+
+.detail-list-primary {
+  background: #f7f8f5;
+  border: 1px solid #e3e7dd;
+  border-radius: 6px;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  padding: 0.75rem;
 }
 
 .stale-warning {
@@ -1077,6 +1101,22 @@ mod tests {
 
         assert!(subtitle_position < link_position);
         assert!(link_position < fields_position);
+    }
+
+    #[test]
+    fn result_card_groups_primary_facts_before_catalog_metadata() {
+        let catalog = load_catalog();
+        let index = SearchIndex::from_catalog(&catalog);
+        let results = index.search(&SearchRequest {
+            query: "SMX1-TOOLBOX".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        let html = result_card(results.rows[0].clone()).to_html();
+        let sku_position = html.find("<dt>SKU</dt>").expect("SKU should render");
+        let code_position = html.find("<dt>Code</dt>").expect("code should render");
+
+        assert!(html.contains("detail-list detail-list-primary"));
+        assert!(sku_position < code_position);
     }
 
     #[test]

@@ -69,6 +69,13 @@ test("static app restores URL state and searches without Stark API calls", async
   await page.getByLabel("Search").fill("SMX1");
   await expect(page.getByText("SMX1-TOOLBOX").first()).toBeVisible();
   await expect(page.getByText("SMX1-TRAILSAVER").first()).toBeVisible();
+  await expect(page.locator(".result-list")).not.toHaveClass(/result-list-compact/);
+  await page.getByRole("button", { name: "Compact" }).click();
+  await expect(page.locator(".result-list")).toHaveClass(/result-list-compact/);
+  await expect(page.locator(".result-thumb-frame").first()).not.toBeVisible();
+  await page.getByRole("button", { name: "Default" }).click();
+  await expect(page.locator(".result-list")).not.toHaveClass(/result-list-compact/);
+  await expect(page.locator(".result-thumb-frame").first()).toBeVisible();
   await page.getByText("SMX1-TOOLBOX").first().hover();
   await expect(page.locator(".result-row").first()).toHaveClass(/result-row-active/);
   await expect(page.locator(".result-detail-popover").getByText("SMX1-TOOLBOX").first()).toBeVisible();

@@ -15,6 +15,7 @@ const UNOFFICIAL_NOTICE: &str = "Unofficial catalog helper. Not endorsed by Star
 const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
 // Result virtualization depends on fixed-height rows. Keep this in sync with `.result-row`.
 const RESULT_ROW_HEIGHT_PX: usize = 88;
+const COMPACT_RESULT_ROW_HEIGHT_PX: usize = 52;
 const RESULT_VIEWPORT_HEIGHT_PX: usize = 512;
 const RESULT_OVERSCAN_ROWS: usize = 8;
 
@@ -33,6 +34,7 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
     let (selected_bikes, set_selected_bikes) = signal(initial_request.selected_bike_variant_ids);
     let search_index = Arc::clone(&index);
     let search_input = NodeRef::<leptos::html::Input>::new();
+    let (compact_results, set_compact_results) = signal(false);
     let results = Memo::new(move |_| {
         search_index.search(&SearchRequest {
             query: query.get(),
@@ -101,9 +103,16 @@ fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
                     {move || {
                         let results = results.get();
                         view! {
-                            <ResultSummary results=results.clone() />
+                            <div class="result-bar">
+                                <ResultSummary results=results.clone() />
+                                <DensityToggle
+                                    compact_results=compact_results
+                                    set_compact_results=set_compact_results
+                                />
+                            </div>
                             <SearchResultList
                                 rows=results.rows.clone()
+                                compact_results=compact_results
                                 selected_detail=selected_detail
                                 set_selected_detail=set_selected_detail
                             />
@@ -213,6 +222,7 @@ fn ResultSummary(results: SearchResults) -> impl IntoView {
 #[component]
 fn SearchResultList(
     rows: Vec<SearchResultRow>,
+    compact_results: ReadSignal<bool>,
     selected_detail: ReadSignal<Option<Arc<SearchResultRow>>>,
     set_selected_detail: WriteSignal<Option<Arc<SearchResultRow>>>,
 ) -> impl IntoView {
@@ -226,13 +236,24 @@ fn SearchResultList(
     view! {
         <div class="result-list-with-detail">
             <ol
-                class="result-list"
+                class=move || {
+                    if compact_results.get() {
+                        "result-list result-list-compact"
+                    } else {
+                        "result-list"
+                    }
+                }
                 aria-label="Result list"
                 style=format!("max-height: {RESULT_VIEWPORT_HEIGHT_PX}px")
                 on:scroll=move |event| set_scroll_top.set(scroll_top_from_event(&event))
             >
                 {move || {
-                    let window = virtual_result_window(total_nodes, scroll_top.get());
+                    let row_height_px = if compact_results.get() {
+                        COMPACT_RESULT_ROW_HEIGHT_PX
+                    } else {
+                        RESULT_ROW_HEIGHT_PX
+                    };
+                    let window = virtual_result_window(total_nodes, scroll_top.get(), row_height_px);
                     let visible_rows = Arc::clone(&rows);
                     view! {
                         {(window.before_px > 0).then(|| result_spacer_view(window.before_px))}
@@ -249,6 +270,33 @@ fn SearchResultList(
         </div>
     }
     .into_any()
+}
+
+#[component]
+fn DensityToggle(
+    compact_results: ReadSignal<bool>,
+    set_compact_results: WriteSignal<bool>,
+) -> impl IntoView {
+    view! {
+        <div class="density-toggle" role="group" aria-label="Result density">
+            <button
+                type="button"
+                class=move || if compact_results.get() { "density-button" } else { "density-button density-button-active" }
+                aria-pressed=move || (!compact_results.get()).to_string()
+                on:click=move |_| set_compact_results.set(false)
+            >
+                "Default"
+            </button>
+            <button
+                type="button"
+                class=move || if compact_results.get() { "density-button density-button-active" } else { "density-button" }
+                aria-pressed=move || compact_results.get().to_string()
+                on:click=move |_| set_compact_results.set(true)
+            >
+                "Compact"
+            </button>
+        </div>
+    }
 }
 
 fn result_row_view(
@@ -305,7 +353,11 @@ fn result_spacer_view(height_px: usize) -> impl IntoView {
     }
 }
 
-fn virtual_result_window(total_nodes: usize, scroll_top_px: usize) -> VirtualResultWindow {
+fn virtual_result_window(
+    total_nodes: usize,
+    scroll_top_px: usize,
+    row_height_px: usize,
+) -> VirtualResultWindow {
     if total_nodes == 0 {
         return VirtualResultWindow {
             start: 0,
@@ -315,16 +367,16 @@ fn virtual_result_window(total_nodes: usize, scroll_top_px: usize) -> VirtualRes
         };
     }
 
-    let first_visible_row = (scroll_top_px / RESULT_ROW_HEIGHT_PX).min(total_nodes - 1);
-    let visible_rows = RESULT_VIEWPORT_HEIGHT_PX.div_ceil(RESULT_ROW_HEIGHT_PX);
+    let first_visible_row = (scroll_top_px / row_height_px).min(total_nodes - 1);
+    let visible_rows = RESULT_VIEWPORT_HEIGHT_PX.div_ceil(row_height_px);
     let start = first_visible_row.saturating_sub(RESULT_OVERSCAN_ROWS);
     let end = (first_visible_row + visible_rows + RESULT_OVERSCAN_ROWS).min(total_nodes);
 
     VirtualResultWindow {
         start,
         end,
-        before_px: start * RESULT_ROW_HEIGHT_PX,
-        after_px: (total_nodes - end) * RESULT_ROW_HEIGHT_PX,
+        before_px: start * row_height_px,
+        after_px: (total_nodes - end) * row_height_px,
     }
 }
 
@@ -728,8 +780,36 @@ input[type="search"] {
   min-width: 0;
 }
 
-.result-summary {
+.result-bar {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
   margin-bottom: 0.75rem;
+}
+
+.density-toggle {
+  background: #ffffff;
+  border: 1px solid #cfd6cc;
+  border-radius: 999px;
+  display: flex;
+  padding: 0.15rem;
+}
+
+.density-button {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: #68736c;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.65rem;
+}
+
+.density-button-active {
+  background: #eef5ec;
+  color: #172026;
 }
 
 .result-list-with-detail {
@@ -761,6 +841,14 @@ input[type="search"] {
   height: 88px;
   overflow: hidden;
   padding: 0.4rem 0.85rem 0.4rem calc(0.65rem + var(--depth) * 1.1rem);
+}
+
+.result-list-compact .result-row {
+  height: 52px;
+}
+
+.result-list-compact .result-thumb-frame {
+  display: none;
 }
 
 .result-row:last-child {
@@ -991,8 +1079,10 @@ mod tests {
     fn search_result_list_html(rows: Vec<SearchResultRow>) -> String {
         Owner::new().with(|| {
             let (selected_detail, set_selected_detail) = signal(None::<Arc<SearchResultRow>>);
+            let (compact_results, _) = signal(false);
             SearchResultList(SearchResultListProps {
                 rows,
+                compact_results,
                 selected_detail,
                 set_selected_detail,
             })
@@ -1006,8 +1096,10 @@ mod tests {
     ) -> String {
         Owner::new().with(|| {
             let (selected_detail, set_selected_detail) = signal(Some(Arc::new(selected)));
+            let (compact_results, _) = signal(false);
             SearchResultList(SearchResultListProps {
                 rows,
+                compact_results,
                 selected_detail,
                 set_selected_detail,
             })
@@ -1135,6 +1227,7 @@ mod tests {
     #[test]
     fn virtualized_row_height_matches_css() {
         assert!(APP_CSS.contains(&format!("height: {RESULT_ROW_HEIGHT_PX}px;")));
+        assert!(APP_CSS.contains(&format!("height: {COMPACT_RESULT_ROW_HEIGHT_PX}px;")));
     }
 
     #[test]
@@ -1355,7 +1448,7 @@ mod tests {
 
     #[test]
     fn virtual_result_window_overscans_around_the_scroll_position() {
-        let window = virtual_result_window(100, RESULT_ROW_HEIGHT_PX * 40);
+        let window = virtual_result_window(100, RESULT_ROW_HEIGHT_PX * 40, RESULT_ROW_HEIGHT_PX);
 
         assert_eq!(window.start, 40 - RESULT_OVERSCAN_ROWS);
         assert_eq!(
@@ -1368,7 +1461,7 @@ mod tests {
 
     #[test]
     fn virtual_result_window_clamps_stale_scroll_positions() {
-        let window = virtual_result_window(10, RESULT_ROW_HEIGHT_PX * 1_000);
+        let window = virtual_result_window(10, RESULT_ROW_HEIGHT_PX * 1_000, RESULT_ROW_HEIGHT_PX);
 
         assert!(window.start <= window.end);
         assert!(window.end <= 10);

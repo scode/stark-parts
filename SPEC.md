@@ -48,6 +48,10 @@ one repeated bike-specific occurrence of the same result. The primary row text s
 part name, and the secondary muted text should be the SKU when one exists. Internal catalog codes are available in the
 detail card, but they should not be used as the primary scanning text in the result list.
 
+The result list should offer default and compact density modes. Default mode should show thumbnails. Compact mode should
+make rows shorter and hide thumbnails for faster scanning without changing the search query, bike filters, result count,
+or detail-card behavior.
+
 ## Search Behavior
 
 Search must update live as the user types. Each character typed into the search field must update the visible result

@@ -2,7 +2,15 @@ import { expect, test } from "@playwright/test";
 
 test("static app restores URL state and searches without Stark API calls", async ({ page }) => {
   const catalogApiRequests = [];
+  const analyticsScriptRequests = [];
   await page.route("https://s3-stark-*/**", (route) => route.abort());
+  await page.route("**/_vercel/insights/script.js", (route) => {
+    analyticsScriptRequests.push(route.request().url());
+    route.fulfill({
+      contentType: "application/javascript",
+      body: "window.__starkPartsAnalyticsLoaded = true;",
+    });
+  });
   page.on("request", (request) => {
     const url = request.url();
     if (url.includes("api.starkfuture.com/v2/store") || url.includes("/v2/store/")) {
@@ -12,6 +20,7 @@ test("static app restores URL state and searches without Stark API calls", async
 
   await page.goto("/?q=SSM1-P-FF-01-G&bike=varg-sm");
 
+  expect(analyticsScriptRequests).toHaveLength(1);
   await expect(page.getByText("Unofficial catalog helper")).toBeVisible();
   await expect(page.getByLabel("Search")).toHaveValue("SSM1-P-FF-01-G");
   await expect(page.getByLabel("Search")).toBeFocused();

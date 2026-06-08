@@ -182,11 +182,10 @@ fn write_catalog(
             .context("failed to format catalog JSON5 with existing timestamp")?;
 
         if existing_raw == stable_formatted {
-            info!(path = %catalog_path.display(), "catalog is already up to date");
-            return Ok(format!(
-                "catalog unchanged: {}",
-                display_path(repo_root, &catalog_path)
-            ));
+            info!(
+                path = %catalog_path.display(),
+                "catalog data unchanged; refreshing generated_at"
+            );
         }
     }
 
@@ -304,7 +303,7 @@ mod tests {
     }
 
     #[test]
-    fn catalog_update_rewrites_only_when_output_changes() {
+    fn catalog_update_refreshes_generated_at_even_when_catalog_data_is_unchanged() {
         let repo = repo_root();
         let client = CliFixtureClient::default();
         let init = Cli::try_parse_from(["stark-parts", "catalog", "init"]).unwrap();
@@ -325,9 +324,9 @@ mod tests {
         )
         .unwrap();
 
-        assert_eq!(message, "catalog unchanged: catalog/stark-parts.json5");
+        assert_eq!(message, "catalog written: catalog/stark-parts.json5");
         let catalog = fs::read_to_string(repo.path().join(DEFAULT_CATALOG_PATH)).unwrap();
-        assert!(catalog.contains("generated_at: \"2026-05-26T12:34:56Z\""));
+        assert!(catalog.contains("generated_at: \"2026-05-27T12:34:56Z\""));
     }
 
     #[test]

@@ -34,6 +34,9 @@ Both commands require network access. Runtime use of the website does not.
 Both commands must emit fully formatted JSON5 using the same deterministic formatter. The formatter is part of the
 contract: no command should write ad hoc JSON5 that happens to parse but produces noisy diffs.
 
+`stark-parts catalog update` must refresh the catalog `generated_at` metadata after a successful crawl, even when Stark
+returns the same parts data as the existing committed catalog. That timestamp feeds the user-visible freshness date.
+
 ## Rust Tooling
 
 The catalog tooling is implemented in Rust.
@@ -163,8 +166,8 @@ Practical requirements:
 - preserve catalog tree order where Stark's ordering appears user-visible
 - use stable indentation
 - use stable escaping
-- include generated timestamps only when the crawl actually writes changed catalog data, or place volatile timestamps
-  where they do not cause unrelated churn
+- keep deterministic-formatting tests focused on formatter and schema behavior; do not depend on repeated live Stark
+  crawls to prove byte stability
 
 If the chosen JSON5 serializer cannot guarantee this directly, the project should add a formatting layer rather than
 accepting noisy generated output.

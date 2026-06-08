@@ -54,6 +54,32 @@ npx playwright test
 
 If a command cannot be run locally, report why instead of omitting it.
 
+## Catalog Updates
+
+Catalog refreshes are offline generated-data changes. Start from the latest `main@origin`, keep the working copy clean,
+and make the catalog refresh its own reviewable `$jjstack` PR unless the user explicitly asks for a different stack
+shape.
+
+Run the updater from the repository root:
+
+```sh
+RUST_LOG=stark_parts=info,stark_parts_catalog=warn cargo run -p stark-parts-cli -- catalog update
+```
+
+The expected generated files are:
+
+- `catalog/stark-parts.json5`
+- `catalog/BUILD_RECEIPT.md`
+
+Update `catalog/BUILD_RECEIPT.md` in the same change when the catalog changes. Record the crawl date, the command that
+was run, the relevant `catalog written` output, and the SHA of the generated catalog.
+
+`catalog update` refreshes the catalog freshness timestamp after a successful crawl, even when Stark returns the same
+parts data as the previous committed catalog. That is still a user-visible catalog update.
+
+Do not rerun the live Stark crawl just to prove deterministic output. The deterministic-formatting contract belongs in
+tests and in development-time debugging, because Stark can change what it serves between two update runs.
+
 ## Conventional Commits
 
 All commit messages and PR titles must use Conventional Commit format: `<type>: <short summary>`

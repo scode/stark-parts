@@ -168,14 +168,16 @@ Catalog updates happen offline through the command line tool described in `IMPL_
 JSON5 catalog file is committed like any other source file.
 
 The page should expose a "Parts data last updated" catalog date and enough source metadata for a user to understand how
-stale the data may be. The displayed date should omit time-of-day detail.
+stale the data may be. The date should reflect the last successful committed catalog update even when Stark returned the
+same parts data as the previous update. The displayed date should omit time-of-day detail.
 
 ## Data Format Contract
 
 The committed catalog state must be JSON5.
 
-The JSON5 must be deterministically formatted. Re-running the catalog update command against unchanged source data must
-produce the same file bytes.
+The JSON5 must be deterministically formatted. Given the same catalog state and metadata, formatting must produce the
+same file bytes. The catalog update command intentionally refreshes freshness metadata after a successful crawl, so a
+live update can change bytes even when Stark returns the same parts data.
 
 The JSON5 must be text-reviewable in Git. Diffs should be useful when Stark adds, removes, renames, or reprices catalog
 entries.

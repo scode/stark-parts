@@ -4,6 +4,7 @@ test("static app restores URL state and searches without Stark API calls", async
   const catalogApiRequests = [];
   const analyticsScriptRequests = [];
   await page.route("https://s3-stark-*/**", (route) => route.abort());
+  await page.route("https://assets.starkfuture.com/**", (route) => route.abort());
   await page.route("**/_vercel/insights/script.js", (route) => {
     analyticsScriptRequests.push(route.request().url());
     route.fulfill({

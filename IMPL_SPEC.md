@@ -220,6 +220,7 @@ Remote images may be loaded by the browser as images, but they must stay out of 
 image URLs whose canonical host is in an explicit allowlist. The initial allowlist is:
 
 ```text
+assets.starkfuture.com
 s3-stark-prod.s3.eu-central-1.amazonaws.com
 s3-stark-production.s3.eu-west-1.amazonaws.com
 ```

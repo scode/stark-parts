@@ -17,17 +17,6 @@ details: architecture, tool choices, data format mechanics, API boundary decisio
 internal contracts. Do not use it to specify user-visible behavior except when restating the minimum needed context to
 explain an implementation constraint.
 
-## Implementation Plan
-
-`PLAN.md` is the source of truth for implementation order and status. Work through it from top to bottom. Each step is
-intended to become its own reviewable `$jjstack` PR, stacked on the PR for the previous step.
-
-When a plan step has passed its required gates and is ready to become its PR, update that step from `[ ]` to `[x]` in
-that same reviewable change. Do not mark a step complete before its required coverage, checks, `$pre-pr-review-swarm`,
-and fixes are done.
-
-If the intended implementation order changes, update `PLAN.md` in the same change that makes the plan true again.
-
 ## Ambiguity Log
 
 Use `AMBIGUITY.md` when a decision is unclear but forward progress is still reasonable. Record what was decided, why,

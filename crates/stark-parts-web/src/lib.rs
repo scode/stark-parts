@@ -1354,6 +1354,8 @@ mod tests {
             selected_bike_variant_ids: vec!["varg-sm".to_owned()],
         });
         assert_eq!(results.rows.len(), 1);
+        let expected_image_url =
+            first_image_url(&results.rows[0]).expect("row should have an image");
         let html = search_result_list_html(results.rows);
 
         assert!(html.contains("<span class=\"result-label\">Stark VARG toolbox</span>"));
@@ -1363,7 +1365,7 @@ mod tests {
         assert!(html.contains("class=\"result-thumb\""));
         assert!(html.contains("loading=\"lazy\""));
         assert!(html.contains("referrerpolicy=\"no-referrer\""));
-        assert!(html.contains("260327_SpareParts"));
+        assert!(html.contains(&expected_image_url));
     }
 
     #[test]

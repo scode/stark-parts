@@ -21,6 +21,7 @@ const MAX_CATEGORY_DEPTH: usize = 32;
 const STARK_SPARE_PARTS_URL: &str = "https://starkfuture.com/parts-and-accessories/spare-parts";
 pub const DEFAULT_CATALOG_PATH: &str = "catalog/stark-parts.json5";
 const ALLOWED_IMAGE_HOSTS: &[&str] = &[
+    "assets.starkfuture.com",
     "s3-stark-prod.s3.eu-central-1.amazonaws.com",
     "s3-stark-production.s3.eu-west-1.amazonaws.com",
 ];
@@ -2077,6 +2078,11 @@ mod tests {
     #[test]
     fn validates_allowed_image_hosts() {
         let mut catalog = representative_catalog();
+        catalog.catalog_trees[0].categories[0].product_groups[0].image_urls =
+            vec!["https://assets.starkfuture.com/spare-parts-images/washer.png".to_owned()];
+
+        validate_catalog(&catalog).unwrap();
+
         catalog.catalog_trees[0].categories[0].product_groups[0].image_urls =
             vec!["https://example.com/catalog/washer.png".to_owned()];
 

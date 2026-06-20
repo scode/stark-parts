@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-06-13T00:27:57.084393404Z",
+    generated_at: "2026-06-20T15:07:02.739653549Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -190,7 +190,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -302,7 +302,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -322,7 +322,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -1328,7 +1328,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -1412,7 +1412,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -2041,7 +2041,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -3217,7 +3217,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -3347,7 +3347,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -4450,7 +4450,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -4474,7 +4474,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -4978,7 +4978,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -5023,7 +5023,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -5201,7 +5201,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -5272,7 +5272,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5310,7 +5310,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5785,7 +5785,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -6444,7 +6444,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -7039,6 +7039,31 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Foot+pegs.webp"],
               articles: [
                 {
+                  code: "titanium_footpeg_ex",
+                  display_name: "Titanium Footpeg Kit (Road-legal)",
+                  description: ".",
+                  localization_key: "spare_parts_product_titanium_footpeg_ex_name",
+                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "titanium_footpeg_ex",
+                      sku: "SEX1-F-FP-TI-KT",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 15900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
                   code: "ti_footpegs_mx_pair_fpcat",
                   display_name: "Titanium footpegs pair (For off-road use only)",
                   localization_key: "spare_parts_product_ti_footpegs_mx_pair_fpcat_name",
@@ -7105,31 +7130,6 @@
                       ],
                       price: {
                         amount_minor: 7900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
-                  code: "titanium_footpeg_ex",
-                  display_name: "Titanium footpegs EX",
-                  description: ".",
-                  localization_key: "spare_parts_product_titanium_footpeg_ex_name",
-                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "titanium_footpeg_ex",
-                      sku: "SEX1-F-FP-TI-KT",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 15900,
                         currency: "USD"
                       },
                       availability: {
@@ -7806,7 +7806,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -10077,6 +10077,30 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
               articles: [
                 {
+                  code: "titanium_footpeg_ex_ticat",
+                  display_name: "Titanium footpeg kit (Road-legal)",
+                  localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_name",
+                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "titanium_footpeg_ex_ticat",
+                      sku: "SEX1-F-FP-TI-KT",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 15900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
                   code: "ti_footpegs_mx_pair",
                   display_name: "Titanium footpegs pair (For off-road use only)",
                   localization_key: "spare_parts_product_ti_footpegs_mx_pair_name",
@@ -10143,30 +10167,6 @@
                       ],
                       price: {
                         amount_minor: 7900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
-                  code: "titanium_footpeg_ex_ticat",
-                  display_name: "Titanium footpegs pair EX",
-                  localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_name",
-                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "titanium_footpeg_ex_ticat",
-                      sku: "SEX1-F-FP-TI-KT",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 15900,
                         currency: "USD"
                       },
                       availability: {
@@ -10611,7 +10611,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -10723,7 +10723,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -10743,7 +10743,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -11749,7 +11749,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -11833,7 +11833,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -12699,7 +12699,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -12764,7 +12764,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -12789,7 +12789,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -13056,7 +13056,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -13549,7 +13549,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -13925,7 +13925,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -14055,7 +14055,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -15172,7 +15172,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -15196,7 +15196,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -15700,7 +15700,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -15745,7 +15745,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -15899,7 +15899,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -15970,7 +15970,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -16008,7 +16008,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -16219,7 +16219,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -16724,7 +16724,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -17334,7 +17334,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -17929,6 +17929,31 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Foot+pegs.webp"],
               articles: [
                 {
+                  code: "titanium_footpeg_ex",
+                  display_name: "Titanium Footpeg Kit (Road-legal)",
+                  description: ".",
+                  localization_key: "spare_parts_product_titanium_footpeg_ex_name",
+                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "titanium_footpeg_ex",
+                      sku: "SEX1-F-FP-TI-KT",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 15900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
                   code: "ti_footpegs_mx_pair_fpcat",
                   display_name: "Titanium footpegs pair (For off-road use only)",
                   localization_key: "spare_parts_product_ti_footpegs_mx_pair_fpcat_name",
@@ -17995,31 +18020,6 @@
                       ],
                       price: {
                         amount_minor: 7900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
-                  code: "titanium_footpeg_ex",
-                  display_name: "Titanium footpegs EX",
-                  description: ".",
-                  localization_key: "spare_parts_product_titanium_footpeg_ex_name",
-                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "titanium_footpeg_ex",
-                      sku: "SEX1-F-FP-TI-KT",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 15900,
                         currency: "USD"
                       },
                       availability: {
@@ -18720,7 +18720,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -20215,7 +20215,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -20263,7 +20263,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -21276,7 +21276,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -21296,7 +21296,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -21316,7 +21316,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -21336,7 +21336,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -21356,7 +21356,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -22159,6 +22159,30 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
               articles: [
                 {
+                  code: "titanium_footpeg_ex_ticat",
+                  display_name: "Titanium footpeg kit (Road-legal)",
+                  localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_name",
+                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "titanium_footpeg_ex_ticat",
+                      sku: "SEX1-F-FP-TI-KT",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 15900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
                   code: "ti_footpegs_mx_pair",
                   display_name: "Titanium footpegs pair (For off-road use only)",
                   localization_key: "spare_parts_product_ti_footpegs_mx_pair_name",
@@ -22225,30 +22249,6 @@
                       ],
                       price: {
                         amount_minor: 7900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
-                  code: "titanium_footpeg_ex_ticat",
-                  display_name: "Titanium footpegs pair EX",
-                  localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_name",
-                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "titanium_footpeg_ex_ticat",
-                      sku: "SEX1-F-FP-TI-KT",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 15900,
                         currency: "USD"
                       },
                       availability: {
@@ -23736,7 +23736,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -23848,7 +23848,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -23868,7 +23868,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -24878,7 +24878,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -24903,7 +24903,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -25152,7 +25152,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -25852,7 +25852,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -26642,7 +26642,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -26993,7 +26993,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -27123,7 +27123,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -28320,7 +28320,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -28344,7 +28344,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -28848,7 +28848,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -28893,7 +28893,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -29117,7 +29117,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -29188,7 +29188,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29226,7 +29226,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29437,7 +29437,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -30103,7 +30103,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -30671,6 +30671,31 @@
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg-1.2/frame_cat/44_foot_pegs",
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Foot+pegs.webp"],
               articles: [
+                {
+                  code: "titanium_footpeg_ex",
+                  display_name: "Titanium Footpeg Kit (Road-legal)",
+                  description: ".",
+                  localization_key: "spare_parts_product_titanium_footpeg_ex_name",
+                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "titanium_footpeg_ex",
+                      sku: "SEX1-F-FP-TI-KT",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 15900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
                 {
                   code: "ti_footpegs_mx_pair_fpcat",
                   display_name: "Titanium footpegs pair (For off-road use only)",
@@ -32965,7 +32990,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -33013,7 +33038,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -34001,7 +34026,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -34061,7 +34086,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -34081,7 +34106,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -34932,6 +34957,30 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
               articles: [
                 {
+                  code: "titanium_footpeg_ex_ticat",
+                  display_name: "Titanium footpeg kit (Road-legal)",
+                  localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_name",
+                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "titanium_footpeg_ex_ticat",
+                      sku: "SEX1-F-FP-TI-KT",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 15900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
                   code: "ti_footpegs_mx_pair",
                   display_name: "Titanium footpegs pair (For off-road use only)",
                   localization_key: "spare_parts_product_ti_footpegs_mx_pair_name",
@@ -35354,7 +35403,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -36400,7 +36449,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -36855,7 +36904,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -36967,7 +37016,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -36987,7 +37036,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -38021,7 +38070,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -38046,7 +38095,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -38295,7 +38344,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -38995,7 +39044,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -39775,7 +39824,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -39905,7 +39954,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -41124,7 +41173,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -41148,7 +41197,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -41675,7 +41724,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -42266,7 +42315,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -42337,7 +42386,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42375,7 +42424,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42586,7 +42635,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -43252,7 +43301,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -43820,6 +43869,31 @@
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg/frame_cat/44_foot_pegs",
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Foot+pegs.webp"],
               articles: [
+                {
+                  code: "titanium_footpeg_ex",
+                  display_name: "Titanium Footpeg Kit (Road-legal)",
+                  description: ".",
+                  localization_key: "spare_parts_product_titanium_footpeg_ex_name",
+                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "titanium_footpeg_ex",
+                      sku: "SEX1-F-FP-TI-KT",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 15900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
                 {
                   code: "ti_footpegs_mx_pair_fpcat",
                   display_name: "Titanium footpegs pair (For off-road use only)",
@@ -44956,17 +45030,18 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Battery.webp"],
               articles: [
                 {
-                  code: "193_battery_6_kwh_complete",
-                  display_name: "Battery 6.5 kWh pack",
-                  localization_key: "spare_parts_product_193_battery_6_kwh_complete_name",
-                  description_localization_key: "spare_parts_product_193_battery_6_kwh_complete_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-B-100S4P.webp"],
+                  code: "battery_72_mx10",
+                  display_name: "Battery 6.5 kWh",
+                  description: "spare_parts_product_battery_72_mx10_description",
+                  localization_key: "spare_parts_product_battery_72_mx10_name",
+                  description_localization_key: "spare_parts_product_battery_72_mx10_description",
+                  image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Battery_7.2.webp"],
                   kit_memberships: [],
                   kit_contents: [],
                   variants: [
                     {
-                      code: "193_battery_6_kwh_complete",
-                      sku: "SMX1-B-100S4P-KT",
+                      code: "battery_72_mx10",
+                      sku: "SMX1-B010-ASSY-KT",
                       image_urls: [],
                       attributes: [],
                       price: {
@@ -44974,7 +45049,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -46298,7 +46373,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -46346,7 +46421,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -47334,7 +47409,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -47394,7 +47469,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -47414,7 +47489,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -48230,6 +48305,30 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
               articles: [
                 {
+                  code: "titanium_footpeg_ex_ticat",
+                  display_name: "Titanium footpeg kit (Road-legal)",
+                  localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_name",
+                  description_localization_key: "spare_parts_product_titanium_footpeg_ex_ticat_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1_Titanium_Titanium_footpegs.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "titanium_footpeg_ex_ticat",
+                      sku: "SEX1-F-FP-TI-KT",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 15900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
                   code: "ti_footpegs_mx_pair",
                   display_name: "Titanium footpegs pair (For off-road use only)",
                   localization_key: "spare_parts_product_ti_footpegs_mx_pair_name",
@@ -48652,7 +48751,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -49521,7 +49620,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE"
                       }
                     }
                   ]

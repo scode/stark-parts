@@ -200,10 +200,10 @@ fn write_catalog(
 
 fn ensure_repository_root(path: &Path) -> Result<()> {
     let cargo_toml = path.join("Cargo.toml");
-    let plan = path.join("PLAN.md");
     let spec = path.join("SPEC.md");
+    let impl_spec = path.join("IMPL_SPEC.md");
 
-    if cargo_toml.is_file() && plan.is_file() && spec.is_file() {
+    if cargo_toml.is_file() && spec.is_file() && impl_spec.is_file() {
         Ok(())
     } else {
         bail!(
@@ -616,8 +616,8 @@ mod tests {
     fn repo_root() -> TempDir {
         let temp = TempDir::new().unwrap();
         fs::write(temp.path().join("Cargo.toml"), "[workspace]\n").unwrap();
-        fs::write(temp.path().join("PLAN.md"), "# plan\n").unwrap();
         fs::write(temp.path().join("SPEC.md"), "# spec\n").unwrap();
+        fs::write(temp.path().join("IMPL_SPEC.md"), "# impl spec\n").unwrap();
         temp
     }
 

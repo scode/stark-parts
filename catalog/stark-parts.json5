@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-06-20T15:07:02.739653549Z",
+    generated_at: "2026-06-25T02:12:24.27997141Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -1328,7 +1328,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -1796,7 +1796,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -3600,7 +3600,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -5201,7 +5201,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5291,7 +5291,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5329,7 +5329,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5348,7 +5348,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -6460,31 +6460,6 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Frame.webp"],
               articles: [
                 {
-                  code: "frame_kit_ex",
-                  display_name: "Frame kit",
-                  description: ".",
-                  localization_key: "spare_parts_product_frame_kit_ex_name",
-                  description_localization_key: "spare_parts_product_frame_kit_ex_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-F-W.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "frame_kit_ex",
-                      sku: "SEX1-F-W-KT",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 99000,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "NOT_AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
                   code: "steering_bearing_kit_f",
                   display_name: "Steering Bearing Kit",
                   description: "Includes: \n\n1x Seal ring bushing\n2x Single row tapered roller bearings\n1x seal ring\n1x O-ring\n1x steering head cover",
@@ -7343,7 +7318,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -8212,7 +8187,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -10234,7 +10209,7 @@
                       image_urls: [],
                       attributes: [],
                       price: {
-                        amount_minor: 19900,
+                        amount_minor: 19500,
                         currency: "USD"
                       },
                       availability: {
@@ -10366,7 +10341,7 @@
                       image_urls: [],
                       attributes: [],
                       price: {
-                        amount_minor: 21500,
+                        amount_minor: 19900,
                         currency: "USD"
                       },
                       availability: {
@@ -11749,7 +11724,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -12217,7 +12192,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -14308,7 +14283,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -15899,7 +15874,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -15989,7 +15964,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -16027,7 +16002,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -16046,7 +16021,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -17350,31 +17325,6 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Frame.webp"],
               articles: [
                 {
-                  code: "frame_kit_ex",
-                  display_name: "Frame kit",
-                  description: ".",
-                  localization_key: "spare_parts_product_frame_kit_ex_name",
-                  description_localization_key: "spare_parts_product_frame_kit_ex_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-F-W.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "frame_kit_ex",
-                      sku: "SEX1-F-W-KT",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 99000,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "NOT_AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
                   code: "steering_bearing_kit_f",
                   display_name: "Steering Bearing Kit",
                   description: "Includes: \n\n1x Seal ring bushing\n2x Single row tapered roller bearings\n1x seal ring\n1x O-ring\n1x steering head cover",
@@ -18233,7 +18183,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -19152,7 +19102,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -22657,7 +22607,7 @@
                         }
                       ],
                       price: {
-                        amount_minor: 6900,
+                        amount_minor: 7900,
                         currency: "USD"
                       },
                       availability: {
@@ -22677,7 +22627,7 @@
                         }
                       ],
                       price: {
-                        amount_minor: 6900,
+                        amount_minor: 7900,
                         currency: "USD"
                       },
                       availability: {
@@ -24833,7 +24783,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -25536,7 +25486,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -27350,7 +27300,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -29117,7 +29067,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -29207,7 +29157,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -29245,7 +29195,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -29264,7 +29214,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -30975,7 +30925,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -31905,7 +31855,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -34026,7 +33976,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         },
                         {
@@ -34086,7 +34036,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         },
                         {
@@ -34106,7 +34056,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -35479,7 +35429,7 @@
                         }
                       ],
                       price: {
-                        amount_minor: 6900,
+                        amount_minor: 7900,
                         currency: "USD"
                       },
                       availability: {
@@ -35499,7 +35449,7 @@
                         }
                       ],
                       price: {
-                        amount_minor: 6900,
+                        amount_minor: 7900,
                         currency: "USD"
                       },
                       availability: {
@@ -38025,7 +37975,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -38728,7 +38678,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -40181,7 +40131,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -42315,7 +42265,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42405,7 +42355,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42443,7 +42393,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42462,7 +42412,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -44173,7 +44123,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -45264,7 +45214,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -47409,7 +47359,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         },
                         {
@@ -47469,7 +47419,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         },
                         {
@@ -47489,7 +47439,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -48827,7 +48777,7 @@
                         }
                       ],
                       price: {
-                        amount_minor: 6900,
+                        amount_minor: 7900,
                         currency: "USD"
                       },
                       availability: {
@@ -48847,7 +48797,7 @@
                         }
                       ],
                       price: {
-                        amount_minor: 6900,
+                        amount_minor: 7900,
                         currency: "USD"
                       },
                       availability: {

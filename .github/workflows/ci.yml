@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   fmt:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
       - uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -20,7 +20,7 @@ jobs:
       - run: cargo fmt --all -- --check
 
   clippy:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -38,7 +38,7 @@ jobs:
       - run: cargo clippy
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -54,14 +54,14 @@ jobs:
       - run: cargo test
 
   dprint:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
       - name: Check formatting with dprint
         uses: dprint/check@v2.3
 
   static-build:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4

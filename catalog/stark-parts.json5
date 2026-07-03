@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-06-25T02:12:24.27997141Z",
+    generated_at: "2026-07-03T00:27:50.601356392Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -302,7 +302,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -1796,7 +1796,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -3007,7 +3007,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -3600,7 +3600,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -4878,7 +4878,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -5161,7 +5161,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5356,7 +5356,7 @@
                 {
                   code: "fast_charger",
                   display_name: "Fast Charger 7 kW",
-                  description: "Fast 7 kW charger with 32 A plug, delivering rapid power to fully charge the Stark VARG in just one hour. Please note that the charger requires 32 A for full capacity. \n\nRest of World plug; Use a standard socket compatible with  IEC 60309-2 32A 3P 230V 6h Blue color to connect the power supply. Ensure that the plug connection is reliable and that the device is reliably grounded. \n\nNote: This is a high power single-phase device (max. ~7.4 kW). Regulations may apply. Confirm compliance with your installer.\n",
+                  description: "Fast 7 kW charger, providing rapid charging to fully recharge the Stark VARG in approximately one hour. Note that a 32 A power supply is required to achieve maximum charging performance.\n\nThe North American version is equipped with a NEMA 14-50P plug. \nThe Rest of World version includes an adapter and can be used with either a 3-pin IEC 60309-2 32 A 2P+E 230 V plug or a 5-pin IEC 60309-2 32 A 400 V plug.\n\nEnsure that the power connection is secure and that the charger is properly grounded.\n\nNote: This is a high-power single-phase device (maximum output approximately 7.4 kW). Local regulations may apply. Please consult a qualified installer to verify compliance with applicable electrical codes and requirements.",
                   localization_key: "spare_parts_product_fast_charger_name",
                   description_localization_key: "spare_parts_product_fast_charger_description",
                   image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/fast_charger.jpg"],
@@ -5811,8 +5811,33 @@
                   ]
                 },
                 {
+                  code: "rear_us_indicator_set_ex",
+                  display_name: "Rear indicator set (US)",
+                  description: ".",
+                  localization_key: "spare_parts_product_rear_us_indicator_set_ex_name",
+                  description_localization_key: "spare_parts_product_rear_us_indicator_set_ex_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/indicators%20US%20rear.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "rear_us_indicator_set_ex",
+                      sku: "SEX1-RE-L-88",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 11499,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
                   code: "rear_indicator_sm",
-                  display_name: "Rear indicator",
+                  display_name: "Rear indicator set (EU)",
                   localization_key: "spare_parts_product_rear_indicator_sm_name",
                   description_localization_key: "spare_parts_product_rear_indicator_sm_description",
                   image_urls: ["https://assets.starkfuture.com/spare-parts-images/Placeholder.webp"],
@@ -6444,7 +6469,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -8996,6 +9021,30 @@
                           }
                         }
                       ]
+                    },
+                    {
+                      code: "fork_clamp_thread_insert_sm",
+                      display_name: "Fork Clamp Thread Insert",
+                      localization_key: "spare_parts_product_fork_clamp_thread_insert_sm_name",
+                      description_localization_key: "spare_parts_product_fork_clamp_thread_insert_sm_description",
+                      image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Placeholder.webp"],
+                      kit_memberships: [],
+                      kit_contents: [],
+                      variants: [
+                        {
+                          code: "fork_clamp_thread_insert_sm",
+                          sku: "SSM1-SF-FF-12",
+                          image_urls: [],
+                          attributes: [],
+                          price: {
+                            amount_minor: 3000,
+                            currency: "USD"
+                          },
+                          availability: {
+                            status: "AVAILABLE"
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
@@ -10698,7 +10747,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -12192,7 +12241,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -13524,7 +13573,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -13549,7 +13598,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -13664,7 +13713,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -14283,7 +14332,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -15575,7 +15624,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -15834,7 +15883,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -16029,7 +16078,7 @@
                 {
                   code: "fast_charger",
                   display_name: "Fast Charger 7 kW",
-                  description: "Fast 7 kW charger with 32 A plug, delivering rapid power to fully charge the Stark VARG in just one hour. Please note that the charger requires 32 A for full capacity. \n\nRest of World plug; Use a standard socket compatible with  IEC 60309-2 32A 3P 230V 6h Blue color to connect the power supply. Ensure that the plug connection is reliable and that the device is reliably grounded. \n\nNote: This is a high power single-phase device (max. ~7.4 kW). Regulations may apply. Confirm compliance with your installer.\n",
+                  description: "Fast 7 kW charger, providing rapid charging to fully recharge the Stark VARG in approximately one hour. Note that a 32 A power supply is required to achieve maximum charging performance.\n\nThe North American version is equipped with a NEMA 14-50P plug. \nThe Rest of World version includes an adapter and can be used with either a 3-pin IEC 60309-2 32 A 2P+E 230 V plug or a 5-pin IEC 60309-2 32 A 400 V plug.\n\nEnsure that the power connection is secure and that the charger is properly grounded.\n\nNote: This is a high-power single-phase device (maximum output approximately 7.4 kW). Local regulations may apply. Please consult a qualified installer to verify compliance with applicable electrical codes and requirements.",
                   localization_key: "spare_parts_product_fast_charger_name",
                   description_localization_key: "spare_parts_product_fast_charger_description",
                   image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/fast_charger.jpg"],
@@ -17309,7 +17358,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -21266,7 +21315,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         },
                         {
@@ -21286,7 +21335,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         },
                         {
@@ -21306,7 +21355,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -23088,7 +23137,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -23129,6 +23178,31 @@
                       attributes: [],
                       price: {
                         amount_minor: 9900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                },
+                {
+                  code: "pirelli_dual_rear_tire_ex",
+                  display_name: "Rear tire Pirelli Rally Cross 140/80-18",
+                  description: ".",
+                  localization_key: "spare_parts_product_pirelli_dual_rear_tire_ex_name",
+                  description_localization_key: "spare_parts_product_pirelli_dual_rear_tire_ex_description",
+                  image_urls: ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/Placeholder"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "pirelli_dual_rear_tire_ex",
+                      sku: "SEX1-RW-T-18PI",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 11000,
                         currency: "USD"
                       },
                       availability: {
@@ -23798,7 +23872,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -25486,7 +25560,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -26592,7 +26666,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -26617,7 +26691,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -26732,7 +26806,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -28698,7 +28772,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -29027,7 +29101,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29222,7 +29296,7 @@
                 {
                   code: "fast_charger",
                   display_name: "Fast Charger 7 kW",
-                  description: "Fast 7 kW charger with 32 A plug, delivering rapid power to fully charge the Stark VARG in just one hour. Please note that the charger requires 32 A for full capacity. \n\nRest of World plug; Use a standard socket compatible with  IEC 60309-2 32A 3P 230V 6h Blue color to connect the power supply. Ensure that the plug connection is reliable and that the device is reliably grounded. \n\nNote: This is a high power single-phase device (max. ~7.4 kW). Regulations may apply. Confirm compliance with your installer.\n",
+                  description: "Fast 7 kW charger, providing rapid charging to fully recharge the Stark VARG in approximately one hour. Note that a 32 A power supply is required to achieve maximum charging performance.\n\nThe North American version is equipped with a NEMA 14-50P plug. \nThe Rest of World version includes an adapter and can be used with either a 3-pin IEC 60309-2 32 A 2P+E 230 V plug or a 5-pin IEC 60309-2 32 A 400 V plug.\n\nEnsure that the power connection is secure and that the charger is properly grounded.\n\nNote: This is a high-power single-phase device (maximum output approximately 7.4 kW). Local regulations may apply. Please consult a qualified installer to verify compliance with applicable electrical codes and requirements.",
                   localization_key: "spare_parts_product_fast_charger_name",
                   description_localization_key: "spare_parts_product_fast_charger_description",
                   image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/fast_charger.jpg"],
@@ -30053,7 +30127,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -35885,7 +35959,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -35926,6 +36000,31 @@
                       attributes: [],
                       price: {
                         amount_minor: 9900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                },
+                {
+                  code: "pirelli_dual_rear_tire_ex",
+                  display_name: "Rear tire Pirelli Rally Cross 140/80-18",
+                  description: ".",
+                  localization_key: "spare_parts_product_pirelli_dual_rear_tire_ex_name",
+                  description_localization_key: "spare_parts_product_pirelli_dual_rear_tire_ex_description",
+                  image_urls: ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/Placeholder"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "pirelli_dual_rear_tire_ex",
+                      sku: "SEX1-RW-T-18PI",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 11000,
                         currency: "USD"
                       },
                       availability: {
@@ -36399,7 +36498,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -36966,7 +37065,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -38678,7 +38777,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -39563,7 +39662,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -41551,7 +41650,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -42225,7 +42324,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42420,7 +42519,7 @@
                 {
                   code: "fast_charger",
                   display_name: "Fast Charger 7 kW",
-                  description: "Fast 7 kW charger with 32 A plug, delivering rapid power to fully charge the Stark VARG in just one hour. Please note that the charger requires 32 A for full capacity. \n\nRest of World plug; Use a standard socket compatible with  IEC 60309-2 32A 3P 230V 6h Blue color to connect the power supply. Ensure that the plug connection is reliable and that the device is reliably grounded. \n\nNote: This is a high power single-phase device (max. ~7.4 kW). Regulations may apply. Confirm compliance with your installer.\n",
+                  description: "Fast 7 kW charger, providing rapid charging to fully recharge the Stark VARG in approximately one hour. Note that a 32 A power supply is required to achieve maximum charging performance.\n\nThe North American version is equipped with a NEMA 14-50P plug. \nThe Rest of World version includes an adapter and can be used with either a 3-pin IEC 60309-2 32 A 2P+E 230 V plug or a 5-pin IEC 60309-2 32 A 400 V plug.\n\nEnsure that the power connection is secure and that the charger is properly grounded.\n\nNote: This is a high-power single-phase device (maximum output approximately 7.4 kW). Local regulations may apply. Please consult a qualified installer to verify compliance with applicable electrical codes and requirements.",
                   localization_key: "spare_parts_product_fast_charger_name",
                   description_localization_key: "spare_parts_product_fast_charger_description",
                   image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/fast_charger.jpg"],
@@ -43251,7 +43350,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -44720,7 +44819,7 @@
                   variants: [
                     {
                       code: "177_docking_station_phone_rubber_left",
-                      sku: "SMX1-SF-D-15",
+                      sku: "SMX1-SF-D-16",
                       image_urls: [],
                       attributes: [],
                       price: {
@@ -44744,7 +44843,7 @@
                   variants: [
                     {
                       code: "178_docking_station_phone_rubber_right",
-                      sku: "SMX1-SF-D-16",
+                      sku: "SMX1-SF-D-15",
                       image_urls: [],
                       attributes: [],
                       price: {
@@ -49570,7 +49669,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]

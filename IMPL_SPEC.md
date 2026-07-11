@@ -66,16 +66,17 @@ compiled into the application binary; keeping code and catalog artifacts separat
 reuse an unchanged application build.
 
 Vercel deployments should use the checked-in Vercel project configuration at the repository root. The project is a
-static "Other" framework deployment: Vercel runs the Trunk release build and serves only the generated `dist/`
-directory. That deployment path must not introduce Vercel Functions, runtime environment variables, or a backend
-dependency for the web app.
+static "Other" framework deployment: Vercel obtains the application output through the cached build task described
+below, assembles the current catalog into it, and serves only the resulting `dist/` directory. That deployment path must
+not introduce Vercel Functions, runtime environment variables, or a backend dependency for the web app.
 
 The Trunk application build should run as a Turborepo task backed by Vercel Remote Cache. The task hash must exclude the
 generated catalog and its build receipt, and the cached outputs must exclude the deployed catalog asset. A separate,
 uncached assembly step copies the current committed catalog into `dist/` after either a cache hit or a real Trunk build.
 Cache misses must fall back to the ordinary release build without requiring manual intervention or external artifact
 storage. Vercel's install phase should install only npm dependencies; Rust and Trunk setup belongs inside the cached
-task so a cache hit does not pay the application toolchain setup cost.
+task so a cache hit does not pay the application toolchain setup cost. Remote Cache artifacts currently expire seven
+days after upload, so an expired artifact must behave as an ordinary cache miss and rebuild the application.
 
 Vercel Web Analytics may be loaded from the static HTML entrypoint with Vercel's hosted analytics script. Basic
 page-view analytics should not add React, Next.js, or npm analytics package integration to the Leptos app.

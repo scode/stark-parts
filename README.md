@@ -61,9 +61,43 @@ This repo is set up for Vercel Git deployments as a static site. Import the repo
 the project root, and select the "Other" framework preset. The build, dev, and output settings are checked in through
 `vercel.json`.
 
-The Vercel build installs Rust with `rustup`, uses the pinned toolchain in `rust-toolchain.toml`, installs the pinned
-Trunk version used by CI, runs `npm run build`, and serves the generated `dist/` directory. No Vercel environment
-variables are required for the static site.
+`npm run build` separates the application build from catalog assembly:
+
+1. Turborepo runs or restores the `build:app` task. Its inputs exclude the generated catalog and build receipt, and its
+   cached outputs exclude the deployed catalog file.
+2. `npm run assemble:catalog` always copies the current committed catalog into `dist/`, whether the application came
+   from a cache hit or a real Trunk build.
+3. Vercel serves the completed `dist/` directory as a static deployment.
+
+Vercel Remote Cache is enabled automatically for the Turborepo task; this project does not need cache credentials or
+runtime environment variables. A catalog-only deployment should restore the unchanged application and skip Rust, Trunk,
+and WASM compilation. On a cache miss, `scripts/build-app.sh` installs the pinned Rust toolchain and Trunk version
+before running the normal release build. Cache availability is only an optimization: a miss must make the deployment
+slower, not change its output or cause it to fail.
+
+Vercel currently expires Remote Cache artifacts seven days after upload. Expect an occasional full build even when only
+the catalog has changed. Application changes, build-input changes, deliberate cache clearing, and expired artifacts also
+produce normal cache misses.
+
+### Build troubleshooting
+
+The Turborepo summary is the first place to look:
+
+- `cache hit` means the application task was restored. Turborepo replays the cached task logs, including their original
+  timestamps; those lines do not mean the compiler ran again.
+- `cache miss` means `scripts/build-app.sh` should install any missing tools and run Trunk.
+- A successful application task followed by a bad or stale catalog points to `scripts/assemble-catalog.mjs`, not the
+  cache. `npm run test:build-scripts` verifies that assembly replaces stale output with the committed bytes.
+
+Local Turborepo artifacts live in `.turbo/`. Removing that ignored directory forces a local cold build without affecting
+Vercel's Remote Cache.
+
+## Continuous integration
+
+GitHub Actions classifies changed paths before starting the main jobs. A change limited to `catalog/stark-parts.json5`
+and `catalog/BUILD_RECEIPT.md` runs catalog validation and generated-file formatting without compiling the web
+application. Any other changed path—including a catalog update mixed with code or configuration—runs the complete
+formatting, lint, test, static-build, and browser-test suite.
 
 Useful local checks:
 

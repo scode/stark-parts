@@ -4,6 +4,7 @@ debug
 target
 dist/
 node_modules/
+.turbo/
 test-results/
 .vercel/
 

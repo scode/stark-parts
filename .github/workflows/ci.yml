@@ -110,7 +110,7 @@ jobs:
         with:
           tool: trunk@0.21.14
       - run: npm ci
-      - run: NO_COLOR=true trunk build --release
+      - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test
 

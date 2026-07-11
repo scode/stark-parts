@@ -1,0 +1,13 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
+    "build:app": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!catalog/stark-parts.json5",
+        "!catalog/BUILD_RECEIPT.md"
+      ],
+      "outputs": ["dist/**", "!dist/stark-parts.json5"]
+    }
+  }
+}

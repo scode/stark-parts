@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-07-03T00:27:50.601356392Z",
+    generated_at: "2026-07-11T01:42:39.408758714Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -154,7 +154,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -190,7 +190,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -1412,7 +1412,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -2041,7 +2041,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -5023,7 +5023,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -5083,7 +5083,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -5161,7 +5161,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5181,7 +5181,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5194,26 +5194,6 @@
                           option_code: "US",
                           option_display_name: "United States / Canada 240V",
                           option_localization_key: "spare_parts_attribute_option_us_name"
-                        }
-                      ],
-                      price: {
-                        amount_minor: 114900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE_HQ"
-                      }
-                    },
-                    {
-                      code: "completecharger-location_charger.CH",
-                      sku: "SMX1-AC-CH-81-CH",
-                      image_urls: [],
-                      attributes: [
-                        {
-                          code: "location_charger",
-                          option_code: "CH",
-                          option_display_name: "Switzerland",
-                          option_localization_key: "spare_parts_attribute_option_ch_name"
                         }
                       ],
                       price: {
@@ -5241,7 +5221,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -5272,7 +5252,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5291,7 +5271,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5310,7 +5290,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5401,6 +5381,30 @@
                       },
                       availability: {
                         status: "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
+                  code: "95_charger_cable_35m_connector_to_charger",
+                  display_name: "Charger power cord Europe",
+                  localization_key: "spare_parts_product_95_charger_cable_35m_connector_to_charger_name",
+                  description_localization_key: "spare_parts_product_95_charger_cable_35m_connector_to_charger_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-AC-CH-05.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "95_charger_cable_35m_connector_to_charger",
+                      sku: "SMX1-AC-CH-05-EU",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 4499,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -5708,7 +5712,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5830,14 +5834,14 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
                 },
                 {
                   code: "rear_indicator_sm",
-                  display_name: "Rear indicator set (EU)",
+                  display_name: "Rear indicator (EU)",
                   localization_key: "spare_parts_product_rear_indicator_sm_name",
                   description_localization_key: "spare_parts_product_rear_indicator_sm_description",
                   image_urls: ["https://assets.starkfuture.com/spare-parts-images/Placeholder.webp"],
@@ -5857,7 +5861,7 @@
                         }
                       ],
                       price: {
-                        amount_minor: 14900,
+                        amount_minor: 6900,
                         currency: "USD"
                       },
                       availability: {
@@ -5877,7 +5881,7 @@
                         }
                       ],
                       price: {
-                        amount_minor: 14900,
+                        amount_minor: 6900,
                         currency: "USD"
                       },
                       availability: {
@@ -6469,7 +6473,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -6504,7 +6508,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -7082,7 +7086,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -7806,7 +7810,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -7831,7 +7835,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -8212,7 +8216,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -8849,7 +8853,7 @@
                             {
                               code: "your_weight_sm",
                               option_code: "soft_sm",
-                              option_display_name: "65-75 kg / 143-165lbs",
+                              option_display_name: "Soft 55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_soft_sm_name"
                             }
                           ],
@@ -8889,7 +8893,7 @@
                             {
                               code: "your_weight_sm",
                               option_code: "hard_sm",
-                              option_display_name: "90-100kg / 200-225lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_hard_sm_name"
                             }
                           ],
@@ -8920,7 +8924,7 @@
                             {
                               code: "your_weight_sm",
                               option_code: "soft_sm",
-                              option_display_name: "65-75 kg / 143-165lbs",
+                              option_display_name: "Soft 55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_soft_sm_name"
                             }
                           ],
@@ -8960,7 +8964,7 @@
                             {
                               code: "your_weight_sm",
                               option_code: "hard_sm",
-                              option_display_name: "90-100kg / 200-225lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_hard_sm_name"
                             }
                           ],
@@ -9595,7 +9599,7 @@
                             {
                               code: "your_weight_sm",
                               option_code: "soft_sm",
-                              option_display_name: "65-75 kg / 143-165lbs",
+                              option_display_name: "Soft 55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_soft_sm_name"
                             }
                           ],
@@ -9635,7 +9639,7 @@
                             {
                               code: "your_weight_sm",
                               option_code: "hard_sm",
-                              option_display_name: "90-100kg / 200-225lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_hard_sm_name"
                             }
                           ],
@@ -9832,7 +9836,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -10143,7 +10147,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -10599,7 +10603,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -10635,7 +10639,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -11857,7 +11861,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -12788,7 +12792,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -12813,7 +12817,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -15769,7 +15773,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -15805,7 +15809,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -15883,7 +15887,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -15903,7 +15907,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -15916,26 +15920,6 @@
                           option_code: "US",
                           option_display_name: "United States / Canada 240V",
                           option_localization_key: "spare_parts_attribute_option_us_name"
-                        }
-                      ],
-                      price: {
-                        amount_minor: 114900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE_HQ"
-                      }
-                    },
-                    {
-                      code: "completecharger-location_charger.CH",
-                      sku: "SMX1-AC-CH-81-CH",
-                      image_urls: [],
-                      attributes: [
-                        {
-                          code: "location_charger",
-                          option_code: "CH",
-                          option_display_name: "Switzerland",
-                          option_localization_key: "spare_parts_attribute_option_ch_name"
                         }
                       ],
                       price: {
@@ -15963,7 +15947,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -15994,7 +15978,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -16013,7 +15997,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -16032,7 +16016,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -16671,7 +16655,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -16818,7 +16802,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -17358,7 +17342,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -17393,7 +17377,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -17971,7 +17955,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -18719,7 +18703,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -18744,7 +18728,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -19151,7 +19135,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -19837,7 +19821,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -19917,7 +19901,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -19989,7 +19973,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -20069,7 +20053,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -20334,7 +20318,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -21226,7 +21210,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -21306,7 +21290,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -21315,7 +21299,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -21335,7 +21319,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         },
                         {
@@ -21355,7 +21339,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -21643,7 +21627,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -21831,7 +21815,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -22200,7 +22184,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -23019,7 +23003,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -23544,7 +23528,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -23724,7 +23708,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -23760,7 +23744,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -24877,7 +24861,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -24902,7 +24886,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -24927,7 +24911,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -25176,7 +25160,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -28917,7 +28901,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -29049,7 +29033,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -29101,7 +29085,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -29121,7 +29105,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29134,26 +29118,6 @@
                           option_code: "US",
                           option_display_name: "United States / Canada 240V",
                           option_localization_key: "spare_parts_attribute_option_us_name"
-                        }
-                      ],
-                      price: {
-                        amount_minor: 114900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE_HQ"
-                      }
-                    },
-                    {
-                      code: "completecharger-location_charger.CH",
-                      sku: "SMX1-AC-CH-81-CH",
-                      image_urls: [],
-                      attributes: [
-                        {
-                          code: "location_charger",
-                          option_code: "CH",
-                          option_display_name: "Switzerland",
-                          option_localization_key: "spare_parts_attribute_option_ch_name"
                         }
                       ],
                       price: {
@@ -29181,7 +29145,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -29212,7 +29176,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -29231,7 +29195,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29250,7 +29214,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -30127,7 +30091,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -30162,7 +30126,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -30211,30 +30175,6 @@
                       },
                       availability: {
                         status: "AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
-                  code: "140_steel_frame",
-                  display_name: "Steel frame",
-                  localization_key: "spare_parts_product_140_steel_frame_name",
-                  description_localization_key: "spare_parts_product_140_steel_frame_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-F-W.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "140_steel_frame",
-                      sku: "SMX1-F-W-KT",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 114999,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -30739,7 +30679,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -31929,7 +31869,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -32658,7 +32598,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -32758,7 +32698,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -32789,7 +32729,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -32829,7 +32769,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -33134,7 +33074,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -34001,7 +33941,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -34041,7 +33981,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -34466,7 +34406,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -34654,7 +34594,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -35023,7 +34963,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -35866,7 +35806,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -36366,7 +36306,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -36917,7 +36857,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -36953,7 +36893,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -38094,7 +38034,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -38119,7 +38059,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -38144,7 +38084,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -38393,7 +38333,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -41773,7 +41713,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42324,7 +42264,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42344,7 +42284,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42357,26 +42297,6 @@
                           option_code: "US",
                           option_display_name: "United States / Canada 240V",
                           option_localization_key: "spare_parts_attribute_option_us_name"
-                        }
-                      ],
-                      price: {
-                        amount_minor: 114900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE_HQ"
-                      }
-                    },
-                    {
-                      code: "completecharger-location_charger.CH",
-                      sku: "SMX1-AC-CH-81-CH",
-                      image_urls: [],
-                      attributes: [
-                        {
-                          code: "location_charger",
-                          option_code: "CH",
-                          option_display_name: "Switzerland",
-                          option_localization_key: "spare_parts_attribute_option_ch_name"
                         }
                       ],
                       price: {
@@ -42404,7 +42324,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -42435,7 +42355,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42454,7 +42374,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42473,7 +42393,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -43350,7 +43270,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -43385,7 +43305,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -43962,7 +43882,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -45313,7 +45233,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -46066,7 +45986,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -46166,7 +46086,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -46197,7 +46117,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -46237,7 +46157,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -46542,7 +46462,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -47409,7 +47329,7 @@
                             {
                               code: "your_weight",
                               option_code: "65_70_kg_143_154lbs",
-                              option_display_name: "65/75 kg / 143-154lbs",
+                              option_display_name: "55-75 kg / 120-165 lbs",
                               option_localization_key: "spare_parts_attribute_option_65_70_kg_143_154lbs_name"
                             }
                           ],
@@ -47449,7 +47369,7 @@
                             {
                               code: "your_weight",
                               option_code: "85_90_kg_187_198_lbs",
-                              option_display_name: "90-100 kg / 187-198 lbs",
+                              option_display_name: "90-110 kg / 200-245 lbs",
                               option_localization_key: "spare_parts_attribute_option_85_90_kg_187_198_lbs_name"
                             }
                           ],
@@ -47874,7 +47794,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -48062,7 +47982,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -48396,7 +48316,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -49164,7 +49084,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]

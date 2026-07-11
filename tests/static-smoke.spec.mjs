@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("static app restores URL state and searches without Stark API calls", async ({ page }) => {
   const catalogApiRequests = [];
+  const staticCatalogRequests = [];
   const analyticsScriptRequests = [];
   await page.route("https://s3-stark-*/**", (route) => route.abort());
   await page.route("https://assets.starkfuture.com/**", (route) => route.abort());
@@ -14,6 +15,9 @@ test("static app restores URL state and searches without Stark API calls", async
   });
   page.on("request", (request) => {
     const url = request.url();
+    if (url.endsWith("/stark-parts.json5")) {
+      staticCatalogRequests.push(url);
+    }
     if (url.includes("api.starkfuture.com/v2/store") || url.includes("/v2/store/")) {
       catalogApiRequests.push(url);
     }
@@ -112,4 +116,50 @@ test("static app restores URL state and searches without Stark API calls", async
   await expect(page.getByText("matched group: Wiring harness").first()).toBeVisible();
 
   expect(catalogApiRequests).toEqual([]);
+  expect(staticCatalogRequests).toHaveLength(1);
+});
+
+test("static app distinguishes a catalog load failure from empty search results", async ({ page }) => {
+  await page.route("**/stark-parts.json5", (route) => route.abort());
+
+  await page.goto("/");
+
+  await expect(page.getByRole("alert")).toContainText("The parts catalog could not be loaded");
+  await expect(page.getByText("No matching catalog entries")).toHaveCount(0);
+  await expect(page.getByLabel("Search")).toBeDisabled();
+});
+
+test("static app keeps its orientation visible while the catalog is loading", async ({ page }) => {
+  let releaseCatalog;
+  const catalogGate = new Promise((resolve) => {
+    releaseCatalog = resolve;
+  });
+  await page.route("**/stark-parts.json5", async (route) => {
+    await catalogGate;
+    await route.continue();
+  });
+
+  await page.goto("/");
+
+  await expect(page.getByText("Unofficial but fast parts catalog source")).toBeVisible();
+  await expect(page.getByText("Loading parts catalog…")).toBeVisible();
+  await expect(page.getByLabel("Search")).toBeDisabled();
+
+  releaseCatalog();
+  await expect(page.getByLabel("Search")).toBeEnabled();
+});
+
+test("static app rejects a malformed catalog response", async ({ page }) => {
+  await page.route("**/stark-parts.json5", (route) =>
+    route.fulfill({
+      contentType: "application/json5",
+      body: "this is not a catalog",
+    }),
+  );
+
+  await page.goto("/");
+
+  await expect(page.getByRole("alert")).toContainText("The parts catalog could not be loaded");
+  await expect(page.getByRole("alert")).toContainText("catalog response was invalid");
+  await expect(page.getByLabel("Search")).toBeDisabled();
 });

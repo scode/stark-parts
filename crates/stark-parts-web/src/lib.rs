@@ -1,5 +1,12 @@
 #![recursion_limit = "256"]
 
+//! Browser-local search UI for a complete, prevalidated catalog snapshot.
+//!
+//! The binary entrypoint owns loading the deployed catalog asset and does not mount [`App`] until that work succeeds.
+//! This crate owns everything after that boundary: building the search index, maintaining URL/UI state, and rendering
+//! results without further catalog I/O. Keeping that split explicit is what lets catalog-only deployments reuse the
+//! compiled application.
+
 pub mod search;
 
 use leptos::prelude::*;
@@ -7,26 +14,67 @@ use search::{
     ArticleVariantSummary, BikeVariantSummary, SearchIndex, SearchRequest, SearchResultRow,
     SearchResults,
 };
-use stark_parts_catalog::{Catalog, CatalogMetadata, parse_catalog_json5};
+use stark_parts_catalog::{Catalog, CatalogMetadata};
 use std::sync::Arc;
 
 const APP_TITLE: &str = "Stark Parts";
-const CATALOG_JSON5: &str = include_str!("../../../catalog/stark-parts.json5");
 // Result virtualization depends on fixed-height rows. Keep this in sync with `.result-row`.
 const RESULT_ROW_HEIGHT_PX: usize = 88;
 const COMPACT_RESULT_ROW_HEIGHT_PX: usize = 52;
 const RESULT_VIEWPORT_HEIGHT_PX: usize = 512;
 const RESULT_OVERSCAN_ROWS: usize = 8;
 
-/// Static Leptos app for searching the committed Stark catalog.
+/// Search experience backed by a catalog loaded during application startup.
+///
+/// Keeping the catalog outside the compiled app lets a catalog refresh replace static data without rebuilding the
+/// application. Callers must finish loading and validating the complete snapshot before mounting this component; the
+/// search UI never performs incremental or query-driven catalog requests.
 #[component]
-pub fn App() -> impl IntoView {
-    view! { <AppWithInitialState initial_request=initial_search_request() /> }
+pub fn App(catalog: Catalog) -> impl IntoView {
+    view! { <AppWithInitialState catalog=catalog initial_request=initial_search_request() /> }
+}
+
+/// Preserve the required page orientation while the catalog is unavailable.
+///
+/// Search cannot become interactive until the complete catalog has been validated, but startup and failure states must
+/// still identify the unofficial site and keep its primary control in the expected place. The optional detail is for a
+/// concrete load error; omitting it represents the normal pending state.
+#[component]
+pub fn CatalogStartupState(message: &'static str, error: Option<String>) -> impl IntoView {
+    let role = if error.is_some() { "alert" } else { "status" };
+    let is_loading = error.is_none();
+    view! {
+        <main class="app-shell" role=role aria-busy=is_loading>
+            <style>{APP_CSS}</style>
+            <section class="notice" aria-label="Unofficial catalog notice">
+                <p>
+                    "Unofficial but " <em>"fast"</em> " parts catalog source. Not endorsed by Stark. May contain errors. Stark's website remains the authoritative source."
+                </p>
+            </section>
+            <header class="toolbar">
+                <div class="primary-search">
+                    <h1>{APP_TITLE}</h1>
+                    <label class="search-control" for="catalog-search">
+                        <span>"Search"</span>
+                        <input
+                            id="catalog-search"
+                            type="search"
+                            disabled
+                            placeholder="part, SKU, assembly, subsystem"
+                        />
+                    </label>
+                    <section class="bike-filter-bar" aria-label="Bike filters">
+                        <p class="bike-filter-default">{message}</p>
+                    </section>
+                </div>
+            </header>
+            {error.map(|error| view! { <p class="empty-state startup-error">{error}</p> })}
+        </main>
+    }
 }
 
 #[component]
-fn AppWithInitialState(initial_request: SearchRequest) -> impl IntoView {
-    let catalog = load_catalog();
+fn AppWithInitialState(catalog: Catalog, initial_request: SearchRequest) -> impl IntoView {
     let metadata = catalog.metadata.clone();
     let index = Arc::new(SearchIndex::from_catalog(&catalog));
     let (query, set_query) = signal(initial_request.query);
@@ -542,10 +590,6 @@ fn variant_attributes(variant: Option<ArticleVariantSummary>) -> impl IntoView {
         </ul>
     }
     .into_any()
-}
-
-fn load_catalog() -> Catalog {
-    parse_catalog_json5(CATALOG_JSON5).expect("committed catalog must parse")
 }
 
 fn first_stark_link(row: &SearchResultRow) -> Option<String> {
@@ -1066,6 +1110,13 @@ input[type="search"] {
 mod tests {
     use super::*;
     use leptos::prelude::Owner;
+    use stark_parts_catalog::parse_catalog_json5;
+
+    /// Load the committed fixture for server-rendered component tests without coupling release builds to its bytes.
+    fn load_catalog() -> Catalog {
+        parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5"))
+            .expect("committed catalog must parse")
+    }
 
     fn minimal_result_row(
         article_display_name: Option<&str>,
@@ -1146,6 +1197,7 @@ mod tests {
     fn app_component_renders_search_experience() {
         let html = Owner::new().with(|| {
             AppWithInitialState(AppWithInitialStateProps {
+                catalog: load_catalog(),
                 initial_request: SearchRequest::default(),
             })
             .to_html()
@@ -1182,6 +1234,7 @@ mod tests {
     fn app_restores_query_state_into_initial_results() {
         let html = Owner::new().with(|| {
             AppWithInitialState(AppWithInitialStateProps {
+                catalog: load_catalog(),
                 initial_request: SearchRequest {
                     query: "SMX1-TOOLBOX".to_owned(),
                     selected_bike_variant_ids: vec!["varg-sm".to_owned()],
@@ -1198,15 +1251,19 @@ mod tests {
 
     #[test]
     fn app_uses_safe_static_catalog_data_path() {
-        let source = include_str!("lib.rs");
+        let index_html = include_str!("../../../index.html");
+        let main_source = include_str!("main.rs");
 
-        assert!(source.contains("include_str!(\"../../../catalog/stark-parts.json5\")"));
-        assert!(!source.contains(concat!(".", "fetch")));
-        assert!(!source.contains(concat!("req", "west")));
+        assert!(
+            index_html.contains("data-trunk rel=\"copy-file\" href=\"catalog/stark-parts.json5\"")
+        );
+        assert!(main_source.contains("const CATALOG_PATH: &str = \"/stark-parts.json5\""));
+        assert!(!main_source.contains("api.starkfuture.com"));
+        assert!(!main_source.contains(concat!("req", "west")));
     }
 
     #[test]
-    fn web_app_source_has_no_runtime_catalog_network_client() {
+    fn web_app_source_has_no_runtime_stark_catalog_client() {
         let lib_source = include_str!("lib.rs");
         let main_source = include_str!("main.rs");
         let manifest = include_str!("../Cargo.toml");
@@ -1215,12 +1272,10 @@ mod tests {
             .next()
             .expect("library source should contain app code before tests");
 
-        assert!(app_source.contains("include_str!(\"../../../catalog/stark-parts.json5\")"));
         for source in [app_source, main_source, manifest] {
-            assert!(!source.contains(concat!("gloo_", "net")));
             assert!(!source.contains(concat!("req", "west")));
             assert!(!source.contains(concat!("web_sys::", "Request")));
-            assert!(!source.contains(concat!(".", "fetch")));
+            assert!(!source.contains("api.starkfuture.com"));
         }
     }
 
@@ -1261,7 +1316,8 @@ mod tests {
         assert!(index_html.contains("data-bin=\"stark-parts-web\""));
         assert!(index_html.contains("/_vercel/insights/script.js"));
         assert!(trunk_config.contains("target = \"index.html\""));
-        assert!(web_main.contains("mount_to_body(stark_parts_web::App)"));
+        assert!(index_html.contains("href=\"catalog/stark-parts.json5\""));
+        assert!(web_main.contains("mount_to_body(Root)"));
     }
 
     #[test]
@@ -1414,6 +1470,7 @@ mod tests {
     fn no_result_state_renders_clear_empty_message() {
         let html = Owner::new().with(|| {
             AppWithInitialState(AppWithInitialStateProps {
+                catalog: load_catalog(),
                 initial_request: SearchRequest {
                     query: "definitely-not-a-real-part".to_owned(),
                     selected_bike_variant_ids: Vec::new(),
@@ -1430,6 +1487,7 @@ mod tests {
     fn bike_filter_state_changes_visible_results() {
         let sm_html = Owner::new().with(|| {
             AppWithInitialState(AppWithInitialStateProps {
+                catalog: load_catalog(),
                 initial_request: SearchRequest {
                     query: "SSM1-P-FF-01-G".to_owned(),
                     selected_bike_variant_ids: vec!["varg-sm".to_owned()],
@@ -1439,6 +1497,7 @@ mod tests {
         });
         let ex_html = Owner::new().with(|| {
             AppWithInitialState(AppWithInitialStateProps {
+                catalog: load_catalog(),
                 initial_request: SearchRequest {
                     query: "SSM1-P-FF-01-G".to_owned(),
                     selected_bike_variant_ids: vec!["varg-ex".to_owned()],

@@ -42,7 +42,8 @@ cargo run -p stark-parts-cli -- catalog update
 ```
 
 That command may call Stark's public API, refresh `catalog/stark-parts.json5`, and preserve deterministic formatting.
-After that, the web app consumes the committed file with `include_str!`, so search remains local to the browser.
+The static deployment serves that committed file alongside the app, which loads it once during startup. Search remains
+local to the browser after initialization.
 
 The search model is intentionally simple. It indexes article/variant rows with denormalized ancestor text: bike variant,
 category path, product group, article, SKU, attributes, and kit data. Matching rows are shown as a flat list whose

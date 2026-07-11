@@ -59,9 +59,11 @@ state.
 
 The web app is implemented in Rust using Leptos.
 
-The app should be built as a static client-side site. It loads the entire committed catalog data set as a static asset
-or compiled-in data during initial page load or app initialization, then performs filtering and result-list updates in
-the browser.
+The app should be built as a static client-side site. The committed catalog is deployed as a separate static asset and
+loaded once during app initialization. The app must validate the complete response before constructing the search index,
+then perform filtering and result-list updates in the browser without further catalog requests. The catalog must not be
+compiled into the application binary; keeping code and catalog artifacts separate allows catalog-only deployments to
+reuse an unchanged application build.
 
 Vercel deployments should use the checked-in Vercel project configuration at the repository root. The project is a
 static "Other" framework deployment: Vercel runs the Trunk release build and serves only the generated `dist/`

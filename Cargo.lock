@@ -2061,6 +2061,7 @@ name = "stark-parts-web"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
+ "gloo-net",
  "leptos",
  "stark-parts-catalog",
  "url",

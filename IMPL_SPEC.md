@@ -73,6 +73,11 @@ dependency for the web app.
 Vercel Web Analytics may be loaded from the static HTML entrypoint with Vercel's hosted analytics script. Basic
 page-view analytics should not add React, Next.js, or npm analytics package integration to the Leptos app.
 
+Continuous integration should classify changes before starting compilation. A change limited to the generated catalog
+and its build receipt validates the catalog crate and generated-file formatting without compiling or testing the web
+application. Any change outside those two generated files, including a change that also updates the catalog, runs the
+complete formatting, lint, test, static-build, and browser-test suite.
+
 The search index should be derived from the committed catalog state, not from a live Stark endpoint. The implementation
 may precompute normalized search text during the offline catalog update if that keeps browser code simpler and makes
 search behavior deterministic.

@@ -8,9 +8,31 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
+  changes:
+    runs-on: ubicloud
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
+      catalog: ${{ steps.filter.outputs.catalog }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          predicate-quantifier: every
+          filters: |
+            app:
+              - "**"
+              - "!catalog/stark-parts.json5"
+              - "!catalog/BUILD_RECEIPT.md"
+            catalog:
+              - "catalog/{stark-parts.json5,BUILD_RECEIPT.md}"
+
   fmt:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
@@ -20,6 +42,8 @@ jobs:
       - run: cargo fmt --all -- --check
 
   clippy:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +62,8 @@ jobs:
       - run: cargo clippy
 
   test:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
@@ -54,6 +80,8 @@ jobs:
       - run: cargo test
 
   dprint:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
@@ -61,6 +89,8 @@ jobs:
         uses: dprint/check@v2.3
 
   static-build:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     runs-on: ubicloud
     steps:
       - uses: actions/checkout@v4
@@ -83,3 +113,25 @@ jobs:
       - run: NO_COLOR=true trunk build --release
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test
+
+  catalog-check:
+    needs: changes
+    if: needs.changes.outputs.catalog == 'true' && needs.changes.outputs.app != 'true'
+    runs-on: ubicloud
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo test -p stark-parts-catalog
+      - name: Check generated file formatting
+        uses: dprint/check@v2.3
+        with:
+          config-path: dprint.json

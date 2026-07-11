@@ -59,8 +59,10 @@ or detail-card behavior.
 Search must update live as the user types. Each character typed into the search field must update the visible result
 list without requiring a submit button and without making any remote request.
 
-The entire app and committed catalog must be loaded during initial page load or app initialization. Search and result
-list updates must be browser-local after that point.
+The entire app and committed catalog must be loaded during initial page load or app initialization. The page must show a
+clear loading state until the catalog is ready. If the catalog cannot be loaded or parsed, the page must show a clear
+failure state rather than an empty result list. Search and result list updates must be browser-local after
+initialization.
 
 An empty search query shows the full result list for the selected bike variants.
 

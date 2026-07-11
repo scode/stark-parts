@@ -11,6 +11,7 @@ stark-parts-catalog = { path = "../stark-parts-catalog", default-features = fals
 url.workspace = true
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
+gloo-net.workspace = true
 leptos = { workspace = true, features = ["csr"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-07-12T02:06:23.1501556Z",
+    generated_at: "2026-07-15T02:44:49.272206024Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -517,7 +517,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -3860,30 +3860,6 @@
                       ]
                     },
                     {
-                      code: "79_rear_hand_brake_master_cylinder_assembly",
-                      display_name: "Rear hand brake master cylinder (Formula)",
-                      localization_key: "spare_parts_product_79_rear_hand_brake_master_cylinder_assembly_name",
-                      description_localization_key: "spare_parts_product_79_rear_hand_brake_master_cylinder_assembly_description",
-                      image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-RWH-02.webp"],
-                      kit_memberships: [],
-                      kit_contents: [],
-                      variants: [
-                        {
-                          code: "79_rear_hand_brake_master_cylinder_assembly",
-                          sku: "SMX1-BR-RWH-02",
-                          image_urls: [],
-                          attributes: [],
-                          price: {
-                            amount_minor: 11499,
-                            currency: "USD"
-                          },
-                          availability: {
-                            status: "AVAILABLE"
-                          }
-                        }
-                      ]
-                    },
-                    {
                       code: "rear_hand_brake_master_cylinder_clamp",
                       display_name: "Rear handbrake master cylinder clamp",
                       localization_key: "spare_parts_product_rear_hand_brake_master_cylinder_clamp_name",
@@ -5040,30 +5016,6 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"],
               articles: [
                 {
-                  code: "124_frame_cable_holder",
-                  display_name: "Frame cable holder",
-                  localization_key: "spare_parts_product_124_frame_cable_holder_name",
-                  description_localization_key: "spare_parts_product_124_frame_cable_holder_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-WH-F-01.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "124_frame_cable_holder",
-                      sku: "SMX1-WH-F-01",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 599,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
                   code: "wiring_harness_ex",
                   display_name: "Wiring harness EX",
                   description: ".",
@@ -5084,6 +5036,30 @@
                       },
                       availability: {
                         status: "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                },
+                {
+                  code: "frame_front_cable_holder",
+                  display_name: "Frame front cable holder",
+                  localization_key: "spare_parts_product_frame_front_cable_holder_name",
+                  description_localization_key: "spare_parts_product_frame_front_cable_holder_description",
+                  image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Placeholder.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "frame_front_cable_holder",
+                      sku: "SEX1-WH-F-06",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 599,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -5252,7 +5228,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5290,7 +5266,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5834,7 +5810,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -8004,7 +7980,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -8216,7 +8192,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -10966,7 +10942,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -13282,7 +13258,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -13918,7 +13894,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -14474,7 +14450,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -14588,30 +14564,6 @@
                           attributes: [],
                           price: {
                             amount_minor: 2900,
-                            currency: "USD"
-                          },
-                          availability: {
-                            status: "AVAILABLE"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      code: "79_rear_hand_brake_master_cylinder_assembly",
-                      display_name: "Rear hand brake master cylinder (Formula)",
-                      localization_key: "spare_parts_product_79_rear_hand_brake_master_cylinder_assembly_name",
-                      description_localization_key: "spare_parts_product_79_rear_hand_brake_master_cylinder_assembly_description",
-                      image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-RWH-02.webp"],
-                      kit_memberships: [],
-                      kit_contents: [],
-                      variants: [
-                        {
-                          code: "79_rear_hand_brake_master_cylinder_assembly",
-                          sku: "SMX1-BR-RWH-02",
-                          image_urls: [],
-                          attributes: [],
-                          price: {
-                            amount_minor: 11499,
                             currency: "USD"
                           },
                           availability: {
@@ -15813,6 +15765,30 @@
                       }
                     }
                   ]
+                },
+                {
+                  code: "frame_front_cable_holder",
+                  display_name: "Frame front cable holder",
+                  localization_key: "spare_parts_product_frame_front_cable_holder_name",
+                  description_localization_key: "spare_parts_product_frame_front_cable_holder_description",
+                  image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Placeholder.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "frame_front_cable_holder",
+                      sku: "SEX1-WH-F-06",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 599,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "NOT_AVAILABLE"
+                      }
+                    }
+                  ]
                 }
               ]
             },
@@ -15978,7 +15954,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -16016,7 +15992,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -16802,7 +16778,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -18898,7 +18874,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -19135,7 +19111,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -22763,7 +22739,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -23003,7 +22979,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -24071,7 +24047,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -26357,7 +26333,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -26966,7 +26942,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -27358,7 +27334,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -27519,7 +27495,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -27706,30 +27682,6 @@
                           attributes: [],
                           price: {
                             amount_minor: 19900,
-                            currency: "USD"
-                          },
-                          availability: {
-                            status: "AVAILABLE"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      code: "79_rear_hand_brake_master_cylinder_assembly",
-                      display_name: "Rear hand brake master cylinder (Formula)",
-                      localization_key: "spare_parts_product_79_rear_hand_brake_master_cylinder_assembly_name",
-                      description_localization_key: "spare_parts_product_79_rear_hand_brake_master_cylinder_assembly_description",
-                      image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-RWH-02.webp"],
-                      kit_memberships: [],
-                      kit_contents: [],
-                      variants: [
-                        {
-                          code: "79_rear_hand_brake_master_cylinder_assembly",
-                          sku: "SMX1-BR-RWH-02",
-                          image_urls: [],
-                          attributes: [],
-                          price: {
-                            amount_minor: 11499,
                             currency: "USD"
                           },
                           availability: {
@@ -28918,30 +28870,6 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"],
               articles: [
                 {
-                  code: "124_frame_cable_holder",
-                  display_name: "Frame cable holder",
-                  localization_key: "spare_parts_product_124_frame_cable_holder_name",
-                  description_localization_key: "spare_parts_product_124_frame_cable_holder_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-WH-F-01.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "124_frame_cable_holder",
-                      sku: "SMX1-WH-F-01",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 599,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
                   code: "125_subframe_cable_holder",
                   display_name: "Subframe cable holder",
                   localization_key: "spare_parts_product_125_subframe_cable_holder_name",
@@ -29176,7 +29104,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29214,7 +29142,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -31584,7 +31512,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -31869,7 +31797,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -35566,7 +35494,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -35806,7 +35734,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -37220,7 +37148,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -39253,7 +39181,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -39778,7 +39706,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -40170,7 +40098,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -40331,7 +40259,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -42355,7 +42283,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42393,7 +42321,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -44999,18 +44927,17 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Battery.webp"],
               articles: [
                 {
-                  code: "battery_72_mx10",
-                  display_name: "Battery 6.5 kWh",
-                  description: "spare_parts_product_battery_72_mx10_description",
-                  localization_key: "spare_parts_product_battery_72_mx10_name",
-                  description_localization_key: "spare_parts_product_battery_72_mx10_description",
-                  image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Battery_7.2.webp"],
+                  code: "193_battery_6_kwh_complete",
+                  display_name: "Battery 6.5 kWh pack",
+                  localization_key: "spare_parts_product_193_battery_6_kwh_complete_name",
+                  description_localization_key: "spare_parts_product_193_battery_6_kwh_complete_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-B-100S4P.webp"],
                   kit_memberships: [],
                   kit_contents: [],
                   variants: [
                     {
-                      code: "battery_72_mx10",
-                      sku: "SMX1-B010-ASSY-KT",
+                      code: "193_battery_6_kwh_complete",
+                      sku: "SMX1-B-100S4P-KT",
                       image_urls: [],
                       attributes: [],
                       price: {
@@ -45018,7 +44945,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -45233,7 +45160,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -49084,7 +49011,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]

@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-07-17T02:33:08.806243714Z",
+    generated_at: "2026-07-18T14:05:00.74666369Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -1412,7 +1412,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -3600,7 +3600,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -5228,7 +5228,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5247,7 +5247,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5404,7 +5404,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -7786,7 +7786,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -7980,7 +7980,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -10459,7 +10459,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -11837,7 +11837,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -12793,7 +12793,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -14312,7 +14312,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -15954,7 +15954,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -15973,7 +15973,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -16299,7 +16299,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -18679,7 +18679,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -18874,7 +18874,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -23564,7 +23564,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -24887,7 +24887,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -25136,7 +25136,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -29104,7 +29104,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -29123,7 +29123,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -29449,7 +29449,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -31512,7 +31512,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -36665,7 +36665,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -38012,7 +38012,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -38261,7 +38261,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -42283,7 +42283,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42302,7 +42302,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42628,7 +42628,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -49816,7 +49816,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]

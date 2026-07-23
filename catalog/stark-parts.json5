@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-07-18T14:05:00.74666369Z",
+    generated_at: "2026-07-23T04:38:17.753528746Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -569,7 +569,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -589,7 +589,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -1412,7 +1412,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -3600,7 +3600,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -5141,26 +5141,6 @@
                       }
                     },
                     {
-                      code: "completecharger-location_charger.UK",
-                      sku: "SMX1-AC-CH-81-UK",
-                      image_urls: [],
-                      attributes: [
-                        {
-                          code: "location_charger",
-                          option_code: "UK",
-                          option_display_name: "United Kingdom",
-                          option_localization_key: "spare_parts_attribute_option_uk_name"
-                        }
-                      ],
-                      price: {
-                        amount_minor: 114900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "NOT_AVAILABLE"
-                      }
-                    },
-                    {
                       code: "completecharger-location_charger.US",
                       sku: "SMX1-AC-CH-81-US240",
                       image_urls: [],
@@ -5197,7 +5177,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -5228,7 +5208,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5247,7 +5227,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5304,7 +5284,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -5381,6 +5361,30 @@
                       },
                       availability: {
                         status: "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                },
+                {
+                  code: "240v_120v_power_cord_adapter",
+                  display_name: "240v-120v Power cord adapter",
+                  localization_key: "spare_parts_product_240v_120v_power_cord_adapter_name",
+                  description_localization_key: "spare_parts_product_240v_120v_power_cord_adapter_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/231123%20Power%20Plug%20Adapter%20v1.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "240v_120v_power_cord_adapter",
+                      sku: "SMX1-AC-CH-05-US001",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 4900,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -6211,7 +6215,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -6484,7 +6488,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -6833,7 +6837,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -7786,7 +7790,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -7896,7 +7900,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -7980,7 +7984,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -9812,7 +9816,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -10994,7 +10998,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -11014,7 +11018,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -11837,7 +11841,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -12793,7 +12797,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -14312,7 +14316,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -15867,26 +15871,6 @@
                       }
                     },
                     {
-                      code: "completecharger-location_charger.UK",
-                      sku: "SMX1-AC-CH-81-UK",
-                      image_urls: [],
-                      attributes: [
-                        {
-                          code: "location_charger",
-                          option_code: "UK",
-                          option_display_name: "United Kingdom",
-                          option_localization_key: "spare_parts_attribute_option_uk_name"
-                        }
-                      ],
-                      price: {
-                        amount_minor: 114900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "NOT_AVAILABLE"
-                      }
-                    },
-                    {
                       code: "completecharger-location_charger.US",
                       sku: "SMX1-AC-CH-81-US240",
                       image_urls: [],
@@ -15923,7 +15907,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -15954,7 +15938,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -15973,7 +15957,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -16030,7 +16014,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -17080,7 +17064,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -17353,7 +17337,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -17702,7 +17686,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -18679,7 +18663,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -18790,7 +18774,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -18874,7 +18858,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -21791,7 +21775,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -23141,7 +23125,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -24099,7 +24083,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -24119,7 +24103,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -24797,7 +24781,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -24887,7 +24871,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -25136,7 +25120,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -29017,26 +29001,6 @@
                       }
                     },
                     {
-                      code: "completecharger-location_charger.UK",
-                      sku: "SMX1-AC-CH-81-UK",
-                      image_urls: [],
-                      attributes: [
-                        {
-                          code: "location_charger",
-                          option_code: "UK",
-                          option_display_name: "United Kingdom",
-                          option_localization_key: "spare_parts_attribute_option_uk_name"
-                        }
-                      ],
-                      price: {
-                        amount_minor: 114900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "NOT_AVAILABLE"
-                      }
-                    },
-                    {
                       code: "completecharger-location_charger.US",
                       sku: "SMX1-AC-CH-81-US240",
                       image_urls: [],
@@ -29073,7 +29037,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -29104,7 +29068,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29123,7 +29087,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29180,7 +29144,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -29781,7 +29745,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -30054,7 +30018,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -30378,7 +30342,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -31428,7 +31392,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -31512,7 +31476,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -34522,7 +34486,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -35871,7 +35835,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -37200,7 +37164,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -37220,7 +37184,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -37922,7 +37886,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -38012,7 +37976,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -38261,7 +38225,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -42196,26 +42160,6 @@
                       }
                     },
                     {
-                      code: "completecharger-location_charger.UK",
-                      sku: "SMX1-AC-CH-81-UK",
-                      image_urls: [],
-                      attributes: [
-                        {
-                          code: "location_charger",
-                          option_code: "UK",
-                          option_display_name: "United Kingdom",
-                          option_localization_key: "spare_parts_attribute_option_uk_name"
-                        }
-                      ],
-                      price: {
-                        amount_minor: 114900,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "NOT_AVAILABLE"
-                      }
-                    },
-                    {
                       code: "completecharger-location_charger.US",
                       sku: "SMX1-AC-CH-81-US240",
                       image_urls: [],
@@ -42252,7 +42196,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -42283,7 +42227,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42302,7 +42246,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42359,7 +42303,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -42960,7 +42904,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -43233,7 +43177,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -43581,7 +43525,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -47910,7 +47854,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -49122,7 +49066,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]

@@ -964,6 +964,10 @@ mod tests {
     }
 
     #[test]
+    /// Direct article matches must outrank rows that match only through product-group context.
+    ///
+    /// The article code identifies the intended result without coupling the ranking contract to
+    /// Stark's mutable display copy.
     fn committed_catalog_ranks_direct_part_matches_before_group_matches() {
         let catalog =
             parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5")).unwrap();
@@ -973,10 +977,7 @@ mod tests {
             selected_bike_variant_ids: Vec::new(),
         });
 
-        assert_eq!(
-            results.rows[0].article.display_name.as_deref(),
-            Some("Wiring harness EX")
-        );
+        assert_eq!(results.rows[0].article.code, "wiring_harness_ex");
     }
 
     #[test]

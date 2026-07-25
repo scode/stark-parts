@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-07-23T04:38:17.753528746Z",
+    generated_at: "2026-07-25T00:42:53.404909962Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -1556,7 +1556,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -4450,7 +4450,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -5017,7 +5017,7 @@
               articles: [
                 {
                   code: "wiring_harness_ex",
-                  display_name: "Wiring harness EX",
+                  display_name: "Wiring harness",
                   description: ".",
                   localization_key: "spare_parts_product_wiring_harness_ex_name",
                   description_localization_key: "spare_parts_product_wiring_harness_ex_description",
@@ -5157,7 +5157,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -5660,7 +5660,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -5890,7 +5890,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -6837,7 +6837,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -7815,7 +7815,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -7851,7 +7851,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -7924,7 +7924,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -7984,7 +7984,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -9070,7 +9070,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -9369,7 +9369,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -10463,7 +10463,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -11985,7 +11985,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -15180,7 +15180,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -15747,7 +15747,7 @@
               articles: [
                 {
                   code: "wiring_harness_ex",
-                  display_name: "Wiring harness EX",
+                  display_name: "Wiring harness",
                   description: ".",
                   localization_key: "spare_parts_product_wiring_harness_ex_name",
                   description_localization_key: "spare_parts_product_wiring_harness_ex_description",
@@ -15887,7 +15887,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -16187,7 +16187,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -16583,7 +16583,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -16787,7 +16787,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -17686,7 +17686,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -18688,7 +18688,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -18724,7 +18724,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -18798,7 +18798,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -18858,7 +18858,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -20539,7 +20539,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -20862,7 +20862,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -22039,7 +22039,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -23548,7 +23548,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -25264,7 +25264,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -27318,7 +27318,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -28288,7 +28288,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -28854,6 +28854,31 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"],
               articles: [
                 {
+                  code: "wiring_harness_ex",
+                  display_name: "Wiring harness",
+                  description: ".",
+                  localization_key: "spare_parts_product_wiring_harness_ex_name",
+                  description_localization_key: "spare_parts_product_wiring_harness_ex_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"],
+                  kit_memberships: [],
+                  kit_contents: [],
+                  variants: [
+                    {
+                      code: "wiring_harness_ex",
+                      sku: "SEX1-WH-81",
+                      image_urls: [],
+                      attributes: [],
+                      price: {
+                        amount_minor: 45999,
+                        currency: "USD"
+                      },
+                      availability: {
+                        status: "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                },
+                {
                   code: "125_subframe_cable_holder",
                   display_name: "Subframe cable holder",
                   localization_key: "spare_parts_product_125_subframe_cable_holder_name",
@@ -28917,31 +28942,6 @@
                       attributes: [],
                       price: {
                         amount_minor: 599,
-                        currency: "USD"
-                      },
-                      availability: {
-                        status: "AVAILABLE"
-                      }
-                    }
-                  ]
-                },
-                {
-                  code: "wiring_harness_ex",
-                  display_name: "Wiring harness EX",
-                  description: ".",
-                  localization_key: "spare_parts_product_wiring_harness_ex_name",
-                  description_localization_key: "spare_parts_product_wiring_harness_ex_description",
-                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"],
-                  kit_memberships: [],
-                  kit_contents: [],
-                  variants: [
-                    {
-                      code: "wiring_harness_ex",
-                      sku: "SEX1-WH-81",
-                      image_urls: [],
-                      attributes: [],
-                      price: {
-                        amount_minor: 45999,
                         currency: "USD"
                       },
                       availability: {
@@ -29017,7 +29017,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -29317,7 +29317,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -30342,7 +30342,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -31342,7 +31342,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -31416,7 +31416,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -31476,7 +31476,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -33227,7 +33227,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -33550,7 +33550,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -34750,7 +34750,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "NOT_AVAILABLE"
+                            status: "AVAILABLE_HQ"
                           }
                         }
                       ]
@@ -36629,7 +36629,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -38369,7 +38369,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -40062,7 +40062,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -41078,7 +41078,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -42055,7 +42055,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -42176,7 +42176,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -42476,7 +42476,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -43525,7 +43525,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -44871,18 +44871,17 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Battery.webp"],
               articles: [
                 {
-                  code: "battery_72_mx10",
-                  display_name: "Battery 6.5 kWh",
-                  description: "spare_parts_product_battery_72_mx10_description",
-                  localization_key: "spare_parts_product_battery_72_mx10_name",
-                  description_localization_key: "spare_parts_product_battery_72_mx10_description",
-                  image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Battery_7.2.webp"],
+                  code: "193_battery_6_kwh_complete",
+                  display_name: "Battery 6.5 kWh pack",
+                  localization_key: "spare_parts_product_193_battery_6_kwh_complete_name",
+                  description_localization_key: "spare_parts_product_193_battery_6_kwh_complete_description",
+                  image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-B-100S4P.webp"],
                   kit_memberships: [],
                   kit_contents: [],
                   variants: [
                     {
-                      code: "battery_72_mx10",
-                      sku: "SMX1-B010-ASSY-KT",
+                      code: "193_battery_6_kwh_complete",
+                      sku: "SMX1-B-100S4P-KT",
                       image_urls: [],
                       attributes: [],
                       price: {
@@ -46595,7 +46594,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -46918,7 +46917,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -49760,7 +49759,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]

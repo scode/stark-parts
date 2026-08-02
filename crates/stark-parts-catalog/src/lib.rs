@@ -792,13 +792,34 @@ fn find_next_payload_json_string_end(value: &str) -> Option<usize> {
 }
 
 #[cfg(any(feature = "http", test))]
+/// Discovers only landing-page cards that Stark identifies as bike variants.
+///
+/// The spare-parts landing grid also links to merchandise under the same URL
+/// prefix. Stark's bike cards carry an `image-card-Stark ...` test id, while
+/// cards such as Accessories and Apparel do not. Requiring that marker keeps
+/// merchandise routes from becoming empty bike catalog trees and fails closed
+/// if Stark changes the card contract.
 fn discover_bike_variants_from_page(html: &str) -> UpstreamResult<Vec<UpstreamBikeVariant>> {
     let marker = "/parts-and-accessories/spare-parts/";
+    let bike_card_marker = "data-testid=\"image-card-Stark ";
     let mut variants = Vec::new();
     let mut remaining = html;
 
-    while let Some(index) = remaining.find(marker) {
-        let after_marker = &remaining[index + marker.len()..];
+    while let Some(anchor_start) = remaining.find("<a") {
+        let anchor = &remaining[anchor_start..];
+        let Some(anchor_end) = anchor.find('>') else {
+            break;
+        };
+        let opening_tag = &anchor[..anchor_end];
+        remaining = &anchor[anchor_end + 1..];
+
+        if !opening_tag.contains(bike_card_marker) {
+            continue;
+        }
+        let Some(index) = opening_tag.find(marker) else {
+            continue;
+        };
+        let after_marker = &opening_tag[index + marker.len()..];
         let tag = after_marker
             .chars()
             .take_while(|character| {
@@ -815,7 +836,6 @@ fn discover_bike_variants_from_page(html: &str) -> UpstreamResult<Vec<UpstreamBi
                 tag,
             });
         }
-        remaining = after_marker;
     }
 
     if variants.is_empty() {
@@ -2776,13 +2796,16 @@ mod tests {
     }
 
     #[test]
-    fn discovers_bike_variants_from_spare_parts_page_text() {
+    /// Merchandise cards share the bike URL prefix but must not become empty variant trees.
+    fn discovers_only_bike_variants_from_spare_parts_landing_cards() {
         let variants = discover_bike_variants_from_page(
             r#"
-            <a href="/parts-and-accessories/spare-parts/varg-sm">Stark VARG SM</a>
-            <a href="/parts-and-accessories/spare-parts/varg-ex">Stark VARG EX</a>
-            <a href="/parts-and-accessories/spare-parts/varg-1.2">Stark VARG MX 1.2</a>
-            <a href="/parts-and-accessories/spare-parts/varg">Stark VARG MX 1.0</a>
+            <a href="/parts-and-accessories/spare-parts/varg-sm" data-testid="image-card-Stark VARG SM">Stark VARG SM</a>
+            <a href="/parts-and-accessories/spare-parts/varg-ex" data-testid="image-card-Stark VARG EX">Stark VARG EX</a>
+            <a href="/parts-and-accessories/spare-parts/varg-1.2" data-testid="image-card-Stark VARG MX 1.2">Stark VARG MX 1.2</a>
+            <a href="/parts-and-accessories/spare-parts/varg" data-testid="image-card-Stark VARG MX 1.0">Stark VARG MX 1.0</a>
+            <a href="/parts-and-accessories/spare-parts/accessories" data-testid="image-card-Accessories">Accessories</a>
+            <a href="/parts-and-accessories/spare-parts/apparel" data-testid="image-card-Apparel">Apparel</a>
             "#,
         )
         .unwrap();
@@ -2831,7 +2854,7 @@ mod tests {
     #[test]
     fn variant_discovery_does_not_treat_mx_1_2_as_legacy_mx() {
         let variants = discover_bike_variants_from_page(
-            r#"<a href="/parts-and-accessories/spare-parts/varg-1.2">Stark VARG MX 1.2</a>"#,
+            r#"<a href="/parts-and-accessories/spare-parts/varg-1.2" data-testid="image-card-Stark VARG MX 1.2">Stark VARG MX 1.2</a>"#,
         )
         .unwrap();
 
@@ -3231,10 +3254,10 @@ mod tests {
 
         fn get_text(&self, _url: &str) -> UpstreamResult<String> {
             Ok(r#"
-                <a href="/parts-and-accessories/spare-parts/varg-sm">Stark VARG SM</a>
-                <a href="/parts-and-accessories/spare-parts/varg-ex">Stark VARG EX</a>
-                <a href="/parts-and-accessories/spare-parts/varg-1.2">Stark VARG MX 1.2</a>
-                <a href="/parts-and-accessories/spare-parts/varg">Stark VARG MX 1.0</a>
+                <a href="/parts-and-accessories/spare-parts/varg-sm" data-testid="image-card-Stark VARG SM">Stark VARG SM</a>
+                <a href="/parts-and-accessories/spare-parts/varg-ex" data-testid="image-card-Stark VARG EX">Stark VARG EX</a>
+                <a href="/parts-and-accessories/spare-parts/varg-1.2" data-testid="image-card-Stark VARG MX 1.2">Stark VARG MX 1.2</a>
+                <a href="/parts-and-accessories/spare-parts/varg" data-testid="image-card-Stark VARG MX 1.0">Stark VARG MX 1.0</a>
             "#
             .to_owned())
         }

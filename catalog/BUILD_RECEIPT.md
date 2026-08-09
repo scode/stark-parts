@@ -1,6 +1,6 @@
 # Stark Catalog Build Receipt
 
-This catalog was generated from Stark's public US storefront on 2026-08-06 UTC.
+This catalog was generated from Stark's public US storefront on 2026-08-09 UTC.
 
 Build command:
 
@@ -11,7 +11,7 @@ RUST_LOG=stark_parts=info,stark_parts_catalog=warn cargo run -p stark-parts-cli 
 Relevant output:
 
 ```text
-2026-08-06T02:52:28.049399Z  INFO run_with{repo_root=/home/scode/git/stark-parts}: stark_parts: catalog written path=/home/scode/git/stark-parts/catalog/stark-parts.json5
+2026-08-09T02:37:47.302149Z  INFO run_with{repo_root=/home/scode/git/stark-parts}: stark_parts: catalog written path=/home/scode/git/stark-parts/catalog/stark-parts.json5
 catalog written: catalog/stark-parts.json5
 ```
 
@@ -24,5 +24,5 @@ sha256sum catalog/stark-parts.json5
 Relevant output:
 
 ```text
-e17f7bf1d700c312ff6c2646dd0e76053f746654f1a5137662d13097ac805d71  catalog/stark-parts.json5
+b976dbc97d3a10d85bc802adedec99e29e3af5e1a98ea4adbe35d8b6521e3433  catalog/stark-parts.json5
 ```

@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-08-09T02:36:21.07606539Z",
+    generated_at: "2026-08-15T01:59:16.105805462Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -302,7 +302,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -414,7 +414,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -517,7 +517,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -895,7 +895,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -1436,7 +1436,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -1460,7 +1460,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -1639,7 +1639,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -2041,7 +2041,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -3762,7 +3762,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -3854,7 +3854,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -4032,7 +4032,7 @@
             {
               code: "33_rear_sprocket",
               display_name: "Rear sprocket",
-              description: "The rear sprocket is an in-house Stark designed component with a groove that expels excess mud, to minimize friction. The rear sprocket is made from 7075 T6 aluminum and has been optimized thanks to computer simulation to be as lightweight and strong as possible. The rear sprocket is integrated with Stark’s own hub design. Different sizes are available. The standard sprockets for the VARG MX is 14/47 and for the VARG EX 12/48. The rear sprocket can be enlarged up to 49 tooth.",
+              description: "The rear sprocket is an in-house Stark designed component with a groove that expels excess mud, to minimize friction. The rear sprocket is made from 7075 T6 aluminum and has been optimized thanks to computer simulation to be as lightweight and strong as possible. The rear sprocket is integrated with Stark’s own hub design. Different sizes are available. The standard is 14/47 for the VARG MX, 12/48 for the VARG EX and 15/47 for the VARG SM. The rear sprocket can be enlarged up to 49 tooth.",
               localization_key: "spare_parts_product_33_rear_sprocket_name",
               description_localization_key: "spare_parts_product_33_rear_sprocket_description",
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm/chain_sprockets/33_rear_sprocket",
@@ -4128,7 +4128,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -4271,7 +4271,7 @@
             {
               code: "32_front_sprocket",
               display_name: "Front sprocket",
-              description: "The front sprocket is an in-house Stark designed component with a groove that expels excess mud. The front sprocket is made from chromoly steel and has been optimized thanks to computer simulation to be as small and compact as possible. Different sizes are available. The standard is 14/47. The front sprocket also comes in sizes 13 and 14.",
+              description: "The front sprocket is an in-house Stark designed component with a groove that expels excess mud. The front sprocket is made from chromoly steel and has been optimized thanks to computer simulation to be as small and compact as possible. Different sizes are available. The standard is 14/47 for the VARG MX, 12/48 for the VARG EX and 15/47 for the VARG SM. The front sprocket also comes in sizes 13.",
               localization_key: "spare_parts_product_32_front_sprocket_name",
               description_localization_key: "spare_parts_product_32_front_sprocket_description",
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm/chain_sprockets/32_front_sprocket",
@@ -4854,7 +4854,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -4954,7 +4954,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -4999,7 +4999,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -5227,7 +5227,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -5600,7 +5600,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -5660,7 +5660,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -5769,7 +5769,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -5814,7 +5814,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -5890,7 +5890,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -6680,7 +6680,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -6802,7 +6802,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -7375,7 +7375,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -7754,7 +7754,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -7790,7 +7790,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -7900,7 +7900,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -7924,7 +7924,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -8053,7 +8053,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -8448,7 +8448,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -10731,7 +10731,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -10843,7 +10843,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -10946,7 +10946,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -11324,7 +11324,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -11865,7 +11865,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -11889,7 +11889,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -12068,7 +12068,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -12426,7 +12426,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -12518,7 +12518,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -12665,7 +12665,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -12727,7 +12727,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -12772,7 +12772,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -13064,7 +13064,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -13262,7 +13262,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -13874,7 +13874,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -13898,7 +13898,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -14454,7 +14454,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -14479,7 +14479,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -14571,7 +14571,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -14784,7 +14784,7 @@
             {
               code: "33_rear_sprocket",
               display_name: "Rear sprocket",
-              description: "The rear sprocket is an in-house Stark designed component with a groove that expels excess mud, to minimize friction. The rear sprocket is made from 7075 T6 aluminum and has been optimized thanks to computer simulation to be as lightweight and strong as possible. The rear sprocket is integrated with Stark’s own hub design. Different sizes are available. The standard sprockets for the VARG MX is 14/47 and for the VARG EX 12/48. The rear sprocket can be enlarged up to 49 tooth.",
+              description: "The rear sprocket is an in-house Stark designed component with a groove that expels excess mud, to minimize friction. The rear sprocket is made from 7075 T6 aluminum and has been optimized thanks to computer simulation to be as lightweight and strong as possible. The rear sprocket is integrated with Stark’s own hub design. Different sizes are available. The standard is 14/47 for the VARG MX, 12/48 for the VARG EX and 15/47 for the VARG SM. The rear sprocket can be enlarged up to 49 tooth.",
               localization_key: "spare_parts_product_33_rear_sprocket_name",
               description_localization_key: "spare_parts_product_33_rear_sprocket_description",
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg-ex/chain_sprockets/33_rear_sprocket",
@@ -14880,7 +14880,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -15023,7 +15023,7 @@
             {
               code: "32_front_sprocket",
               display_name: "Front sprocket",
-              description: "The front sprocket is an in-house Stark designed component with a groove that expels excess mud. The front sprocket is made from chromoly steel and has been optimized thanks to computer simulation to be as small and compact as possible. Different sizes are available. The standard is 14/47. The front sprocket also comes in sizes 13 and 14.",
+              description: "The front sprocket is an in-house Stark designed component with a groove that expels excess mud. The front sprocket is made from chromoly steel and has been optimized thanks to computer simulation to be as small and compact as possible. Different sizes are available. The standard is 14/47 for the VARG MX, 12/48 for the VARG EX and 15/47 for the VARG SM. The front sprocket also comes in sizes 13.",
               localization_key: "spare_parts_product_32_front_sprocket_name",
               description_localization_key: "spare_parts_product_32_front_sprocket_description",
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg-ex/chain_sprockets/32_front_sprocket",
@@ -15584,7 +15584,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -15684,7 +15684,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -15729,7 +15729,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -15957,7 +15957,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -16523,7 +16523,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -16583,7 +16583,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -16692,7 +16692,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -16762,7 +16762,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -16787,7 +16787,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -17529,7 +17529,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -17651,7 +17651,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -18224,7 +18224,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -18627,7 +18627,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -18663,7 +18663,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -18774,7 +18774,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -18798,7 +18798,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -18952,7 +18952,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -19347,7 +19347,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -22334,7 +22334,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -22464,7 +22464,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -22819,7 +22819,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -22891,7 +22891,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -22963,7 +22963,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -23367,7 +23367,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -23488,7 +23488,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -23816,7 +23816,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -23928,7 +23928,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -24031,7 +24031,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -24409,7 +24409,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -24846,7 +24846,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -25144,7 +25144,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -25168,7 +25168,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -25347,7 +25347,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -25979,7 +25979,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -26071,7 +26071,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -26218,7 +26218,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -26317,7 +26317,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -26902,7 +26902,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -26926,7 +26926,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -27479,7 +27479,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -27504,7 +27504,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -27621,7 +27621,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -27822,7 +27822,7 @@
             {
               code: "33_rear_sprocket",
               display_name: "Rear sprocket",
-              description: "The rear sprocket is an in-house Stark designed component with a groove that expels excess mud, to minimize friction. The rear sprocket is made from 7075 T6 aluminum and has been optimized thanks to computer simulation to be as lightweight and strong as possible. The rear sprocket is integrated with Stark’s own hub design. Different sizes are available. The standard sprockets for the VARG MX is 14/47 and for the VARG EX 12/48. The rear sprocket can be enlarged up to 49 tooth.",
+              description: "The rear sprocket is an in-house Stark designed component with a groove that expels excess mud, to minimize friction. The rear sprocket is made from 7075 T6 aluminum and has been optimized thanks to computer simulation to be as lightweight and strong as possible. The rear sprocket is integrated with Stark’s own hub design. Different sizes are available. The standard is 14/47 for the VARG MX, 12/48 for the VARG EX and 15/47 for the VARG SM. The rear sprocket can be enlarged up to 49 tooth.",
               localization_key: "spare_parts_product_33_rear_sprocket_name",
               description_localization_key: "spare_parts_product_33_rear_sprocket_description",
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg-1.2/chain_sprockets/33_rear_sprocket",
@@ -27918,7 +27918,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -28060,7 +28060,7 @@
             {
               code: "32_front_sprocket",
               display_name: "Front sprocket",
-              description: "The front sprocket is an in-house Stark designed component with a groove that expels excess mud. The front sprocket is made from chromoly steel and has been optimized thanks to computer simulation to be as small and compact as possible. Different sizes are available. The standard is 14/47. The front sprocket also comes in sizes 13 and 14.",
+              description: "The front sprocket is an in-house Stark designed component with a groove that expels excess mud. The front sprocket is made from chromoly steel and has been optimized thanks to computer simulation to be as small and compact as possible. Different sizes are available. The standard is 14/47 for the VARG MX, 12/48 for the VARG EX and 15/47 for the VARG SM. The front sprocket also comes in sizes 13.",
               localization_key: "spare_parts_product_32_front_sprocket_name",
               description_localization_key: "spare_parts_product_32_front_sprocket_description",
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg-1.2/chain_sprockets/32_front_sprocket",
@@ -28692,7 +28692,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -28792,7 +28792,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -28837,7 +28837,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -29087,7 +29087,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -29653,7 +29653,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -30210,7 +30210,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -30879,7 +30879,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -31392,7 +31392,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -31416,7 +31416,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -31570,7 +31570,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -32013,7 +32013,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -35045,7 +35045,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -35175,7 +35175,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -35554,7 +35554,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -35626,7 +35626,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -35698,7 +35698,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -36077,7 +36077,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -36198,7 +36198,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -36522,7 +36522,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -36897,7 +36897,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -37009,7 +37009,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -37112,7 +37112,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -37490,7 +37490,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -37951,7 +37951,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -38249,7 +38249,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -38273,7 +38273,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -38452,7 +38452,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -39145,7 +39145,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -39646,7 +39646,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -39670,7 +39670,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -40223,7 +40223,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -40248,7 +40248,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -40365,7 +40365,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE_HQ"
+                            status: "AVAILABLE"
                           }
                         }
                       ]
@@ -40614,7 +40614,7 @@
             {
               code: "33_rear_sprocket",
               display_name: "Rear sprocket",
-              description: "The rear sprocket is an in-house Stark designed component with a groove that expels excess mud, to minimize friction. The rear sprocket is made from 7075 T6 aluminum and has been optimized thanks to computer simulation to be as lightweight and strong as possible. The rear sprocket is integrated with Stark’s own hub design. Different sizes are available. The standard sprockets for the VARG MX is 14/47 and for the VARG EX 12/48. The rear sprocket can be enlarged up to 49 tooth.",
+              description: "The rear sprocket is an in-house Stark designed component with a groove that expels excess mud, to minimize friction. The rear sprocket is made from 7075 T6 aluminum and has been optimized thanks to computer simulation to be as lightweight and strong as possible. The rear sprocket is integrated with Stark’s own hub design. Different sizes are available. The standard is 14/47 for the VARG MX, 12/48 for the VARG EX and 15/47 for the VARG SM. The rear sprocket can be enlarged up to 49 tooth.",
               localization_key: "spare_parts_product_33_rear_sprocket_name",
               description_localization_key: "spare_parts_product_33_rear_sprocket_description",
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg/chain_sprockets/33_rear_sprocket",
@@ -40710,7 +40710,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -40875,7 +40875,7 @@
             {
               code: "32_front_sprocket",
               display_name: "Front sprocket",
-              description: "The front sprocket is an in-house Stark designed component with a groove that expels excess mud. The front sprocket is made from chromoly steel and has been optimized thanks to computer simulation to be as small and compact as possible. Different sizes are available. The standard is 14/47. The front sprocket also comes in sizes 13 and 14.",
+              description: "The front sprocket is an in-house Stark designed component with a groove that expels excess mud. The front sprocket is made from chromoly steel and has been optimized thanks to computer simulation to be as small and compact as possible. Different sizes are available. The standard is 14/47 for the VARG MX, 12/48 for the VARG EX and 15/47 for the VARG SM. The front sprocket also comes in sizes 13.",
               localization_key: "spare_parts_product_32_front_sprocket_name",
               description_localization_key: "spare_parts_product_32_front_sprocket_description",
               stark_url: "https://starkfuture.com/parts-and-accessories/spare-parts/varg/chain_sprockets/32_front_sprocket",
@@ -41482,7 +41482,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -42246,7 +42246,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -42812,7 +42812,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -43393,7 +43393,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -44062,7 +44062,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -44749,7 +44749,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -45080,7 +45080,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -45380,7 +45380,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -48377,7 +48377,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -48507,7 +48507,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -48811,7 +48811,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -48883,7 +48883,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -48955,7 +48955,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -49257,7 +49257,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]
@@ -49652,7 +49652,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     }
                   ]

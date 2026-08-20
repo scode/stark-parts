@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-08-15T01:59:16.105805462Z",
+    generated_at: "2026-08-20T02:50:54.875521513Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -3744,7 +3744,7 @@
                     },
                     {
                       code: "rear_brake_disc_220mm_x",
-                      display_name: "Brake disc 220mm (not available in US and AUS)",
+                      display_name: "Brake disc 220mm",
                       description: "Brembo brake disc 220mm. Not available in US and AUS",
                       localization_key: "spare_parts_product_rear_brake_disc_220mm_x_name",
                       description_localization_key: "spare_parts_product_rear_brake_disc_220mm_x_description",
@@ -5227,7 +5227,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -12727,7 +12727,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -13856,7 +13856,7 @@
                     },
                     {
                       code: "brake_disc_220mm_x",
-                      display_name: "Brake disc 220mm (not available in US and AUS)",
+                      display_name: "Brake disc 220mm",
                       description: "Brembo brake disc 220mm. Not available in US and AUS",
                       localization_key: "spare_parts_product_brake_disc_220mm_x_name",
                       description_localization_key: "spare_parts_product_brake_disc_220mm_x_description",
@@ -14461,7 +14461,7 @@
                     },
                     {
                       code: "rear_brake_disc_220mm_x",
-                      display_name: "Brake disc 220mm (not available in US and AUS)",
+                      display_name: "Brake disc 220mm",
                       description: "Brembo brake disc 220mm. Not available in US and AUS",
                       localization_key: "spare_parts_product_rear_brake_disc_220mm_x_name",
                       description_localization_key: "spare_parts_product_rear_brake_disc_220mm_x_description",
@@ -15957,7 +15957,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -21491,7 +21491,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -26884,7 +26884,7 @@
                     },
                     {
                       code: "brake_disc_220mm_x",
-                      display_name: "Brake disc 220mm (not available in US and AUS)",
+                      display_name: "Brake disc 220mm",
                       description: "Brembo brake disc 220mm. Not available in US and AUS",
                       localization_key: "spare_parts_product_brake_disc_220mm_x_name",
                       description_localization_key: "spare_parts_product_brake_disc_220mm_x_description",
@@ -27486,7 +27486,7 @@
                     },
                     {
                       code: "rear_brake_disc_220mm_x",
-                      display_name: "Brake disc 220mm (not available in US and AUS)",
+                      display_name: "Brake disc 220mm",
                       description: "Brembo brake disc 220mm. Not available in US and AUS",
                       localization_key: "spare_parts_product_rear_brake_disc_220mm_x_name",
                       description_localization_key: "spare_parts_product_rear_brake_disc_220mm_x_description",
@@ -29087,7 +29087,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -34178,7 +34178,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -39628,7 +39628,7 @@
                     },
                     {
                       code: "brake_disc_220mm_x",
-                      display_name: "Brake disc 220mm (not available in US and AUS)",
+                      display_name: "Brake disc 220mm",
                       description: "Brembo brake disc 220mm. Not available in US and AUS",
                       localization_key: "spare_parts_product_brake_disc_220mm_x_name",
                       description_localization_key: "spare_parts_product_brake_disc_220mm_x_description",
@@ -40230,7 +40230,7 @@
                     },
                     {
                       code: "rear_brake_disc_220mm_x",
-                      display_name: "Brake disc 220mm (not available in US and AUS)",
+                      display_name: "Brake disc 220mm",
                       description: "Brembo brake disc 220mm. Not available in US and AUS",
                       localization_key: "spare_parts_product_rear_brake_disc_220mm_x_name",
                       description_localization_key: "spare_parts_product_rear_brake_disc_220mm_x_description",
@@ -42246,7 +42246,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     },
                     {
@@ -45080,7 +45080,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     }
                   ]
@@ -47545,7 +47545,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]

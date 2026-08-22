@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-08-20T02:50:54.875521513Z",
+    generated_at: "2026-08-22T04:04:26.276151636Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -1556,7 +1556,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -3159,7 +3159,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -3714,7 +3714,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -4954,7 +4954,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -5208,7 +5208,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -7763,7 +7763,7 @@
             },
             {
               code: "control_switch_ex",
-              display_name: "Control switch VARG EX/SM left side",
+              display_name: "Control switch",
               description: ".",
               localization_key: "spare_parts_product_control_switch_ex_name",
               description_localization_key: "spare_parts_product_control_switch_ex_description",
@@ -7772,7 +7772,7 @@
               articles: [
                 {
                   code: "control_switch_ex",
-                  display_name: "Control switch VARG EX/SM left side",
+                  display_name: "Control switch",
                   description: ".",
                   localization_key: "spare_parts_product_control_switch_ex_name",
                   description_localization_key: "spare_parts_product_control_switch_ex_description",
@@ -11985,7 +11985,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -13849,7 +13849,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -14430,7 +14430,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -15684,7 +15684,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -15938,7 +15938,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -18636,7 +18636,7 @@
             },
             {
               code: "control_switch_ex",
-              display_name: "Control switch VARG EX/SM left side",
+              display_name: "Control switch",
               description: ".",
               localization_key: "spare_parts_product_control_switch_ex_name",
               description_localization_key: "spare_parts_product_control_switch_ex_description",
@@ -18645,7 +18645,7 @@
               articles: [
                 {
                   code: "control_switch_ex",
-                  display_name: "Control switch VARG EX/SM left side",
+                  display_name: "Control switch",
                   description: ".",
                   localization_key: "spare_parts_product_control_switch_ex_name",
                   description_localization_key: "spare_parts_product_control_switch_ex_description",
@@ -22723,7 +22723,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -25264,7 +25264,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -26877,7 +26877,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -27455,7 +27455,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -28792,7 +28792,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -29068,7 +29068,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -35458,7 +35458,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -36330,7 +36330,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -38369,7 +38369,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]
@@ -39621,7 +39621,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -40199,7 +40199,7 @@
                             currency: "USD"
                           },
                           availability: {
-                            status: "AVAILABLE"
+                            status: "NOT_AVAILABLE"
                           }
                         }
                       ]
@@ -41605,7 +41605,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "AVAILABLE"
                       }
                     },
                     {
@@ -42227,7 +42227,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "NOT_AVAILABLE"
+                        status: "AVAILABLE_HQ"
                       }
                     },
                     {
@@ -49460,7 +49460,7 @@
                         currency: "USD"
                       },
                       availability: {
-                        status: "AVAILABLE_HQ"
+                        status: "NOT_AVAILABLE"
                       }
                     }
                   ]

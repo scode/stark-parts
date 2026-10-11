@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 1,
-    generated_at: "2026-10-01T17:10:24.101104499Z",
+    generated_at: "2026-10-11T03:21:26.31825717Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v2",
       country: "US",
@@ -2663,6 +2663,7 @@
                     },
                     {
                       code: "front_brake_disc_screw_sm",
+                      display_name: "Front brake disc screw",
                       localization_key: "spare_parts_product_front_brake_disc_screw_sm_name",
                       description_localization_key: "spare_parts_product_front_brake_disc_screw_sm_description",
                       image_urls: ["https://assets.starkfuture.com/spare-parts-images/I14580-060012-08-FRONT_BRAKE_disc_Screw.webp"],

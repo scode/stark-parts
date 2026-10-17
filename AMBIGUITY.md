@@ -111,6 +111,9 @@ controlled by `SPEC.md`; this is a testability choice for the scaffold.
 
 ## 2026-05-28: Localization Extraction Timing
 
+Superseded on 2026-10-17: the current storefront API returns English strings through `language=en`. `IMPL_SPEC.md` now
+requires that API path, so page-payload localization extraction is no longer outstanding work.
+
 Decision: the first committed live catalog keeps Stark localization keys and stable codes, but does not block step 5 on
 extracting English display strings from Stark's Next.js page payload.
 

@@ -95,46 +95,44 @@ identifiers in the URL, not display names.
 
 ## Source Data
 
-The current crawl research lives in `lore/2026-05-26-stark-parts-crawl.md`.
-
-The first known Stark API base from that report is:
+The crawler uses the API consumed by Stark's current storefront:
 
 ```text
-https://api.starkfuture.com/v2
+https://api.starkfuture.com/v3/product-catalog
 ```
 
-Known useful endpoints from the report:
+These endpoints were observed to accept unauthenticated GET requests. This is not a claim that Stark has published a
+third-party API contract or guaranteed their stability.
 
 ```text
-GET store/categories
-GET store/categories/{code}
-GET store/products
-GET store/products/{code}
-GET store/articles/suggestions
+GET categories/tree?language=en
+GET categories/by-slug/parts/products?country=US&language=en&page={page}&limit=100
+GET products/{slug}?country=US&language=en
+GET products/{slug}/pack-composition?country=US&language=en&variantValueId={value}
 ```
 
-The crawler should use the category and product endpoints for full ingestion. The suggestions endpoint is useful for
-comparison, but it is query-driven and should not be the main crawl source.
+The unfiltered Parts listing defines snapshot membership and includes mounting parts. Do not request only
+`spareParts=false`, which excludes mounting hardware. Follow every page and check page numbers, totals, unique product
+IDs, and the final item count; reject an inconsistent or incomplete crawl before writing the catalog. An API-level
+failure inside an HTTP 200 response is still a failed crawl.
 
 The first catalog should use the US storefront for storefront-specific data such as prices, currency, and availability.
 That choice should not become a compatibility filter; preserve parts that Stark exposes in the crawled catalog even when
 source metadata suggests regional specificity.
 
-For `varg-ex`, the report identifies this traversal:
+Discover models from category-tree `bikeSlug` values and structured product fitments. Preserve the existing four bike
+filter IDs when mapping the source slugs so bookmarked searches still work. Discover categories from the shared Parts
+tree, retaining all paths and bounding tree depth. Do not scrape HTML cards or execute upstream JavaScript.
 
-```text
-GET /store/categories?product_tag=varg-ex&path=SP
-GET /store/categories?product_tag=varg-ex&path={parent_path}/{category_code}
-GET /store/products?category={leaf_category_code}&tags=varg-ex
-GET /store/products/{product_code}?tags=varg-ex&country=US
-```
-
-Other Stark bike variant tags must be discovered from Stark's public catalog surface before the full catalog refresh.
-The implementation should treat `varg-ex` as the known starting point from the research report, not as the complete
-variant set.
-
-The crawler must carry its own traversal path. The report notes that Stark's `path` field is a parent path and is not
-reliable enough by itself to reconstruct hierarchy after the fact.
+Fetch each listed product's details once. Keep structured fitment conditions separately from prose; never broaden them
+from a description. Prefer SKU-specific stock selections over product totals, and do not substitute product-level
+availability for an individual SKU. Prices are integer minor-unit strings with an explicit currency. Build canonical
+product links from safe slugs and URL-encoded variant IDs. Fetch kit composition for each concrete kit SKU's selected
+value and store it on that variant, retaining quantities and preassigned component options except the internal `price`
+attribute. Preserve variant descriptions and localization keys when supplied; variant wording overrides the product's
+default description for search and display. If a product description exactly matches one of its variant descriptions,
+treat it as the storefront's selected variant default and omit it from article-level fallback. A sibling SKU without
+translated wording must not inherit another variant's description.
 
 ## Committed Catalog Schema
 
@@ -147,10 +145,11 @@ The schema should preserve enough source data to support search, display, and fu
 - country and language assumptions
 - supported bike variants
 - bike filter identifiers suitable for URL state
-- category tree per bike variant
+- shared category tree and every product's category paths
 - product groups
 - articles or parts
 - variants and SKUs
+- structured model fitments and configuration restrictions
 - attributes and options
 - prices and availability, if included
 - image URLs, if included
@@ -159,6 +158,15 @@ The schema should preserve enough source data to support search, display, and fu
 
 The schema should keep stable identifiers close to each node. Display strings can change; codes and SKUs are more useful
 for deterministic diffing and exact search.
+
+Schema version 2 stores products once in the top-level `products` collection, independently of model and category
+membership. The parser continues to accept version 1 `catalog_trees` snapshots so the application migration can be
+reviewed and deployed before the generated-data refresh. Empty additive fields are omitted by the formatter to preserve
+legacy snapshot bytes.
+
+Variant `kit_contents` is an optional override: absence inherits article-level contents for legacy snapshots, while an
+explicit empty array means that SKU has no components. Preserve that distinction in parsing and formatting; combining
+the component lists across a product's colours would contaminate each SKU's search text and detail card.
 
 Stark website links must be built from trusted catalog identifiers when possible. If the catalog stores a URL, it must
 be a canonical HTTPS URL with no username, password, or fragment, and its host must be in this allowlist:
@@ -191,9 +199,9 @@ accepting noisy generated output.
 
 Stark API responses return localization keys for many names and descriptions.
 
-The first implementation should attempt to extract English display strings from Stark's Next.js page payload. Parse that
-payload as data only; do not execute upstream JavaScript or use `eval`-style script evaluation. If extraction fails or a
-key is missing, keep the raw code or localization-key fallback and record enough metadata to debug the failure.
+Request English strings through the API's `language=en` parameter. Preserve both resolved strings and localization keys.
+If a resolved string is absent, keep the raw code or localization-key fallback. Localization must not depend on Next.js
+page payloads or script execution.
 
 Resolved display strings and descriptions are external data. Render them as text, or sanitize them before any HTML
 insertion. The UI should not use raw HTML insertion for catalog names, descriptions, localization strings, codes, SKUs,
@@ -206,9 +214,9 @@ original localization key. The key is useful for debugging upstream changes.
 
 Search should be simple and deterministic before it is clever.
 
-A practical first index is one row per article variant, with SKUs kept as an array. That matches the crawl report's
-recommendation and keeps exact SKU lookup straightforward without losing the relationship between variant attributes and
-part data.
+The index expands each concrete SKU into its model and category contexts, then merges matching contexts into one visible
+result. Shared product identity must survive overlapping categories. Products with an empty fitment list have an
+unassigned model context; they are visible in unfiltered search and excluded by an explicit bike selection.
 
 Each index row should include denormalized ancestor text:
 
@@ -225,6 +233,9 @@ The search index should keep text buckets separate by source. Exact article or v
 from article descriptions, inherited product-group wording, and broader context such as bike variant and category path.
 Non-empty searches should rank those buckets in that order while preserving catalog order inside each rank. Empty
 searches should remain catalog ordered.
+
+A complete normalized SKU match has its own highest rank. UUID variant identifiers and short SKU fragments can otherwise
+match many source fields and push the requested SKU below the visible window.
 
 The renderer should show matching rows as a flat virtualized result list. Repeated occurrences of the same article or
 variant across bike catalog trees should merge into one visible result with bike compatibility attached. Ancestor fields
@@ -251,7 +262,7 @@ Only the catalog commands should call Stark's APIs.
 The web app must not call:
 
 ```text
-https://api.starkfuture.com/v2/store/*
+https://api.starkfuture.com/*
 ```
 
 That constraint should be easy to test. The app code should not contain Stark API client logic, and browser tests should

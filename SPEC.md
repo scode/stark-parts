@@ -40,10 +40,20 @@ The site must be static at runtime. Loading and searching the catalog must not r
 call, or any remote RPC. The catalog data used by the browser is committed in this repository and served as static site
 content.
 
-The supported catalog should include every Stark bike variant for which Stark exposes public parts catalog data.
+The supported catalog should include every Stark bike variant for which Stark exposes public parts catalog data. The
+original MX model must be labeled MX 1.0 so it is distinguishable from later MX versions.
+
+Catalog refreshes reflect Stark's current Parts catalog, including mounting parts. Apparel and Accessories are separate
+storefront sections and are outside this site's catalog. Products removed from the current Parts catalog are removed on
+refresh; an earlier snapshot is not an additional source of products.
 
 Bike filtering is multi-select. If no bike variant is selected, that is equivalent to selecting all committed bike
 variants. If one or more variants are selected, the result list shows only parts compatible with those variants.
+
+Model compatibility may have configuration restrictions, such as an inverter generation. The detail card must show those
+restrictions separately from the broad bike names. Broad model filtering does not certify that a part fits every
+configuration of that model. Products without stated compatibility remain searchable with no bike filter and must say
+that compatibility is unspecified; they must not be presented as fitting every model.
 
 The result list is flat. Each row represents one concrete searchable part result, not one catalog hierarchy node and not
 one repeated bike-specific occurrence of the same result. The primary row text should be the human-readable article or
@@ -66,10 +76,11 @@ initialization.
 
 An empty search query shows the full result list for the selected bike variants.
 
-Non-empty search results should be ranked by match quality rather than raw catalog order. Direct part matches such as
-SKU, article name, article code, variant code, and variant attributes should appear before matches found only in an
-article description. Article-description matches should appear before matches found only through inherited product-group
-wording, bike wording, or category context. Rows with the same match quality should keep their catalog-relative order.
+Non-empty search results should be ranked by match quality rather than raw catalog order. An exact complete SKU match
+must rank first. Other direct part matches such as partial SKU, article name, article code, variant code, and variant
+attributes should appear before matches found only in an article description. Article-description matches should appear
+before matches found only through inherited product-group wording, bike wording, or category context. Rows with the same
+match quality should keep their catalog-relative order.
 
 The current search state must be reflected in the page URL so searches can be bookmarked or shared. Loading a URL with
 search state must restore the query and selected bike variants.
@@ -116,6 +127,7 @@ going back to Stark or a dealer:
 - code, when available
 - SKU, when available
 - bike variant compatibility
+- source fitment restrictions, when present
 - category path
 - variant attributes, when available
 - kit membership or kit contents, when available
@@ -126,6 +138,14 @@ going back to Stark or a dealer:
   the part. If the committed data does not contain an article- or SKU-specific URL, the link should point to the Stark
   product-group page for that bike, category path, and product code. It must not fall back to the bike-level spare-parts
   overview for a part-level result.
+
+When a product belongs to multiple categories or collections, the detail card must preserve those associations. Kit
+contents must include source quantities and variant qualifications when available. Current product and variant links
+take precedence over reconstructed legacy assembly links.
+
+Descriptions and kit contents must follow the selected SKU when Stark provides variant-specific data. Searching for a
+kit colour must not match another colour through that other SKU's description or components. Internal pricing options
+must not appear as kit component attributes.
 
 Image frames should keep their layout stable when remote images are slow or fail to load, and failed images should show
 a fallback state instead of a broken-image icon.

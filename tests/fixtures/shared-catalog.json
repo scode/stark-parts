@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "schema_version": 2,
+    "generated_at": "2026-10-17T00:00:00Z",
+    "source": {
+      "api_base_url": "https://api.starkfuture.com/v3/product-catalog",
+      "country": "US",
+      "language": "en",
+      "endpoints": [{ "method": "GET", "path": "/products/{slug}" }]
+    }
+  },
+  "bike_variants": [{ "id": "varg", "code": "varg", "display_name": "Stark VARG MX 1.0" }],
+  "catalog_trees": [],
+  "categories": [
+    { "code": "bodywork", "path": ["bodywork"], "display_name": "Bodywork", "categories": [], "product_groups": [] }
+  ],
+  "products": [{
+    "code": "fixture-body-kit",
+    "display_name": "Body kit",
+    "image_urls": [],
+    "category_paths": [["bodywork"]],
+    "articles": [{
+      "code": "fixture-body-kit",
+      "display_name": "Body kit",
+      "description": "Forest grey panels",
+      "image_urls": [],
+      "kit_memberships": [],
+      "kit_contents": ["Legacy component"],
+      "fitments": [{ "bike_variant_id": "varg", "conditions": { "inverter": "gen2" } }],
+      "variants": [
+        {
+          "code": "grey",
+          "sku": "FIXTURE-KIT-G",
+          "stark_url": "https://starkfuture.com/product/fixture-body-kit?variant=grey",
+          "image_urls": [],
+          "attributes": [{ "code": "color", "option_code": "grey", "option_display_name": "Forest grey" }],
+          "description": "Forest grey panels",
+          "kit_contents": ["2 × Forest grey panel"]
+        },
+        {
+          "code": "white",
+          "sku": "FIXTURE-KIT-W",
+          "stark_url": "https://starkfuture.com/product/fixture-body-kit?variant=white",
+          "image_urls": [],
+          "attributes": [{ "code": "color", "option_code": "white", "option_display_name": "Snow White" }],
+          "description": "Snow White panels",
+          "kit_contents": ["2 × Snow White panel"]
+        },
+        {
+          "code": "red",
+          "sku": "FIXTURE-KIT-R",
+          "image_urls": [],
+          "attributes": [{ "code": "color", "option_code": "red", "option_display_name": "Stark Red" }],
+          "description": "Stark Red panels",
+          "kit_contents": ["2 × Stark Red panel"]
+        },
+        {
+          "code": "empty",
+          "sku": "FIXTURE-KIT-E",
+          "image_urls": [],
+          "attributes": [],
+          "kit_contents": []
+        },
+        {
+          "code": "legacy",
+          "sku": "FIXTURE-KIT-L",
+          "image_urls": [],
+          "attributes": []
+        }
+      ]
+    }]
+  }]
+}

@@ -259,10 +259,7 @@ fn display_path(repo_root: &Path, path: &Path) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use stark_parts_catalog::{
-        UpstreamArticle, UpstreamArticleEntry, UpstreamArticleVariant, UpstreamBikeVariant,
-        UpstreamCategory, UpstreamProductDetail, UpstreamProductSummary, UpstreamResult,
-    };
+    use stark_parts_catalog::{Catalog, UpstreamResult};
     use tempfile::TempDir;
 
     #[test]
@@ -525,6 +522,41 @@ mod tests {
         article_display_name: String,
     }
 
+    #[test]
+    /// A source failure must leave the previous snapshot and freshness date intact.
+    fn failed_refresh_preserves_committed_bytes() {
+        struct FailedSource;
+        impl UpstreamCatalog for FailedSource {
+            fn fetch_catalog(&self, _config: &CrawlConfig) -> UpstreamResult<Catalog> {
+                Err(stark_parts_catalog::UpstreamError::new(
+                    "incomplete listing",
+                ))
+            }
+        }
+        let repo = repo_root();
+        let init = Cli::try_parse_from(["stark-parts", "catalog", "init"]).unwrap();
+        run_with(
+            init,
+            repo.path(),
+            &CliFixtureClient::default(),
+            test_config("2026-10-16T00:00:00Z"),
+        )
+        .unwrap();
+        let path = repo.path().join(DEFAULT_CATALOG_PATH);
+        let before = fs::read(&path).unwrap();
+        let update = Cli::try_parse_from(["stark-parts", "catalog", "update"]).unwrap();
+        assert!(
+            run_with(
+                update,
+                repo.path(),
+                &FailedSource,
+                test_config("2026-10-17T00:00:00Z")
+            )
+            .is_err()
+        );
+        assert_eq!(fs::read(path).unwrap(), before);
+    }
+
     impl Default for CliFixtureClient {
         fn default() -> Self {
             Self {
@@ -534,82 +566,17 @@ mod tests {
     }
 
     impl UpstreamCatalog for CliFixtureClient {
-        fn bike_variants(&self) -> UpstreamResult<Vec<UpstreamBikeVariant>> {
-            Ok(vec![UpstreamBikeVariant {
-                tag: "varg-ex".to_owned(),
-                display_name: Some("Varg EX".to_owned()),
-            }])
-        }
-
-        fn categories(&self, _tag: &str, _path: &str) -> UpstreamResult<Vec<UpstreamCategory>> {
-            Ok(vec![UpstreamCategory {
-                code: "bodywork".to_owned(),
-                name_key: Some("spare_parts_category_bodywork_name".to_owned()),
-                display_name: Some("Bodywork".to_owned()),
-                image_url: None,
-                is_leaf: true,
-                path: "SP".to_owned(),
-            }])
-        }
-
-        fn products(
-            &self,
-            _tag: &str,
-            _category_code: &str,
-        ) -> UpstreamResult<Vec<UpstreamProductSummary>> {
-            Ok(vec![UpstreamProductSummary {
-                code: "9_seat".to_owned(),
-                name_key: Some("spare_parts_product_9_seat_name".to_owned()),
-                description_key: Some("spare_parts_product_9_seat_description".to_owned()),
-                display_name: Some("Seat".to_owned()),
-                description: Some("Seat group".to_owned()),
-                image_url: Some(
-                    "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/Seat.webp"
-                        .to_owned(),
-                ),
-            }])
-        }
-
-        fn product_detail(
-            &self,
-            _tag: &str,
-            _country: &str,
-            _product_code: &str,
-        ) -> UpstreamResult<UpstreamProductDetail> {
-            Ok(UpstreamProductDetail {
-                code: "9_seat".to_owned(),
-                name_key: Some("spare_parts_product_9_seat_name".to_owned()),
-                description_key: Some("spare_parts_product_9_seat_description".to_owned()),
-                display_name: Some("Seat".to_owned()),
-                description: Some("Seat group".to_owned()),
-                feature_image_url: None,
-                articles: vec![UpstreamArticleEntry {
-                    reference: Some(2),
-                    article: UpstreamArticle {
-                        code: "28_seat_assembly".to_owned(),
-                        name_key: Some("spare_parts_product_28_seat_assembly_name".to_owned()),
-                        description_key: Some(
-                            "spare_parts_product_28_seat_assembly_description".to_owned(),
-                        ),
-                        display_name: Some(self.article_display_name.clone()),
-                        description: Some("Replacement seat".to_owned()),
-                        image_url: Some(
-                            "https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/SMX1-P-ST.webp"
-                                .to_owned(),
-                        ),
-                        tags: vec!["varg-ex".to_owned()],
-                        is_kit: false,
-                        kit_contain: Vec::new(),
-                        variants: vec![UpstreamArticleVariant {
-                            code: "28_seat_assembly-seat_color.jet_black".to_owned(),
-                            skus: vec!["SMX1-P-ST-B".to_owned()],
-                            availability: Some("AVAILABLE".to_owned()),
-                            price: None,
-                            attributes: Vec::new(),
-                        }],
-                    },
-                }],
-            })
+        /// CLI tests care about write policy, so no source traversal is needed here.
+        fn fetch_catalog(&self, config: &CrawlConfig) -> UpstreamResult<Catalog> {
+            Ok(serde_json::from_value(serde_json::json!({
+                "metadata": { "schema_version": 2, "generated_at": config.generated_at,
+                    "source": { "api_base_url": config.api_base_url, "country": "US", "language": "en", "endpoints": [] } },
+                "bike_variants": [], "catalog_trees": [], "categories": [],
+                "products": [{ "code": "seat", "image_urls": [], "articles": [{
+                    "code": "seat", "display_name": self.article_display_name,
+                    "image_urls": [], "kit_memberships": [], "kit_contents": [], "variants": []
+                }] }]
+            })).unwrap())
         }
     }
 

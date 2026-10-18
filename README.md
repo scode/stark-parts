@@ -41,15 +41,18 @@ Catalog updates are offline work. Run them from the repository root:
 cargo run -p stark-parts-cli -- catalog update
 ```
 
-That command may call Stark's public API, refresh `catalog/stark-parts.json5`, and preserve deterministic formatting.
-The static deployment serves that committed file alongside the app, which loads it once during startup. Search remains
-local to the browser after initialization.
+That command reads the unauthenticated v3 API used by Stark's storefront and refreshes `catalog/stark-parts.json5` with
+deterministic formatting. Its source is the current Parts catalog, including mounting hardware. Apparel and Accessories
+are separate sections and are not included. Removed products are not carried forward from an earlier snapshot. The
+static deployment serves that committed file alongside the app, which loads it once during startup. Search remains local
+to the browser after initialization.
 
 The search model is intentionally simple. It indexes article/variant rows with denormalized ancestor text: bike variant,
 category path, product group, article, SKU, attributes, and kit data. Matching rows are shown as a flat list whose
 primary text is the human-readable article or part name, with SKU shown as the secondary scanning text when it exists.
-Repeated occurrences of the same article or variant across bike catalog trees are merged into one visible result with
-bike compatibility kept on the detail card.
+Shared products retain all their category associations and model fitments. Repeated search contexts merge into one
+visible SKU result, with compatibility and source configuration restrictions kept on the detail card. Products without
+stated fitment remain searchable without a bike filter and are labeled "Compatibility unspecified".
 
 The UI exposes the catalog generation/source metadata, a persistent unofficial-site warning, multi-select bike filters,
 URL-restorable search state, hover detail cards for result rows, stale price/availability warnings, lazy remote images,

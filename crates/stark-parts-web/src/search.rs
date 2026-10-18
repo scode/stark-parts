@@ -1,6 +1,6 @@
 use stark_parts_catalog::{
-    Article, ArticleVariant, AttributeSelection, Availability, Catalog, CategoryNode, Price,
-    ProductGroup,
+    Article, ArticleVariant, AttributeSelection, Availability, Catalog, CategoryNode, Fitment,
+    Price, ProductGroup,
 };
 use std::collections::{HashMap, HashSet};
 use url::form_urlencoded;
@@ -44,6 +44,8 @@ impl SearchIndex {
                 &mut rows,
             );
         }
+
+        collect_shared_rows(catalog, &bike_summaries, &mut rows);
 
         Self {
             bike_variants,
@@ -164,6 +166,8 @@ pub struct SearchResultRow {
     pub compatible_bikes: Vec<BikeVariantSummary>,
     pub category_path: Vec<String>,
     pub category_display_path: Vec<String>,
+    /// Every matching source category path survives deduplication.
+    pub category_display_paths: Vec<String>,
     pub product_group: ProductGroupSummary,
     pub article: ArticleSummary,
     pub variant: Option<ArticleVariantSummary>,
@@ -188,6 +192,7 @@ pub struct ArticleSummary {
     pub image_urls: Vec<String>,
     pub kit_memberships: Vec<String>,
     pub kit_contents: Vec<String>,
+    pub fitments: Vec<Fitment>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -335,6 +340,7 @@ enum MatchSource {
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 enum SearchRank {
+    ExactSku,
     ExactPart,
     ArticleDescription,
     InheritedContext,
@@ -349,6 +355,92 @@ struct MatchedSearchRow<'a> {
     row: &'a SearchRow,
     search_match: SearchMatch,
     catalog_order: usize,
+}
+
+/// Expand shared products into searchable contexts without duplicating visible SKUs.
+/// Missing fitment stays unassigned: it is visible without a bike filter but must
+/// not become a claim that the part fits every model.
+fn collect_shared_rows(
+    catalog: &Catalog,
+    bikes: &HashMap<String, BikeVariantSummary>,
+    rows: &mut Vec<SearchRow>,
+) {
+    /// Display labels are global to category codes; product paths retain their ordering separately.
+    fn category_names(nodes: &[CategoryNode], names: &mut HashMap<String, String>) {
+        for node in nodes {
+            names.insert(
+                node.code.clone(),
+                node.display_name
+                    .clone()
+                    .unwrap_or_else(|| node.code.clone()),
+            );
+            category_names(&node.categories, names);
+        }
+    }
+    let mut names = HashMap::new();
+    category_names(&catalog.categories, &mut names);
+    for group in &catalog.products {
+        for article in &group.articles {
+            let mut ids: Vec<_> = article
+                .fitments
+                .iter()
+                .map(|fitment| fitment.bike_variant_id.as_str())
+                .collect();
+            ids.sort();
+            ids.dedup();
+            if ids.is_empty() {
+                ids.push("");
+            }
+            let paths = if group.category_paths.is_empty() {
+                vec![Vec::new()]
+            } else {
+                group.category_paths.clone()
+            };
+            for path in &paths {
+                let crumbs: Vec<_> = path
+                    .iter()
+                    .map(|code| CategoryCrumb {
+                        code: code.clone(),
+                        display_name: names.get(code).cloned(),
+                    })
+                    .collect();
+                for id in &ids {
+                    let bike = bikes.get(*id);
+                    let variants: Vec<_> = if article.variants.is_empty() {
+                        vec![None]
+                    } else {
+                        article.variants.iter().map(Some).collect()
+                    };
+                    for variant in variants {
+                        let mut row = search_row_from_variant(
+                            id,
+                            bike.map(|bike| bike.code.as_str()),
+                            bike.and_then(|bike| bike.display_name.as_deref()),
+                            &crumbs,
+                            group,
+                            article,
+                            variant,
+                        );
+                        if id.is_empty() {
+                            row.result.compatible_bikes.clear();
+                        }
+                        // Details retain every membership even when only one category
+                        // context matches the query that brought this SKU into view.
+                        row.result.category_display_paths = paths
+                            .iter()
+                            .map(|path| {
+                                path.iter()
+                                    .map(|code| names.get(code).unwrap_or(code).as_str())
+                                    .collect::<Vec<_>>()
+                                    .join(" / ")
+                            })
+                            .collect();
+                        rows.push(row);
+                    }
+                }
+            }
+        }
+    }
 }
 
 fn collect_category_rows(
@@ -421,6 +513,9 @@ fn collect_product_group_rows(
     }
 }
 
+/// Resolve the selected SKU's wording before indexing or rendering the row.
+/// Legacy articles inherit product text, but explicit empty SKU compositions
+/// suppress that fallback so other kit options cannot leak into the result.
 fn search_row_from_variant(
     bike_variant_id: &str,
     bike_code: Option<&str>,
@@ -452,6 +547,7 @@ fn search_row_from_variant(
             code: bike_code.unwrap_or(bike_variant_id).to_owned(),
             display_name: bike_display_name.map(str::to_owned),
         }],
+        category_display_paths: vec![category_display_path.join(" / ")],
         category_path,
         category_display_path,
         product_group: ProductGroupSummary {
@@ -464,11 +560,17 @@ fn search_row_from_variant(
         article: ArticleSummary {
             code: article.code.clone(),
             display_name: article.display_name.clone(),
-            description: article.description.clone(),
+            description: variant
+                .and_then(|variant| variant.description.clone())
+                .or_else(|| article.description.clone()),
             stark_url: article.stark_url.clone(),
             image_urls: article.image_urls.clone(),
             kit_memberships: article.kit_memberships.clone(),
-            kit_contents: article.kit_contents.clone(),
+            kit_contents: variant
+                .and_then(|variant| variant.kit_contents.as_ref())
+                .unwrap_or(&article.kit_contents)
+                .clone(),
+            fitments: article.fitments.clone(),
         },
         variant: variant.map(article_variant_summary),
         match_feedback: None,
@@ -527,6 +629,11 @@ fn merge_result_rows(rows: Vec<MatchedSearchRow<'_>>) -> Vec<SearchResultRow> {
 }
 
 fn merge_compatible_bikes(target: &mut SearchResultRow, source: &SearchResultRow) {
+    for path in &source.category_display_paths {
+        if !target.category_display_paths.contains(path) {
+            target.category_display_paths.push(path.clone());
+        }
+    }
     for bike in &source.compatible_bikes {
         if !target
             .compatible_bikes
@@ -597,6 +704,14 @@ fn exact_part_searchable_fields(result: &SearchResultRow) -> Vec<String> {
     }
     fields.extend(result.article.kit_memberships.iter().cloned());
     fields.extend(result.article.kit_contents.iter().cloned());
+    for fitment in &result.article.fitments {
+        fields.extend(
+            fitment
+                .conditions
+                .iter()
+                .flat_map(|(key, value)| [key.clone(), value.clone()]),
+        );
+    }
     fields
 }
 
@@ -647,8 +762,20 @@ fn row_match(row: &SearchRow, query_tokens: &[String], compact_query: &str) -> O
         return None;
     }
 
+    // Upstream variant UUIDs and common SKU fragments can satisfy broad token
+    // matching. A complete SKU must stay ahead of those incidental matches.
+    let exact_sku = row
+        .result
+        .variant
+        .as_ref()
+        .and_then(|variant| variant.sku.as_deref())
+        .is_some_and(|sku| compact_search_text(sku) == compact_query);
     Some(SearchMatch {
-        rank: row.search_text.rank(query_tokens, compact_query),
+        rank: if exact_sku {
+            SearchRank::ExactSku
+        } else {
+            row.search_text.rank(query_tokens, compact_query)
+        },
         source: row.search_text.feedback_source(query_tokens, compact_query),
     })
 }
@@ -924,29 +1051,88 @@ mod tests {
     }
 
     #[test]
+    /// Search a SKU from the deployed asset so upstream removals cannot invalidate
+    /// the smoke test; fixed behavioral expectations belong in fixture tests.
     fn committed_catalog_builds_search_index() {
         let catalog =
             parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5")).unwrap();
         let index = SearchIndex::from_catalog(&catalog);
+        let all = index.search(&SearchRequest::default());
+        let sku = all
+            .rows
+            .iter()
+            .find_map(|row| row.variant.as_ref()?.sku.as_deref())
+            .expect("the deployed catalog must have a concrete SKU");
         let results = index.search(&SearchRequest {
-            query: "SMX1-TOOLBOX".to_owned(),
+            query: sku.to_owned(),
             selected_bike_variant_ids: Vec::new(),
         });
 
-        assert_eq!(index.bike_variants().len(), 4);
+        assert_eq!(index.bike_variants().len(), catalog.bike_variants.len());
         assert!(results.has_matches());
-        assert!(results.rows.iter().any(|row| {
-            row.variant
-                .as_ref()
-                .and_then(|variant| variant.sku.as_deref())
-                == Some("SMX1-TOOLBOX")
-        }));
+        assert_eq!(row_sku(&results.rows[0]), sku);
     }
 
     #[test]
-    fn committed_catalog_matches_parts_through_group_descriptions() {
+    /// Colour wording and components belong only to their SKU. An explicit empty
+    /// composition suppresses article fallback; older absent overrides inherit it.
+    fn selected_kit_wording_and_contents_do_not_leak_across_colours() {
         let catalog =
-            parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5")).unwrap();
+            parse_catalog_json5(include_str!("../../../tests/fixtures/shared-catalog.json"))
+                .unwrap();
+        let index = SearchIndex::from_catalog(&catalog);
+        for (query, sku, description, contents) in [
+            (
+                "body kit snow white",
+                "FIXTURE-KIT-W",
+                "Snow White panels",
+                "2 × Snow White panel",
+            ),
+            (
+                "body kit stark red",
+                "FIXTURE-KIT-R",
+                "Stark Red panels",
+                "2 × Stark Red panel",
+            ),
+        ] {
+            let results = index.search(&SearchRequest {
+                query: query.to_owned(),
+                selected_bike_variant_ids: Vec::new(),
+            });
+            assert_eq!(results.rows.len(), 1);
+            assert_eq!(row_sku(&results.rows[0]), sku);
+            assert_eq!(
+                results.rows[0].article.description.as_deref(),
+                Some(description)
+            );
+            assert_eq!(results.rows[0].article.kit_contents, [contents]);
+        }
+        let all = index.search(&SearchRequest::default());
+        let empty = all
+            .rows
+            .iter()
+            .find(|row| row_sku(row) == "FIXTURE-KIT-E")
+            .unwrap();
+        assert!(empty.article.kit_contents.is_empty());
+        let legacy = all
+            .rows
+            .iter()
+            .find(|row| row_sku(row) == "FIXTURE-KIT-L")
+            .unwrap();
+        assert_eq!(legacy.article.kit_contents, ["Legacy component"]);
+        assert_eq!(
+            legacy.article.description.as_deref(),
+            Some("Forest grey panels")
+        );
+    }
+
+    #[test]
+    /// Legacy snapshots still expose inherited assembly context during the format migration.
+    fn legacy_catalog_matches_parts_through_group_descriptions() {
+        let catalog = parse_catalog_json5(include_str!(
+            "../../../tests/fixtures/interaction-catalog.json"
+        ))
+        .unwrap();
         let index = SearchIndex::from_catalog(&catalog);
         let results = index.search(&SearchRequest {
             query: "wiring harness".to_owned(),
@@ -968,9 +1154,11 @@ mod tests {
     ///
     /// The article code identifies the intended result without coupling the ranking contract to
     /// Stark's mutable display copy.
-    fn committed_catalog_ranks_direct_part_matches_before_group_matches() {
-        let catalog =
-            parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5")).unwrap();
+    fn legacy_catalog_ranks_direct_part_matches_before_group_matches() {
+        let catalog = parse_catalog_json5(include_str!(
+            "../../../tests/fixtures/interaction-catalog.json"
+        ))
+        .unwrap();
         let index = SearchIndex::from_catalog(&catalog);
         let results = index.search(&SearchRequest {
             query: "wiring harness".to_owned(),
@@ -1130,8 +1318,98 @@ mod tests {
             .expect("fixture row should have a SKU")
     }
 
+    #[test]
+    /// Shared category membership must not duplicate SKUs or broaden conditional fitment.
+    fn shared_products_preserve_categories_conditions_and_unspecified_fitment() {
+        let mut catalog = fixture_catalog();
+        let mut group = disc_group();
+        group.articles.truncate(1);
+        group.category_paths = vec![vec!["brakes".to_owned()], vec!["race".to_owned()]];
+        group.articles[0].fitments = vec![Fitment {
+            bike_variant_id: "varg-ex".to_owned(),
+            conditions: std::collections::BTreeMap::from([(
+                "inverter".to_owned(),
+                "gen2".to_owned(),
+            )]),
+        }];
+        catalog.categories = ["brakes", "race"]
+            .into_iter()
+            .map(|code| CategoryNode {
+                code: code.to_owned(),
+                path: vec![code.to_owned()],
+                display_name: Some(code.to_owned()),
+                localization_key: None,
+                categories: Vec::new(),
+                product_groups: Vec::new(),
+            })
+            .collect();
+        catalog.catalog_trees.clear();
+        catalog.products = vec![group];
+        let index = SearchIndex::from_catalog(&catalog);
+        let all = index.search(&SearchRequest::default());
+        assert_eq!(all.rows.len(), 2);
+        assert_eq!(all.rows[0].category_display_paths, ["brakes", "race"]);
+        assert_eq!(
+            all.rows[0].article.fitments[0].conditions["inverter"],
+            "gen2"
+        );
+        let restricted = index.search(&SearchRequest {
+            query: "gen2".to_owned(),
+            selected_bike_variant_ids: vec!["varg-sm".to_owned()],
+        });
+        assert!(!restricted.has_matches());
+        assert!(
+            index
+                .search(&SearchRequest {
+                    query: "race".to_owned(),
+                    selected_bike_variant_ids: Vec::new()
+                })
+                .has_matches()
+        );
+        catalog.products[0].articles[0].fitments.clear();
+        let index = SearchIndex::from_catalog(&catalog);
+        let all = index.search(&SearchRequest::default());
+        assert_eq!(all.rows.len(), 2);
+        assert!(all.rows[0].compatible_bikes.is_empty());
+        assert!(
+            !index
+                .search(&SearchRequest {
+                    query: String::new(),
+                    selected_bike_variant_ids: vec!["varg-ex".to_owned()]
+                })
+                .has_matches()
+        );
+    }
+
+    #[test]
+    /// Full SKU lookup must beat an earlier product that merely contains the same SKU prefix.
+    fn exact_sku_outranks_partial_sku_matches() {
+        let mut catalog = fixture_catalog();
+        catalog.catalog_trees[0].categories[0]
+            .product_groups
+            .insert(
+                0,
+                ranking_group(
+                    "partial",
+                    None,
+                    "partial",
+                    Some("260mm disc kit"),
+                    None,
+                    "SMX1-BR-FW-260-KIT",
+                ),
+            );
+        let results = SearchIndex::from_catalog(&catalog).search(&SearchRequest {
+            query: "smx1brfw260".to_owned(),
+            selected_bike_variant_ids: Vec::new(),
+        });
+        assert_eq!(row_sku(&results.rows[0]), "SMX1-BR-FW-260");
+    }
+
+    /// A small legacy tree fixture keeps ranking tests independent of source refreshes.
     fn fixture_catalog() -> Catalog {
         Catalog {
+            categories: Vec::new(),
+            products: Vec::new(),
             metadata: CatalogMetadata {
                 schema_version: 1,
                 generated_at: "2026-05-26T12:34:56Z".to_owned(),
@@ -1195,6 +1473,7 @@ mod tests {
                         localization_key: None,
                         categories: Vec::new(),
                         product_groups: vec![ProductGroup {
+                            category_paths: Vec::new(),
                             code: "mirror_group".to_owned(),
                             display_name: Some("Mirror group".to_owned()),
                             description: None,
@@ -1203,6 +1482,7 @@ mod tests {
                             stark_url: None,
                             image_urls: Vec::new(),
                             articles: vec![Article {
+                                fitments: Vec::new(),
                                 code: "mirror".to_owned(),
                                 display_name: Some("Mirror".to_owned()),
                                 description: None,
@@ -1223,6 +1503,7 @@ mod tests {
 
     fn disc_group() -> ProductGroup {
         ProductGroup {
+            category_paths: Vec::new(),
             code: "disc_group".to_owned(),
             display_name: Some("Disc group".to_owned()),
             description: Some("group-only-description".to_owned()),
@@ -1231,6 +1512,7 @@ mod tests {
             stark_url: Some("https://www.starkfuture.com/us-US/parts/disc-group".to_owned()),
             image_urls: vec!["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/catalog/disc-group.png".to_owned()],
             articles: vec![Article {
+                fitments: Vec::new(),
                 code: "disc_260mm".to_owned(),
                 display_name: Some("260mm Disc".to_owned()),
                 description: Some("article-only-description".to_owned()),
@@ -1242,6 +1524,9 @@ mod tests {
                 kit_contents: vec!["mount bolt".to_owned()],
                 variants: vec![
                     ArticleVariant {
+                        description: None,
+                        description_localization_key: None,
+                        kit_contents: None,
                         code: "disc_260mm-standard".to_owned(),
                         sku: Some("SMX1-BR-FW-260".to_owned()),
                         stark_url: Some("https://www.starkfuture.com/us-US/parts/disc-260mm?sku=SMX1-BR-FW-260".to_owned()),
@@ -1264,6 +1549,7 @@ mod tests {
                     variant("disc_260mm-small", "SMX1-BR-FW-240"),
                 ],
             }, Article {
+                fitments: Vec::new(),
                 code: "brake_manual".to_owned(),
                 display_name: Some("Brake manual".to_owned()),
                 description: Some("Variantless reference article".to_owned()),
@@ -1287,6 +1573,7 @@ mod tests {
         sku: &str,
     ) -> ProductGroup {
         ProductGroup {
+            category_paths: Vec::new(),
             code: group_code.to_owned(),
             display_name: Some(group_code.to_owned()),
             description: group_description.map(str::to_owned),
@@ -1295,6 +1582,7 @@ mod tests {
             stark_url: None,
             image_urls: Vec::new(),
             articles: vec![Article {
+                fitments: Vec::new(),
                 code: article_code.to_owned(),
                 display_name: article_display_name.map(str::to_owned),
                 description: article_description.map(str::to_owned),
@@ -1311,6 +1599,9 @@ mod tests {
 
     fn variant(code: &str, sku: &str) -> ArticleVariant {
         ArticleVariant {
+            description: None,
+            description_localization_key: None,
+            kit_contents: None,
             code: code.to_owned(),
             sku: Some(sku.to_owned()),
             stark_url: None,

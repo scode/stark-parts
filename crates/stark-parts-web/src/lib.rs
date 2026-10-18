@@ -479,7 +479,9 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
         .display_name
         .clone()
         .unwrap_or_else(|| row.product_group.code.clone());
-    let category_path = if row.category_display_path.is_empty() {
+    let category_path = if !row.category_display_paths.is_empty() {
+        row.category_display_paths.join("; ")
+    } else if row.category_display_path.is_empty() {
         row.category_path.join(" / ")
     } else {
         row.category_display_path.join(" / ")
@@ -497,6 +499,7 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
     let link = first_stark_link(&row);
     let image = first_image_url(&row);
     let compatible_bikes = compatible_bikes_text(&row);
+    let restrictions = fitment_restrictions(&row);
 
     view! {
         <article class="result-card">
@@ -525,6 +528,9 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
                 {availability.map(|value| view! { <DetailItem label="Availability" value=value /> })}
             </dl>
             <dl class="detail-list">
+                {(!restrictions.is_empty()).then(|| view! {
+                    <DetailItem label="Fitment restrictions" value=restrictions />
+                })}
                 <DetailItem label="Code" value=row.article.code.clone() />
                 <DetailItem label="Category path" value=category_path />
                 {variant.as_ref().map(|variant| view! { <DetailItem label="Variant" value=variant.code.clone() /> })}
@@ -543,6 +549,9 @@ fn result_card(row: SearchResultRow) -> impl IntoView {
 
 fn compatible_bikes_text(row: &SearchResultRow) -> String {
     if row.compatible_bikes.is_empty() {
+        if row.bike_variant_id.is_empty() {
+            return "Compatibility unspecified".to_owned();
+        }
         return row
             .bike_display_name
             .clone()
@@ -559,6 +568,31 @@ fn compatible_bikes_text(row: &SearchResultRow) -> String {
         })
         .collect::<Vec<_>>()
         .join(", ")
+}
+
+/// Surface source conditions separately from broad model chips and product prose.
+fn fitment_restrictions(row: &SearchResultRow) -> String {
+    row.article
+        .fitments
+        .iter()
+        .filter(|fitment| !fitment.conditions.is_empty())
+        .map(|fitment| {
+            let label = row
+                .compatible_bikes
+                .iter()
+                .find(|bike| bike.id == fitment.bike_variant_id)
+                .and_then(|bike| bike.display_name.as_deref())
+                .unwrap_or(&fitment.bike_variant_id);
+            let conditions = fitment
+                .conditions
+                .iter()
+                .map(|(key, value)| format!("{}: {value}", key.replace('_', " ")))
+                .collect::<Vec<_>>()
+                .join(", ");
+            format!("{label} ({conditions})")
+        })
+        .collect::<Vec<_>>()
+        .join("; ")
 }
 
 #[component]
@@ -1112,10 +1146,13 @@ mod tests {
     use leptos::prelude::Owner;
     use stark_parts_catalog::parse_catalog_json5;
 
-    /// Load the committed fixture for server-rendered component tests without coupling release builds to its bytes.
+    /// Freeze interaction examples so source removals cannot change rendering contracts.
+    /// The committed snapshot is checked separately by search-index integration tests.
     fn load_catalog() -> Catalog {
-        parse_catalog_json5(include_str!("../../../catalog/stark-parts.json5"))
-            .expect("committed catalog must parse")
+        parse_catalog_json5(include_str!(
+            "../../../tests/fixtures/interaction-catalog.json"
+        ))
+        .expect("interaction catalog must parse")
     }
 
     fn minimal_result_row(
@@ -1133,6 +1170,7 @@ mod tests {
             }],
             category_path: vec!["category".to_owned()],
             category_display_path: vec!["Category".to_owned()],
+            category_display_paths: vec!["Category".to_owned()],
             match_feedback: None,
             product_group: search::ProductGroupSummary {
                 code: "group".to_owned(),
@@ -1149,6 +1187,7 @@ mod tests {
                 image_urls: Vec::new(),
                 kit_memberships: Vec::new(),
                 kit_contents: Vec::new(),
+                fitments: Vec::new(),
             },
             variant: Some(ArticleVariantSummary {
                 code: "variant_code".to_owned(),
@@ -1529,15 +1568,13 @@ mod tests {
     }
 
     #[test]
+    /// Virtualization needs an explicitly oversized result set, independent of catalog size.
     fn search_result_list_mounts_only_the_initial_virtual_window() {
-        let catalog = load_catalog();
-        let index = SearchIndex::from_catalog(&catalog);
-        let results = index.search(&SearchRequest {
-            query: "S".to_owned(),
-            selected_bike_variant_ids: Vec::new(),
-        });
-        let total_nodes = results.rows.len();
-        let html = search_result_list_html(results.rows);
+        let rows = (0..200)
+            .map(|index| minimal_result_row(Some("Part"), Some(&format!("SKU-{index}"))))
+            .collect::<Vec<_>>();
+        let total_nodes = rows.len();
+        let html = search_result_list_html(rows);
 
         assert!(total_nodes > RESULT_VIEWPORT_HEIGHT_PX / RESULT_ROW_HEIGHT_PX);
         assert!(

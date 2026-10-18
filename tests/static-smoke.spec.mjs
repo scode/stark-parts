@@ -1,6 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 test("static app restores URL state and searches without Stark API calls", async ({ page }) => {
+  // Fixed interaction examples keep catalog removals separate from UI regressions.
+  // A separate smoke test below loads the actual deployed snapshot.
+  await page.route("**/stark-parts.json5", (route) =>
+    route.fulfill({ path: "tests/fixtures/interaction-catalog.json", contentType: "application/json5" }),
+  );
   const catalogApiRequests = [];
   const staticCatalogRequests = [];
   const analyticsScriptRequests = [];
@@ -18,7 +23,7 @@ test("static app restores URL state and searches without Stark API calls", async
     if (url.endsWith("/stark-parts.json5")) {
       staticCatalogRequests.push(url);
     }
-    if (url.includes("api.starkfuture.com/v2/store") || url.includes("/v2/store/")) {
+    if (url.includes("api.starkfuture.com/") || url.includes("/product-catalog/")) {
       catalogApiRequests.push(url);
     }
   });
@@ -117,6 +122,51 @@ test("static app restores URL state and searches without Stark API calls", async
 
   expect(catalogApiRequests).toEqual([]);
   expect(staticCatalogRequests).toHaveLength(1);
+});
+
+test("deployed catalog remains searchable after an upstream refresh", async ({ page }) => {
+  const requests = [];
+  page.on("request", (request) => {
+    if (request.url().includes("api.starkfuture.com/")) requests.push(request.url());
+  });
+  await page.route("https://assets.starkfuture.com/**", (route) => route.abort());
+  await page.goto("/");
+  // Discover a current SKU instead of requiring a product to stay on sale forever.
+  const firstSku = page.locator(".result-meta").first();
+  await expect(firstSku).toBeVisible();
+  const sku = await firstSku.innerText();
+  expect(sku.trim()).not.toBe("");
+  await page.getByLabel("Search").fill(sku);
+  await expect(page.locator(".result-meta").first()).toHaveText(sku);
+  await page.locator(".result-row").first().hover();
+  await expect(page.locator(".result-detail-popover")).toContainText(sku);
+  expect(requests).toEqual([]);
+});
+
+test("shared kit SKUs show their own contents, links, and fitment restrictions", async ({ page }) => {
+  // Frozen schema-2 data covers behavior independently of current source membership.
+  await page.route("**/stark-parts.json5", (route) =>
+    route.fulfill({ path: "tests/fixtures/shared-catalog.json", contentType: "application/json5" }),
+  );
+  await page.goto("/?q=body+kit+snow+white");
+  await expect(page.locator(".result-row")).toHaveCount(1);
+  await expect(page.locator(".result-meta").first()).toHaveText("FIXTURE-KIT-W");
+  await page.locator(".result-row").first().hover();
+  const details = page.locator(".result-detail-popover");
+  await expect(details).toContainText("2 × Snow White panel");
+  await expect(details).not.toContainText("Forest grey");
+  await expect(details).toContainText("Fitment restrictions");
+  await expect(details).toContainText("gen2");
+  await expect(details.locator("a.stark-link")).toHaveAttribute(
+    "href",
+    "https://starkfuture.com/product/fixture-body-kit?variant=white",
+  );
+  await page.getByLabel("Search").fill("body kit stark red");
+  await expect(page.locator(".result-row")).toHaveCount(1);
+  await expect(page.locator(".result-meta").first()).toHaveText("FIXTURE-KIT-R");
+  await page.locator(".result-row").first().hover();
+  await expect(details).toContainText("2 × Stark Red panel");
+  await expect(details).not.toContainText("Snow White");
 });
 
 test("static app distinguishes a catalog load failure from empty search results", async ({ page }) => {

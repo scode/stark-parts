@@ -1,0 +1,781 @@
+{
+  "metadata": {
+    "schema_version": 1,
+    "generated_at": "2026-10-11T03:21:26.31825717Z",
+    "source": {
+      "api_base_url": "https://api.starkfuture.com/v2",
+      "country": "US",
+      "language": "en",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/store/categories"
+        },
+        {
+          "method": "GET",
+          "path": "/store/products"
+        },
+        {
+          "method": "GET",
+          "path": "/store/products/{code}"
+        }
+      ]
+    }
+  },
+  "bike_variants": [
+    {
+      "id": "varg-sm",
+      "code": "varg-sm",
+      "display_name": "VARG SM"
+    },
+    {
+      "id": "varg-ex",
+      "code": "varg-ex",
+      "display_name": "VARG EX"
+    },
+    {
+      "id": "varg-1.2",
+      "code": "varg-1.2",
+      "display_name": "VARG MX 1.2"
+    },
+    {
+      "id": "varg",
+      "code": "varg",
+      "display_name": "VARG MX 1.0"
+    }
+  ],
+  "catalog_trees": [
+    {
+      "bike_variant_id": "varg-sm",
+      "categories": [
+        {
+          "code": "accessories",
+          "path": [
+            "accessories"
+          ],
+          "display_name": "Accessories",
+          "localization_key": "spare_parts_category_accessories_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "1_toolbox",
+              "display_name": "Toolbox",
+              "description": "The toolbox contains the appropriate tools to completely dissemble and reassemble the Stark VARG and includes several torque wrenches, the smaller one from 2Nm to 20Nm while the larger from 20Nm to 100Nm+. The metal case and wooden interior and microfiber cloth means no plastic has been used.",
+              "localization_key": "spare_parts_product_1_toolbox_name",
+              "description_localization_key": "spare_parts_product_1_toolbox_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm/accessories/1_toolbox",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/260327_SpareParts___%40syovanvliet_89505_WEB.jpg"
+              ],
+              "articles": [
+                {
+                  "code": "1_toolbox_kamasa_stark_varg",
+                  "display_name": "Stark VARG toolbox",
+                  "localization_key": "spare_parts_product_1_toolbox_kamasa_stark_varg_name",
+                  "description_localization_key": "spare_parts_product_1_toolbox_kamasa_stark_varg_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/SMX1-Toolbox.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "1_toolbox_kamasa_stark_varg",
+                      "sku": "SMX1-TOOLBOX",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 49900,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "code": "trailsaver_axe",
+              "display_name": "Trailsaver axe",
+              "description": "The Trail Saver was developed to be the best axe in the world. It's 3D-printed in Titanium grade 23, a popular alloy in Aerospace and medical applications due to it's incredible mechanical properties and purity. It was developed to be the Christmas gift for the Stark team, but we decided to make a limited edition of 1000pcs.\n\nhttps://www.youtube.com/watch?v=cpRppUBbNVI",
+              "localization_key": "spare_parts_product_trailsaver_axe_name",
+              "description_localization_key": "spare_parts_product_trailsaver_axe_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm/accessories/trailsaver_axe",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/home_desktop.webp"
+              ],
+              "articles": [
+                {
+                  "code": "trailsaver_axe",
+                  "display_name": "Trailsaver axe",
+                  "description": "The Trail Saver was developed to be the best axe in the world. It's 3D-printed in Titanium grade 23, a popular alloy in Aerospace and medical applications due to it's incredible mechanical properties and purity. It was developed to be the Christmas gift for the Stark team, but we decided to make a limited edition of 1000pcs.\n\nhttps://www.youtube.com/watch?v=cpRppUBbNVI",
+                  "localization_key": "spare_parts_product_trailsaver_axe_name",
+                  "description_localization_key": "spare_parts_product_trailsaver_axe_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/home_desktop.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "trailsaver_axe",
+                      "sku": "SMX1-TRAILSAVER",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 29900,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "bodywork",
+          "path": [
+            "bodywork"
+          ],
+          "display_name": "Bodywork",
+          "localization_key": "spare_parts_category_bodywork_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "5_front_fender",
+              "display_name": "Front fender",
+              "description": "The front fender is made from Polypropylene and constructed in variable thickness for the best combination of flex and strength. The front fender comes in the three different Stark VARG colors: Stark Red, Forest Gray and Snow White.",
+              "localization_key": "spare_parts_product_5_front_fender_name",
+              "description_localization_key": "spare_parts_product_5_front_fender_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm/bodywork/5_front_fender",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/Front+fender.webp"
+              ],
+              "articles": [
+                {
+                  "code": "front_fender_sm",
+                  "display_name": "Front fender",
+                  "localization_key": "spare_parts_product_front_fender_sm_name",
+                  "description_localization_key": "spare_parts_product_front_fender_sm_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/251029_SM-SpareParts___%40syovanvliet_80696_HR.jpg"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "front_fender_sm-color.forest_grey",
+                      "sku": "SSM1-P-FF-01-G",
+                      "image_urls": [],
+                      "attributes": [
+                        {
+                          "code": "color",
+                          "option_code": "forest_grey",
+                          "option_display_name": "Forest grey",
+                          "option_localization_key": "spare_parts_attribute_option_forest_grey_name"
+                        }
+                      ],
+                      "price": {
+                        "amount_minor": 3800,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    },
+                    {
+                      "code": "front_fender_sm-color.stark_red",
+                      "sku": "SSM1-P-FF-01-R",
+                      "image_urls": [],
+                      "attributes": [
+                        {
+                          "code": "color",
+                          "option_code": "stark_red",
+                          "option_display_name": "Stark Red",
+                          "option_localization_key": "spare_parts_attribute_option_stark_red_name"
+                        }
+                      ],
+                      "price": {
+                        "amount_minor": 3800,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    },
+                    {
+                      "code": "front_fender_sm-color.snow_white",
+                      "sku": "SSM1-P-FF-01-SW",
+                      "image_urls": [],
+                      "attributes": [
+                        {
+                          "code": "color",
+                          "option_code": "snow_white",
+                          "option_display_name": "Snow White",
+                          "option_localization_key": "spare_parts_attribute_option_snow_white_name"
+                        }
+                      ],
+                      "price": {
+                        "amount_minor": 3800,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "electronics",
+          "path": [
+            "electronics"
+          ],
+          "display_name": "Electronics",
+          "localization_key": "spare_parts_category_electronics_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "43_wiring_harness",
+              "display_name": "Wiring harness",
+              "description": "This is the main harness for the bike that goes into the VCU, to the inverter to the map switch to the throttle. It is the nerve system of the bike and is sourced from Spanish electronic firm Apta. The wiring is different diameter depending on the role and purpose of each part.",
+              "localization_key": "spare_parts_product_43_wiring_harness_name",
+              "description_localization_key": "spare_parts_product_43_wiring_harness_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-sm/electronics/43_wiring_harness",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"
+              ],
+              "articles": [
+                {
+                  "code": "wiring_harness_ex",
+                  "display_name": "Wiring harness",
+                  "description": ".",
+                  "localization_key": "spare_parts_product_wiring_harness_ex_name",
+                  "description_localization_key": "spare_parts_product_wiring_harness_ex_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "wiring_harness_ex",
+                      "sku": "SEX1-WH-81",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 45999,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "code": "frame_front_cable_holder",
+                  "display_name": "Frame front cable holder",
+                  "localization_key": "spare_parts_product_frame_front_cable_holder_name",
+                  "description_localization_key": "spare_parts_product_frame_front_cable_holder_description",
+                  "image_urls": [
+                    "https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Placeholder.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "frame_front_cable_holder",
+                      "sku": "SEX1-WH-F-06",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 599,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bike_variant_id": "varg-ex",
+      "categories": [
+        {
+          "code": "accessories",
+          "path": [
+            "accessories"
+          ],
+          "display_name": "Accessories",
+          "localization_key": "spare_parts_category_accessories_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "1_toolbox",
+              "display_name": "Toolbox",
+              "description": "The toolbox contains the appropriate tools to completely dissemble and reassemble the Stark VARG and includes several torque wrenches, the smaller one from 2Nm to 20Nm while the larger from 20Nm to 100Nm+. The metal case and wooden interior and microfiber cloth means no plastic has been used.",
+              "localization_key": "spare_parts_product_1_toolbox_name",
+              "description_localization_key": "spare_parts_product_1_toolbox_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-ex/accessories/1_toolbox",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/260327_SpareParts___%40syovanvliet_89505_WEB.jpg"
+              ],
+              "articles": [
+                {
+                  "code": "1_toolbox_kamasa_stark_varg",
+                  "display_name": "Stark VARG toolbox",
+                  "localization_key": "spare_parts_product_1_toolbox_kamasa_stark_varg_name",
+                  "description_localization_key": "spare_parts_product_1_toolbox_kamasa_stark_varg_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/SMX1-Toolbox.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "1_toolbox_kamasa_stark_varg",
+                      "sku": "SMX1-TOOLBOX",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 49900,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "code": "trailsaver_axe",
+              "display_name": "Trailsaver axe",
+              "description": "The Trail Saver was developed to be the best axe in the world. It's 3D-printed in Titanium grade 23, a popular alloy in Aerospace and medical applications due to it's incredible mechanical properties and purity. It was developed to be the Christmas gift for the Stark team, but we decided to make a limited edition of 1000pcs.\n\nhttps://www.youtube.com/watch?v=cpRppUBbNVI",
+              "localization_key": "spare_parts_product_trailsaver_axe_name",
+              "description_localization_key": "spare_parts_product_trailsaver_axe_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-ex/accessories/trailsaver_axe",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/home_desktop.webp"
+              ],
+              "articles": [
+                {
+                  "code": "trailsaver_axe",
+                  "display_name": "Trailsaver axe",
+                  "description": "The Trail Saver was developed to be the best axe in the world. It's 3D-printed in Titanium grade 23, a popular alloy in Aerospace and medical applications due to it's incredible mechanical properties and purity. It was developed to be the Christmas gift for the Stark team, but we decided to make a limited edition of 1000pcs.\n\nhttps://www.youtube.com/watch?v=cpRppUBbNVI",
+                  "localization_key": "spare_parts_product_trailsaver_axe_name",
+                  "description_localization_key": "spare_parts_product_trailsaver_axe_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/home_desktop.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "trailsaver_axe",
+                      "sku": "SMX1-TRAILSAVER",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 29900,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "electronics",
+          "path": [
+            "electronics"
+          ],
+          "display_name": "Electronics",
+          "localization_key": "spare_parts_category_electronics_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "43_wiring_harness",
+              "display_name": "Wiring harness",
+              "description": "This is the main harness for the bike that goes into the VCU, to the inverter to the map switch to the throttle. It is the nerve system of the bike and is sourced from Spanish electronic firm Apta. The wiring is different diameter depending on the role and purpose of each part.",
+              "localization_key": "spare_parts_product_43_wiring_harness_name",
+              "description_localization_key": "spare_parts_product_43_wiring_harness_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-ex/electronics/43_wiring_harness",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"
+              ],
+              "articles": [
+                {
+                  "code": "wiring_harness_ex",
+                  "display_name": "Wiring harness",
+                  "description": ".",
+                  "localization_key": "spare_parts_product_wiring_harness_ex_name",
+                  "description_localization_key": "spare_parts_product_wiring_harness_ex_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "wiring_harness_ex",
+                      "sku": "SEX1-WH-81",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 45999,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "code": "frame_front_cable_holder",
+                  "display_name": "Frame front cable holder",
+                  "localization_key": "spare_parts_product_frame_front_cable_holder_name",
+                  "description_localization_key": "spare_parts_product_frame_front_cable_holder_description",
+                  "image_urls": [
+                    "https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Placeholder.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "frame_front_cable_holder",
+                      "sku": "SEX1-WH-F-06",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 599,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bike_variant_id": "varg-1.2",
+      "categories": [
+        {
+          "code": "accessories",
+          "path": [
+            "accessories"
+          ],
+          "display_name": "Accessories",
+          "localization_key": "spare_parts_category_accessories_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "1_toolbox",
+              "display_name": "Toolbox",
+              "description": "The toolbox contains the appropriate tools to completely dissemble and reassemble the Stark VARG and includes several torque wrenches, the smaller one from 2Nm to 20Nm while the larger from 20Nm to 100Nm+. The metal case and wooden interior and microfiber cloth means no plastic has been used.",
+              "localization_key": "spare_parts_product_1_toolbox_name",
+              "description_localization_key": "spare_parts_product_1_toolbox_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-1.2/accessories/1_toolbox",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/260327_SpareParts___%40syovanvliet_89505_WEB.jpg"
+              ],
+              "articles": [
+                {
+                  "code": "1_toolbox_kamasa_stark_varg",
+                  "display_name": "Stark VARG toolbox",
+                  "localization_key": "spare_parts_product_1_toolbox_kamasa_stark_varg_name",
+                  "description_localization_key": "spare_parts_product_1_toolbox_kamasa_stark_varg_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/SMX1-Toolbox.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "1_toolbox_kamasa_stark_varg",
+                      "sku": "SMX1-TOOLBOX",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 49900,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "code": "trailsaver_axe",
+              "display_name": "Trailsaver axe",
+              "description": "The Trail Saver was developed to be the best axe in the world. It's 3D-printed in Titanium grade 23, a popular alloy in Aerospace and medical applications due to it's incredible mechanical properties and purity. It was developed to be the Christmas gift for the Stark team, but we decided to make a limited edition of 1000pcs.\n\nhttps://www.youtube.com/watch?v=cpRppUBbNVI",
+              "localization_key": "spare_parts_product_trailsaver_axe_name",
+              "description_localization_key": "spare_parts_product_trailsaver_axe_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-1.2/accessories/trailsaver_axe",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/home_desktop.webp"
+              ],
+              "articles": [
+                {
+                  "code": "trailsaver_axe",
+                  "display_name": "Trailsaver axe",
+                  "description": "The Trail Saver was developed to be the best axe in the world. It's 3D-printed in Titanium grade 23, a popular alloy in Aerospace and medical applications due to it's incredible mechanical properties and purity. It was developed to be the Christmas gift for the Stark team, but we decided to make a limited edition of 1000pcs.\n\nhttps://www.youtube.com/watch?v=cpRppUBbNVI",
+                  "localization_key": "spare_parts_product_trailsaver_axe_name",
+                  "description_localization_key": "spare_parts_product_trailsaver_axe_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/home_desktop.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "trailsaver_axe",
+                      "sku": "SMX1-TRAILSAVER",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 29900,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "electronics",
+          "path": [
+            "electronics"
+          ],
+          "display_name": "Electronics",
+          "localization_key": "spare_parts_category_electronics_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "43_wiring_harness",
+              "display_name": "Wiring harness",
+              "description": "This is the main harness for the bike that goes into the VCU, to the inverter to the map switch to the throttle. It is the nerve system of the bike and is sourced from Spanish electronic firm Apta. The wiring is different diameter depending on the role and purpose of each part.",
+              "localization_key": "spare_parts_product_43_wiring_harness_name",
+              "description_localization_key": "spare_parts_product_43_wiring_harness_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg-1.2/electronics/43_wiring_harness",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"
+              ],
+              "articles": [
+                {
+                  "code": "wiring_harness_ex",
+                  "display_name": "Wiring harness",
+                  "description": ".",
+                  "localization_key": "spare_parts_product_wiring_harness_ex_name",
+                  "description_localization_key": "spare_parts_product_wiring_harness_ex_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "wiring_harness_ex",
+                      "sku": "SEX1-WH-81",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 45999,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bike_variant_id": "varg",
+      "categories": [
+        {
+          "code": "accessories",
+          "path": [
+            "accessories"
+          ],
+          "display_name": "Accessories",
+          "localization_key": "spare_parts_category_accessories_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "1_toolbox",
+              "display_name": "Toolbox",
+              "description": "The toolbox contains the appropriate tools to completely dissemble and reassemble the Stark VARG and includes several torque wrenches, the smaller one from 2Nm to 20Nm while the larger from 20Nm to 100Nm+. The metal case and wooden interior and microfiber cloth means no plastic has been used.",
+              "localization_key": "spare_parts_product_1_toolbox_name",
+              "description_localization_key": "spare_parts_product_1_toolbox_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg/accessories/1_toolbox",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/260327_SpareParts___%40syovanvliet_89505_WEB.jpg"
+              ],
+              "articles": [
+                {
+                  "code": "1_toolbox_kamasa_stark_varg",
+                  "display_name": "Stark VARG toolbox",
+                  "localization_key": "spare_parts_product_1_toolbox_kamasa_stark_varg_name",
+                  "description_localization_key": "spare_parts_product_1_toolbox_kamasa_stark_varg_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/SMX1-Toolbox.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "1_toolbox_kamasa_stark_varg",
+                      "sku": "SMX1-TOOLBOX",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 49900,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "code": "trailsaver_axe",
+              "display_name": "Trailsaver axe",
+              "description": "The Trail Saver was developed to be the best axe in the world. It's 3D-printed in Titanium grade 23, a popular alloy in Aerospace and medical applications due to it's incredible mechanical properties and purity. It was developed to be the Christmas gift for the Stark team, but we decided to make a limited edition of 1000pcs.\n\nhttps://www.youtube.com/watch?v=cpRppUBbNVI",
+              "localization_key": "spare_parts_product_trailsaver_axe_name",
+              "description_localization_key": "spare_parts_product_trailsaver_axe_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg/accessories/trailsaver_axe",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/home_desktop.webp"
+              ],
+              "articles": [
+                {
+                  "code": "trailsaver_axe",
+                  "display_name": "Trailsaver axe",
+                  "description": "The Trail Saver was developed to be the best axe in the world. It's 3D-printed in Titanium grade 23, a popular alloy in Aerospace and medical applications due to it's incredible mechanical properties and purity. It was developed to be the Christmas gift for the Stark team, but we decided to make a limited edition of 1000pcs.\n\nhttps://www.youtube.com/watch?v=cpRppUBbNVI",
+                  "localization_key": "spare_parts_product_trailsaver_axe_name",
+                  "description_localization_key": "spare_parts_product_trailsaver_axe_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/home_desktop.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "trailsaver_axe",
+                      "sku": "SMX1-TRAILSAVER",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 29900,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE_HQ"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "electronics",
+          "path": [
+            "electronics"
+          ],
+          "display_name": "Electronics",
+          "localization_key": "spare_parts_category_electronics_name",
+          "categories": [],
+          "product_groups": [
+            {
+              "code": "43_wiring_harness",
+              "display_name": "Wiring harness",
+              "description": "This is the main harness for the bike that goes into the VCU, to the inverter to the map switch to the throttle. It is the nerve system of the bike and is sourced from Spanish electronic firm Apta. The wiring is different diameter depending on the role and purpose of each part.",
+              "localization_key": "spare_parts_product_43_wiring_harness_name",
+              "description_localization_key": "spare_parts_product_43_wiring_harness_description",
+              "stark_url": "https://starkfuture.com/parts-and-accessories/spare-parts/varg/electronics/43_wiring_harness",
+              "image_urls": [
+                "https://assets.starkfuture.com/spare-parts-images/wiringharness.webp"
+              ],
+              "articles": [
+                {
+                  "code": "124_frame_cable_holder",
+                  "display_name": "Frame cable holder",
+                  "localization_key": "spare_parts_product_124_frame_cable_holder_name",
+                  "description_localization_key": "spare_parts_product_124_frame_cable_holder_description",
+                  "image_urls": [
+                    "https://assets.starkfuture.com/spare-parts-images/SMX1-WH-F-01.webp"
+                  ],
+                  "kit_memberships": [],
+                  "kit_contents": [],
+                  "variants": [
+                    {
+                      "code": "124_frame_cable_holder",
+                      "sku": "SMX1-WH-F-01",
+                      "image_urls": [],
+                      "attributes": [],
+                      "price": {
+                        "amount_minor": 599,
+                        "currency": "USD"
+                      },
+                      "availability": {
+                        "status": "AVAILABLE"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

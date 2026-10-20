@@ -6,7 +6,7 @@ Unofficial static search for the committed Stark parts catalog.
 
 ```sh
 rustup toolchain install
-cargo install trunk --version 0.21.14 --locked
+cargo install trunk --version 0.22.0 --locked --no-default-features --features update_check,native-tls
 npm run dev
 ```
 
@@ -77,6 +77,10 @@ runtime environment variables. A catalog-only deployment should restore the unch
 and WASM compilation. On a cache miss, `scripts/build-app.sh` installs the pinned Rust toolchain and Trunk version
 before running the normal release build. Cache availability is only an optimization: a miss must make the deployment
 slower, not change its output or cause it to fail.
+
+Build hosts need current OS CA certificates. Trunk 0.22.0 is installed with the same native TLS features as its upstream
+release binaries, so its HTTPS downloads use the host trust store. Turborepo 2.11.10 separately carries the eMudhra
+intermediate-key block and refreshed bundled roots; updating the OS does not replace an older Turbo binary's roots.
 
 Vercel currently expires Remote Cache artifacts seven days after upload. Expect an occasional full build even when only
 the catalog has changed. Application changes, build-input changes, deliberate cache clearing, and expired artifacts also

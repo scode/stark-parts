@@ -107,7 +107,7 @@ jobs:
           target: wasm32-unknown-unknown
       - uses: taiki-e/install-action@v2
         with:
-          tool: trunk@0.21.14
+          tool: trunk@0.22.0
       - run: npm ci
       - run: npm run build
       - run: npm run test:build-scripts

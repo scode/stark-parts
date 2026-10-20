@@ -17,8 +17,10 @@ fi
 export PATH="${CARGO_HOME:-$HOME/.cargo}/bin:$PATH"
 
 rustup toolchain install
-if [[ "$(trunk --version 2>/dev/null)" != "trunk 0.21.14" ]]; then
-  cargo install trunk --version 0.21.14 --locked
+if [[ "$(trunk --version 2>/dev/null)" != "trunk 0.22.0" ]]; then
+  # Match upstream's release binaries: native TLS uses the builder's maintained trust store instead of the older
+  # bundled Mozilla roots in Trunk 0.21's default Rustls build. The builder's OS certificates must also be current.
+  cargo install trunk --version 0.22.0 --locked --no-default-features --features update_check,native-tls
 fi
 
 NO_COLOR=true trunk build --release

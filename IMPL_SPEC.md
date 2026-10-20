@@ -78,6 +78,13 @@ storage. Vercel's install phase should install only npm dependencies; Rust and T
 task so a cache hit does not pay the application toolchain setup cost. Remote Cache artifacts currently expire seven
 days after upload, so an expired artifact must behave as an ordinary cache miss and rebuild the application.
 
+The pinned Rust toolchain must be at least 1.96.1, Trunk 0.22.0's declared minimum. Trunk source installs must select
+`update_check,native-tls` with default features disabled, matching upstream's release binaries. This keeps tool-download
+trust in the builder's maintained OS store rather than the bundled roots in the old Trunk 0.21 default build. Build
+hosts remain responsible for current OS CA certificates. Turborepo's separately bundled TLS verifier and roots must also
+include the eMudhra fix (2.11.10 or later); an OS update cannot repair an older Turbo binary. These are build-tool
+dependencies, independent of the catalog CLI's Cargo.lock.
+
 Vercel Web Analytics may be loaded from the static HTML entrypoint with Vercel's hosted analytics script. Basic
 page-view analytics should not add React, Next.js, or npm analytics package integration to the Leptos app.
 

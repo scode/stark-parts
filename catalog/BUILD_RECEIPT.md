@@ -1,6 +1,6 @@
 # Stark Catalog Build Receipt
 
-This catalog was generated from Stark's current US Parts storefront on 2026-11-03 UTC, using its unauthenticated v3
+This catalog was generated from Stark's current US Parts storefront on 2026-11-09 UTC, using its unauthenticated v3
 catalog API, including mounting hardware.
 
 Build command:
@@ -24,5 +24,5 @@ sha256sum catalog/stark-parts.json5
 Relevant output:
 
 ```text
-cddea3e9274db27d8f56839a7f31638aedf20a0ee47a108fb1d23b2e65157d80  catalog/stark-parts.json5
+8481b5cae98766bc75125506566acbc9780aa2f9ab790b602c6776687b479fb2  catalog/stark-parts.json5
 ```

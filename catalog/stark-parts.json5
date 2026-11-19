@@ -1,7 +1,7 @@
 {
   metadata: {
     schema_version: 2,
-    generated_at: "2026-11-14T02:31:08.416864628Z",
+    generated_at: "2026-11-19T03:16:09.118401693Z",
     source: {
       api_base_url: "https://api.starkfuture.com/v3/product-catalog",
       country: "US",
@@ -815,7 +815,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 9
+                quantity: 7
               },
               description_localization_key: "spare_parts_product_titanium-footpegs-pair-road-legal_variant_sex1-f-fp-ti-kt_description"
             }
@@ -852,7 +852,7 @@
       display_name: "Body kit SM",
       localization_key: "spare_parts_product_body-kit-sm_name",
       stark_url: "https://starkfuture.com/parts-and-accessories/product/body-kit-sm",
-      image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/2b589fff-d418-4786-9be5-b2d3ae0f5f33.jpg", "https://assets.starkfuture.com/spare-parts-images/AOP_3192.webp", "https://assets.starkfuture.com/spare-parts-images/admin/4b748662-f2fb-42c7-bf2e-b67e2a7326b9.jpg"],
+      image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/2b589fff-d418-4786-9be5-b2d3ae0f5f33.jpg", "https://assets.starkfuture.com/spare-parts-images/admin/4b748662-f2fb-42c7-bf2e-b67e2a7326b9.jpg", "https://assets.starkfuture.com/spare-parts-images/admin/669808cf-074d-43e0-8e04-5f35365ebd20.webp"],
       articles: [
         {
           code: "body-kit-sm",
@@ -861,7 +861,7 @@
           localization_key: "spare_parts_product_body-kit-sm_name",
           description_localization_key: "spare_parts_product_body-kit-sm_description",
           stark_url: "https://starkfuture.com/parts-and-accessories/product/body-kit-sm",
-          image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/2b589fff-d418-4786-9be5-b2d3ae0f5f33.jpg", "https://assets.starkfuture.com/spare-parts-images/AOP_3192.webp", "https://assets.starkfuture.com/spare-parts-images/admin/4b748662-f2fb-42c7-bf2e-b67e2a7326b9.jpg"],
+          image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/2b589fff-d418-4786-9be5-b2d3ae0f5f33.jpg", "https://assets.starkfuture.com/spare-parts-images/admin/4b748662-f2fb-42c7-bf2e-b67e2a7326b9.jpg", "https://assets.starkfuture.com/spare-parts-images/admin/669808cf-074d-43e0-8e04-5f35365ebd20.webp"],
           kit_memberships: [],
           kit_contents: [],
           variants: [
@@ -918,7 +918,7 @@
               code: "ce6c1575-0381-4c7f-90e7-0d77688114cd",
               sku: "SSM1-P-KT-R",
               stark_url: "https://starkfuture.com/parts-and-accessories/product/body-kit-sm?variant=ce6c1575-0381-4c7f-90e7-0d77688114cd",
-              image_urls: ["https://assets.starkfuture.com/spare-parts-images/AOP_3192.webp"],
+              image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/669808cf-074d-43e0-8e04-5f35365ebd20.webp"],
               attributes: [
                 {
                   code: "color",
@@ -988,8 +988,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 7
+                status: "AVAILABLE_HQ",
+                quantity: 394
               },
               description: "Refresh the look and protection of your Stark VARG MX with the complete factory body kit in Forest Grey. Made from durable, impact-resistant polypropylene, the kit is designed to withstand the demands of motocross riding while keeping the bike looking clean and race-ready.\n\nIts single-unit design lets you remove the complete bodywork together, rather than taking off each panel individually. This makes routine cleaning, maintenance, and access to the bike much faster and more convenient.\n\nDesigned as a direct factory replacement for the Stark VARG MX, with all body panels matched in Forest Grey.",
               description_localization_key: "spare_parts_product_body-kit-mx_variant_smx1-p-kt-g_description",
@@ -1013,8 +1013,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 15
+                status: "AVAILABLE_HQ",
+                quantity: 317
               },
               description_localization_key: "spare_parts_product_body-kit-mx_variant_smx1-p-kt-sw_description",
               kit_contents: ["1 × Front fender MX/EX (Snow White)", "1 × Front left spoiler (Snow White)", "1 × Front right spoiler (Snow White)", "1 × Rear fender MX (Snow White)", "1 × Rear mud flap", "1 × Rear spoiler MX (Snow White)"]
@@ -1038,7 +1038,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 34
+                quantity: 26
               },
               description: "Refresh the look and protection of your Stark VARG MX with the complete factory body kit in Stark Red. Made from durable, impact-resistant polypropylene, the kit is designed to withstand the demands of motocross riding while keeping the bike looking clean and race-ready.\n\nIts single-unit design lets you remove the complete bodywork together, rather than taking off each panel individually. This makes routine cleaning, maintenance, and access to the bike much faster and more convenient.\n\nDesigned as a direct factory replacement for the Stark VARG MX, with all body panels matched in Stark Red.",
               description_localization_key: "spare_parts_product_body-kit-mx_variant_smx1-p-kt-r_description",
@@ -1066,7 +1066,7 @@
       display_name: "Body kit EX",
       localization_key: "spare_parts_product_body-kit-ex_name",
       stark_url: "https://starkfuture.com/parts-and-accessories/product/body-kit-ex",
-      image_urls: ["https://assets.starkfuture.com/spare-parts-images/AOP_3192.webp", "https://assets.starkfuture.com/spare-parts-images/SEX1-P-KT-G.webp", "https://assets.starkfuture.com/spare-parts-images/admin/f7489b67-08ad-41b2-af3b-a23448ef59cd.jpg"],
+      image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/1975896d-04e2-445e-b471-c3dab719b48f.webp", "https://assets.starkfuture.com/spare-parts-images/admin/6dcc4dfb-0c93-4ace-a678-496c2bb7ce7e.webp", "https://assets.starkfuture.com/spare-parts-images/admin/ad2a7877-dc55-49df-ab7a-15cf06bd4150.webp"],
       articles: [
         {
           code: "body-kit-ex",
@@ -1075,7 +1075,7 @@
           localization_key: "spare_parts_product_body-kit-ex_name",
           description_localization_key: "spare_parts_product_body-kit-ex_description",
           stark_url: "https://starkfuture.com/parts-and-accessories/product/body-kit-ex",
-          image_urls: ["https://assets.starkfuture.com/spare-parts-images/AOP_3192.webp", "https://assets.starkfuture.com/spare-parts-images/SEX1-P-KT-G.webp", "https://assets.starkfuture.com/spare-parts-images/admin/f7489b67-08ad-41b2-af3b-a23448ef59cd.jpg"],
+          image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/1975896d-04e2-445e-b471-c3dab719b48f.webp", "https://assets.starkfuture.com/spare-parts-images/admin/6dcc4dfb-0c93-4ace-a678-496c2bb7ce7e.webp", "https://assets.starkfuture.com/spare-parts-images/admin/ad2a7877-dc55-49df-ab7a-15cf06bd4150.webp"],
           kit_memberships: [],
           kit_contents: [],
           variants: [
@@ -1083,7 +1083,7 @@
               code: "dc16ea90-dbcb-4726-9a51-38cd008e1eee",
               sku: "SEX1-P-KT-G",
               stark_url: "https://starkfuture.com/parts-and-accessories/product/body-kit-ex?variant=dc16ea90-dbcb-4726-9a51-38cd008e1eee",
-              image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1-P-KT-G.webp"],
+              image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/6dcc4dfb-0c93-4ace-a678-496c2bb7ce7e.webp"],
               attributes: [
                 {
                   code: "color",
@@ -1098,7 +1098,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 353
+                quantity: 321
               },
               description: "Refresh the look and protection of your Stark VARG EX with the complete factory body kit in Forest Grey. Made from durable, impact-resistant polypropylene, the kit is designed to withstand the demands of enduro riding while keeping the bike looking clean and race-ready.\n\nIts single-unit design lets you remove the complete bodywork together, rather than taking off each panel individually. This makes routine cleaning, maintenance, and access to the bike much faster and more convenient.\n\nDesigned as a direct factory replacement for the Stark VARG EX , with all body panels matched in Forest Grey.",
               description_localization_key: "spare_parts_product_body-kit-ex_variant_sex1-p-kt-g_description",
@@ -1108,7 +1108,7 @@
               code: "f9b95775-c32a-4601-b125-0da1218f6dc5",
               sku: "SEX1-P-KT-SW",
               stark_url: "https://starkfuture.com/parts-and-accessories/product/body-kit-ex?variant=f9b95775-c32a-4601-b125-0da1218f6dc5",
-              image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/f7489b67-08ad-41b2-af3b-a23448ef59cd.jpg"],
+              image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/ad2a7877-dc55-49df-ab7a-15cf06bd4150.webp"],
               attributes: [
                 {
                   code: "color",
@@ -1123,7 +1123,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 282
+                quantity: 255
               },
               description: "Refresh the look and protection of your Stark VARG EX with the complete factory body kit in Snow White. Made from durable, impact-resistant polypropylene, the kit is designed to withstand the demands of enduro riding while keeping the bike looking clean and race-ready.\n\nIts single-unit design lets you remove the complete bodywork together, rather than taking off each panel individually. This makes routine cleaning, maintenance, and access to the bike much faster and more convenient.\n\nDesigned as a direct factory replacement for the Stark VARG EX, with all body panels matched in Snow White.",
               description_localization_key: "spare_parts_product_body-kit-ex_variant_sex1-p-kt-sw_description",
@@ -1133,7 +1133,7 @@
               code: "6c20bf32-f158-4a8d-afa5-0f100fbf24ea",
               sku: "SEX1-P-KT-R",
               stark_url: "https://starkfuture.com/parts-and-accessories/product/body-kit-ex?variant=6c20bf32-f158-4a8d-afa5-0f100fbf24ea",
-              image_urls: ["https://assets.starkfuture.com/spare-parts-images/AOP_3192.webp"],
+              image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/1975896d-04e2-445e-b471-c3dab719b48f.webp"],
               attributes: [
                 {
                   code: "color",
@@ -1148,7 +1148,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 203
+                quantity: 197
               },
               description_localization_key: "spare_parts_product_body-kit-ex_variant_sex1-p-kt-r_description",
               kit_contents: ["1 × Front fender MX/EX (Stark Red)", "1 × Front left spoiler (Stark Red)", "1 × Front right spoiler (Stark Red)", "1 × Rear fender EX/SM (Black)", "1 × Rear mud flap", "1 × Rear spoiler EX/SM (Stark Red)"]
@@ -1258,7 +1258,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 34
+                quantity: 24
               },
               description_localization_key: "spare_parts_product_fork-cover-set_variant_smx1-sf-fg_description"
             }
@@ -1318,7 +1318,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 7
+                quantity: 5
               },
               description_localization_key: "spare_parts_product_steering-bearing-kit_variant_smx1-bearing-str-kt_description",
               kit_contents: ["2 × Steering head bearing", "1 × Steering head bearing lower seal", "1 × Top steering head bearing cover", "1 × Top steering head bearing o-ring", "1 × Top steering head bearing seal ring"]
@@ -1383,7 +1383,7 @@
                 }
               ],
               price: {
-                amount_minor: 2299,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -1444,7 +1444,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/240708_Suspension_Parts_13.jpg"],
               attributes: [],
               price: {
-                amount_minor: 2849,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -1510,7 +1510,7 @@
                 }
               ],
               price: {
-                amount_minor: 68999,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
@@ -1533,12 +1533,12 @@
                 }
               ],
               price: {
-                amount_minor: 59900,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 5
+                quantity: 4
               },
               description_localization_key: "spare_parts_product_kyb-rear-shock-ex_variant_sex1-sr-sh-03_description"
             },
@@ -1556,7 +1556,7 @@
                 }
               ],
               price: {
-                amount_minor: 68999,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
@@ -1610,7 +1610,7 @@
                 }
               ],
               price: {
-                amount_minor: 2099,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -1674,7 +1674,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 63
+                quantity: 59
               },
               description_localization_key: "spare_parts_product_front-wheel-bearing-kit_variant_smx1-fw-br-kt_description",
               kit_contents: ["2 × 6005 Hub bearing", "1 × Front hub inner bushing", "2 × Front wheel spacer", "1 × Hub interior centering bushing foam", "2 × SKF front and rear hub bearing seal ring"]
@@ -1790,8 +1790,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 76
+                status: "AVAILABLE",
+                quantity: 7
               },
               description_localization_key: "spare_parts_product_carbon-fiber-subframe-with-gold-logo_variant_smx1-p-cf-01_description"
             }
@@ -1849,8 +1849,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 98
+                status: "AVAILABLE",
+                quantity: 6
               },
               description_localization_key: "spare_parts_product_left-carbon-fiber-spoiler_variant_smx1-p-cf-02_description"
             }
@@ -1909,7 +1909,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 165
+                quantity: 155
               },
               description_localization_key: "spare_parts_product_rear-aluminium-subframe_variant_smx1-f-rw_description"
             }
@@ -1968,7 +1968,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 7
+                quantity: 6
               },
               description_localization_key: "spare_parts_product_right-carbon-fiber-spoiler_variant_smx1-p-cf-03_description"
             }
@@ -2087,7 +2087,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 51
+                quantity: 48
               },
               description_localization_key: "spare_parts_product_side-stand-kit_variant_smx1-f-ss-kt_description",
               kit_contents: ["1 × M5x16 Top and bottom spring mount bolt", "1 × M8x20 bolt", "1 × M8x24 T45 Countersunk bolt", "1 × Side stand bolt o-ring", "1 × Side stand bracket", "1 × Side stand inner spring", "1 × Side stand leg", "1 × Side stand leg spring bracket", "1 × Side stand outer spring", "1 × Side stand pressed bushing", "1 × Side stand rubber strap", "1 × Side stand short bushing", "1 × Side stand spring plate bushing", "1 × Spring mount washer"]
@@ -2264,12 +2264,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-SR-S-03.webp"],
               attributes: [],
               price: {
-                amount_minor: 1390,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 140
+                quantity: 127
               },
               description_localization_key: "spare_parts_product_aluminium-side-cap_variant_smx1-sr-s-03_description"
             }
@@ -2331,12 +2331,12 @@
                 }
               ],
               price: {
-                amount_minor: 2490,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 2
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_front-plate-ex-sm_variant_sex1-p-np-01-sw_description"
             },
@@ -2354,12 +2354,12 @@
                 }
               ],
               price: {
-                amount_minor: 2899,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 7
+                quantity: 6
               },
               description_localization_key: "spare_parts_product_front-plate-ex-sm_variant_sex1-p-np-01-vw_description"
             }
@@ -2417,7 +2417,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 117
+                quantity: 103
               },
               description_localization_key: "spare_parts_product_number-plate-mx_variant_smx1-p-np-01-sw_description"
             },
@@ -2440,7 +2440,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 53
+                quantity: 54
               },
               description_localization_key: "spare_parts_product_number-plate-mx_variant_smx1-p-np-01-vw_description"
             }
@@ -2498,7 +2498,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 30
+                quantity: 28
               },
               description: "Left handguard for Stark VARG — Forest grey.\nDesigned to protects the rider's hands from branches, rocks, and roost while riding off-road.\nCompatible with Varg MX 1.2 and VARG EX.\nAlso compatible with VARG MX 1.0 equipped with either a rear foot brake or a rear hand brake with a Brembo master cylinder. Not compatible with the MX 1.0 equipped with a Formula rear master cylinder.\n\nAvailable in three colors:\n- Forest Grey: matches the Forest Grey body kit\n- Snow White: matches the Snow White Body kit\n- Varg White: matches the Stark Red body kit (same color as the front plate)",
               description_localization_key: "spare_parts_product_left-handguard_variant_sex1-hb-hg-02-g_description"
@@ -2522,7 +2522,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 100
+                quantity: 96
               },
               description_localization_key: "spare_parts_product_left-handguard_variant_sex1-hb-hg-02-sw_description"
             },
@@ -2544,8 +2544,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 60
+                status: "AVAILABLE",
+                quantity: 10
               },
               description: "Left handguard for Stark VARG — Varg White.\nDesigned to protects the rider's hands from branches, rocks, and roost while riding off-road.\nCompatible with Varg MX 1.2 and VARG EX.\nAlso compatible with VARG MX 1.0 equipped with either a rear foot brake or a rear hand brake with a Brembo master cylinder. Not compatible with the MX 1.0 equipped with a Formula rear master cylinder.\n\nAvailable in three colors:\n- Forest Grey: matches the Forest Grey body kit\n- Snow White: matches the Snow White Body kit\n- Varg White: matches the Stark Red body kit (same color as the front plate)",
               description_localization_key: "spare_parts_product_left-handguard_variant_sex1-hb-hg-02-vw_description"
@@ -2604,7 +2604,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 27
+                quantity: 25
               },
               description: "Right handguard for Stark VARG — Forest Grey.\nDesigned to protects the rider's hands from branches, rocks, and roost while riding off-road.\nCompatible with Varg MX 1.2 and VARG EX.\nAlso compatible with VARG MX 1.0 equipped with either a rear foot brake or a rear hand brake with a Brembo master cylinder. Not compatible with the MX 1.0 equipped with a Formula rear master cylinder.\n\nAvailable in three colors:\n- Forest Grey: matches the Forest Grey body kit\n- Snow White: matches the Snow White Body kit\n- Varg White: matches the Stark Red body kit (same color as the front plate)",
               description_localization_key: "spare_parts_product_right-handguard_variant_sex1-hb-hg-01-g_description"
@@ -2627,8 +2627,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 2
+                status: "AVAILABLE_HQ",
+                quantity: 93
               },
               description_localization_key: "spare_parts_product_right-handguard_variant_sex1-hb-hg-01-sw_description"
             },
@@ -2650,8 +2650,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 69
+                status: "AVAILABLE",
+                quantity: 9
               },
               description: "Right handguard for Stark VARG — Varg White.\nDesigned to protects the rider's hands from branches, rocks, and roost while riding off-road.\nCompatible with Varg MX 1.2 and VARG EX.\nAlso compatible with VARG MX 1.0 equipped with either a rear foot brake or a rear hand brake with a Brembo master cylinder. Not compatible with the MX 1.0 equipped with a Formula rear master cylinder.\n\nAvailable in three colors:\n- Forest Grey: matches the Forest Grey body kit\n- Snow White: matches the Snow White Body kit\n- Varg White: matches the Stark Red body kit (same color as the front plate)",
               description_localization_key: "spare_parts_product_right-handguard_variant_sex1-hb-hg-01-vw_description"
@@ -2703,7 +2703,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 86
+                quantity: 82
               },
               description_localization_key: "spare_parts_product_left-handguard-bracket-for-rear-foot-brake-setup_variant_sex1-hb-hg-03_description"
             }
@@ -2761,7 +2761,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 16
+                quantity: 11
               },
               description_localization_key: "spare_parts_product_front-fender-mx-ex_variant_smx1-p-ff-01-g_description"
             },
@@ -2783,8 +2783,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 6
+                status: "AVAILABLE_HQ",
+                quantity: 65
               },
               description_localization_key: "spare_parts_product_front-fender-mx-ex_variant_smx1-p-ff-01-sw_description"
             },
@@ -2807,7 +2807,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 14
+                quantity: 13
               },
               description_localization_key: "spare_parts_product_front-fender-mx-ex_variant_smx1-p-ff-01-r_description"
             }
@@ -2969,7 +2969,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 9
+                quantity: 8
               },
               description_localization_key: "spare_parts_product_front-left-spoiler_variant_smx1-p-fs-01-g_description"
             },
@@ -2992,7 +2992,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 23
+                quantity: 22
               },
               description_localization_key: "spare_parts_product_front-left-spoiler_variant_smx1-p-fs-01-sw_description"
             },
@@ -3081,7 +3081,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 39
+                quantity: 31
               },
               description_localization_key: "spare_parts_product_front-right-spoiler_variant_smx1-p-fs-02-g_description"
             },
@@ -3104,7 +3104,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 11
+                quantity: 10
               },
               description_localization_key: "spare_parts_product_front-right-spoiler_variant_smx1-p-fs-02-sw_description"
             },
@@ -3188,12 +3188,12 @@
                 }
               ],
               price: {
-                amount_minor: 2990,
+                amount_minor: 3449,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 9
+                quantity: 8
               },
               description: "Replacement rear fender for Stark VARG EX and SM — Black.\nAvailable in 3 colors to match your body kit.\nThe black fender goes with the red body kit.\n\nThe M6 clip nuts are not included and can be taken from the original spoiler or purchased separately.\nThe central screw below the rear fender isn't included and is used to attach the seat to the subframe.",
               description_localization_key: "spare_parts_product_rear-fender-ex-sm_variant_sex1-p-rf-02-b_description"
@@ -3217,7 +3217,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 18
+                quantity: 17
               },
               description: "Replacement rear fender for Stark VARG EX and SM — Forest Grey.\nAvailable in 3 colors to match your body kit.\nThe black fender goes with the red body kit.\n\nThe M6 clip nuts are not included and can be taken from the original spoiler or purchased separately.\nThe central screw below the rear fender isn't included and is used to attach the seat to the subframe.",
               description_localization_key: "spare_parts_product_rear-fender-ex-sm_variant_sex1-p-rf-02-g_description"
@@ -3299,7 +3299,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 9
+                quantity: 8
               },
               description_localization_key: "spare_parts_product_rear-fender-mx_variant_smx1-p-rf-02-g_description"
             },
@@ -3322,7 +3322,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 7
+                quantity: 2
               },
               description: "Replacement rear fender for Stark VARG MX — Snow White.\nAvailable in 3 colors to match your body kit.\n\nThe central screw below the rear fender isn't included and is used to attach the seat to the subframe.",
               description_localization_key: "spare_parts_product_rear-fender-mx_variant_smx1-p-rf-02-sw_description"
@@ -3346,7 +3346,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 8
+                quantity: 6
               },
               description: "Replacement rear fender for Stark VARG MX — Stark Red.\nAvailable in 3 colors to match your body kit.\n\nThe central screw below the rear fender isn't included and is used to attach the seat to the subframe.",
               description_localization_key: "spare_parts_product_rear-fender-mx_variant_smx1-p-rf-02-r_description"
@@ -3446,7 +3446,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 11
+                quantity: 9
               },
               description_localization_key: "spare_parts_product_homologation-license-plate-holder-ex_variant_sex1-p-rf-05_description"
             }
@@ -3496,12 +3496,12 @@
                 }
               ],
               price: {
-                amount_minor: 2900,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 4
+                quantity: 3
               },
               description_localization_key: "spare_parts_product_bottom-fender-rubber_variant_sex1-p-rf-04-b_description"
             },
@@ -3519,7 +3519,7 @@
                 }
               ],
               price: {
-                amount_minor: 3349,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -3542,7 +3542,7 @@
                 }
               ],
               price: {
-                amount_minor: 3349,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -3597,8 +3597,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 1
+                status: "AVAILABLE_HQ",
+                quantity: 259
               },
               description_localization_key: "spare_parts_product_rear-mud-flap_variant_smx1-p-rf-03_description"
             }
@@ -3718,7 +3718,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 24
+                quantity: 14
               },
               description_localization_key: "spare_parts_product_m6x12-5-t30-collar-bolt_variant_std-sc-0004_description"
             }
@@ -3791,7 +3791,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 35
+                quantity: 32
               },
               description_localization_key: "spare_parts_product_m8x30-bolt-2_variant_i14583-080030-10_description"
             }
@@ -3855,12 +3855,12 @@
                 }
               ],
               price: {
-                amount_minor: 3449,
+                amount_minor: 5990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 12
+                quantity: 11
               },
               description: "Rear spoiler for Stark VARG MX 1.0 and 1.2 — Forest Grey.\nDirect factory replacement in the original finish.\nAvailable in 3 colors to match your body kit.",
               description_localization_key: "spare_parts_product_rear-spoiler-mx_variant_smx1-p-rf-01-g_description"
@@ -3879,12 +3879,12 @@
                 }
               ],
               price: {
-                amount_minor: 3449,
+                amount_minor: 5990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 12
+                quantity: 10
               },
               description: "Rear spoiler for Stark VARG MX 1.0 and 1.2 — Snow White.\nDirect factory replacement in the original finish.\nAvailable in 3 colors to match your body kit.",
               description_localization_key: "spare_parts_product_rear-spoiler-mx_variant_smx1-p-rf-01-sw_description"
@@ -3903,7 +3903,7 @@
                 }
               ],
               price: {
-                amount_minor: 3449,
+                amount_minor: 5990,
                 currency: "USD"
               },
               availability: {
@@ -3961,12 +3961,12 @@
                 }
               ],
               price: {
-                amount_minor: 2990,
+                amount_minor: 3449,
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 58
+                status: "AVAILABLE",
+                quantity: 1
               },
               description: "Rear spoiler for Stark VARG EX and SM — Forest grey.\nDirect factory replacement in the original finish.\nAvailable in 3 colors to match your body kit.",
               description_localization_key: "spare_parts_product_rear-spoiler-ex-sm_variant_sex1-p-rf-01-g_description"
@@ -3990,7 +3990,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 55
+                quantity: 47
               },
               description_localization_key: "spare_parts_product_rear-spoiler-ex-sm_variant_sex1-p-rf-01-sw_description"
             },
@@ -4013,7 +4013,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 43
+                quantity: 42
               },
               description: "Rear spoiler for Stark VARG EX and SM — Stark Red.\nDirect factory replacement in the original finish.\nAvailable in 3 colors to match your body kit.",
               description_localization_key: "spare_parts_product_rear-spoiler-ex-sm_variant_sex1-p-rf-01-r_description"
@@ -4065,7 +4065,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 5
+                quantity: 3
               },
               description_localization_key: "spare_parts_product_skid-plate-foam_variant_smx1-f-sk-02_description"
             }
@@ -4155,7 +4155,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 44
+                quantity: 43
               },
               description_localization_key: "spare_parts_product_original-seat_variant_smx1-p-st-b_description"
             }
@@ -4262,7 +4262,7 @@
                 }
               ],
               price: {
-                amount_minor: 69890,
+                amount_minor: 80999,
                 currency: "USD"
               },
               availability: {
@@ -4320,7 +4320,7 @@
                 }
               ],
               price: {
-                amount_minor: 69900,
+                amount_minor: 80999,
                 currency: "USD"
               },
               availability: {
@@ -4347,8 +4347,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 7
+                status: "AVAILABLE",
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_kyb-front-fork-leg-right-ex_variant_sex1-sf-ff-03-r_description"
             },
@@ -4366,7 +4366,7 @@
                 }
               ],
               price: {
-                amount_minor: 69900,
+                amount_minor: 80999,
                 currency: "USD"
               },
               availability: {
@@ -4421,7 +4421,7 @@
                 }
               ],
               price: {
-                amount_minor: 69890,
+                amount_minor: 80999,
                 currency: "USD"
               },
               availability: {
@@ -4467,7 +4467,7 @@
                 }
               ],
               price: {
-                amount_minor: 69890,
+                amount_minor: 80999,
                 currency: "USD"
               },
               availability: {
@@ -4611,8 +4611,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 1
+                status: "AVAILABLE_HQ",
+                quantity: 6
               },
               description_localization_key: "spare_parts_product_kyb-front-fork-leg-left-ex_variant_sex1-sf-ff-03-l_description"
             },
@@ -4630,7 +4630,7 @@
                 }
               ],
               price: {
-                amount_minor: 69900,
+                amount_minor: 80999,
                 currency: "USD"
               },
               availability: {
@@ -4737,8 +4737,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 4
+                status: "AVAILABLE_HQ",
+                quantity: 39
               },
               description_localization_key: "spare_parts_product_grip-seat-jet-black_variant_smx1-p-st-b-rb_description"
             }
@@ -4856,7 +4856,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 59
+                quantity: 55
               },
               description_localization_key: "spare_parts_product_rk-mxu-uw-ring-gold-520-chain-114t_variant_smx1-rw-t-01_description"
             }
@@ -4916,7 +4916,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 16
+                quantity: 10
               },
               description_localization_key: "spare_parts_product_nylon-skid-plate_variant_smx1-f-sk-01_description"
             }
@@ -5130,7 +5130,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 25
+                quantity: 24
               },
               description_localization_key: "spare_parts_product_top-chain-protector_variant_sex1-sr-s-10_description"
             }
@@ -5237,7 +5237,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-SR-0004.webp"],
               attributes: [],
               price: {
-                amount_minor: 120,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -5301,7 +5301,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 32
+                quantity: 21
               },
               description_localization_key: "spare_parts_product_swingarm-rear-brake-hose-guide_variant_smx1-sr-s-07_description"
             }
@@ -5361,7 +5361,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 206
+                quantity: 187
               },
               description_localization_key: "spare_parts_product_rear-chain-guide_variant_sex1-sr-s-09_description"
             }
@@ -5417,7 +5417,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 20
+                quantity: 19
               },
               description_localization_key: "spare_parts_product_side-stand-leg-spring-bracket_variant_smx1-f-ss-09_description"
             }
@@ -5471,7 +5471,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/I7380T-050016-08.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -5649,7 +5649,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-F-SS-04.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -6050,7 +6050,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 19
+                quantity: 17
               },
               description_localization_key: "spare_parts_product_steering-lock-barrel_variant_sex1-f-sl-01_description"
             }
@@ -6217,7 +6217,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 27
+                quantity: 24
               },
               description_localization_key: "spare_parts_product_rear-disc-guard_variant_sex1-sr-dg-01_description"
             }
@@ -6372,12 +6372,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-F-A-14.webp"],
               attributes: [],
               price: {
-                amount_minor: 349,
+                amount_minor: 590,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 13
+                quantity: 12
               },
               description_localization_key: "spare_parts_product_m11x1-5-lower-frame-to-motor-shaft-nut_variant_smx1-f-a-14_description"
             }
@@ -6437,7 +6437,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 115
+                quantity: 103
               },
               description_localization_key: "spare_parts_product_handlebar-bushing_variant_smx1-sf-tc-16_description"
             }
@@ -6497,7 +6497,7 @@
                 }
               ],
               price: {
-                amount_minor: 68999,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
@@ -6520,7 +6520,7 @@
                 }
               ],
               price: {
-                amount_minor: 68999,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
@@ -6543,7 +6543,7 @@
                 }
               ],
               price: {
-                amount_minor: 68999,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
@@ -6599,7 +6599,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 61
+                quantity: 57
               },
               description_localization_key: "spare_parts_product_front-sprocket-washer_variant_smx1-pt-gb-10_description"
             }
@@ -6662,7 +6662,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6685,7 +6685,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6708,7 +6708,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6731,7 +6731,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6754,7 +6754,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6777,7 +6777,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6800,7 +6800,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6823,12 +6823,12 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 31
+                quantity: 30
               },
               description_localization_key: "spare_parts_product_shock-spring-50mm-36-n-mm_variant_120535000401_description"
             },
@@ -6846,7 +6846,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6869,7 +6869,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6892,7 +6892,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6915,12 +6915,12 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 1
+                status: "NOT_AVAILABLE",
+                quantity: 0
               },
               description_localization_key: "spare_parts_product_shock-spring-50mm-36-n-mm_variant_120535000901_description"
             },
@@ -6938,7 +6938,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -6961,7 +6961,7 @@
                 }
               ],
               price: {
-                amount_minor: 16999,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
@@ -7028,7 +7028,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 11
+                quantity: 10
               },
               description_localization_key: "spare_parts_product_front-sprocket-ex-mx-sm_variant_smx1-pt-gb-12_description"
             },
@@ -7050,8 +7050,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 105
+                status: "AVAILABLE",
+                quantity: 12
               },
               description: "The Stark-designed front sprocket features a dedicated mud-expelling groove that helps clear excess mud and debris during off-road riding.\nMade from hardened chromoly steel, it is built for the demands of motocross and enduro use.\n\nComputer-optimized for a compact, lightweight design, the sprocket is available in four sizes to tailor the VARG’s gearing to your riding style.\n\nStandard gearing:\n\nVARG MX: 14/47\nVARG EX: 12/48\nVARG SM: 15/47\n\nImportant: Changing the front sprocket size affects the acceleration/top-speed balance: smaller sprockets provide quicker acceleration, while larger sprockets increase top speed.\nChanging the homologated sprocket size will void the road homologation of the Stark VARG EX or SM.",
               description_localization_key: "spare_parts_product_front-sprocket-ex-mx-sm_variant_smx1-pt-gb-13_description"
@@ -7075,7 +7075,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 30
+                quantity: 26
               },
               description_localization_key: "spare_parts_product_front-sprocket-ex-mx-sm_variant_smx1-pt-gb-14_description"
             },
@@ -7098,7 +7098,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 10
+                quantity: 9
               },
               description_localization_key: "spare_parts_product_front-sprocket-ex-mx-sm_variant_smx1-pt-gb-15_description"
             }
@@ -7157,8 +7157,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 204
+                status: "AVAILABLE",
+                quantity: 4
               },
               description_localization_key: "spare_parts_product_fork-service-kit_variant_119994801901_description"
             }
@@ -7217,7 +7217,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 2
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_front-tire-metzeler-mce-6-days-extreme-medium-80-100-21_variant_sex1-fw-t-21me_description"
             }
@@ -7280,7 +7280,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 22
+                quantity: 21
               },
               description_localization_key: "spare_parts_product_rear-tire-metzeler-mce-6-days-extreme-140-80-18_variant_sex1-rw-t-18mem_description"
             },
@@ -7470,7 +7470,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 7
+                quantity: 5
               },
               description_localization_key: "spare_parts_product_front-tire-pirelli-scorpion-mx32-mid-soft-80-100-21_variant_smx1-fw-t-21mx_description"
             }
@@ -7522,7 +7522,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 18
+                quantity: 16
               },
               description_localization_key: "spare_parts_product_rear-tire-pirelli-scorpion-mx32-mid-soft-110-90-19_variant_smx1-rw-t-19mx_description"
             }
@@ -7569,7 +7569,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/240708_Suspension_Parts_10.jpg"],
               attributes: [],
               price: {
-                amount_minor: 1599,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -7628,7 +7628,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/120105200201.webp"],
               attributes: [],
               price: {
-                amount_minor: 1690,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
@@ -7810,8 +7810,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 163
+                status: "AVAILABLE",
+                quantity: 5
               },
               description_localization_key: "spare_parts_product_x-grip-ev-0-front-mousse-90-90-21_variant_sex1-fw-it-21m_description"
             }
@@ -7960,8 +7960,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 1
+                status: "NOT_AVAILABLE",
+                quantity: 0
               },
               description_localization_key: "spare_parts_product_21-mx-front-wheel_variant_smx1-fw-21_description"
             }
@@ -8012,7 +8012,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 32
+                quantity: 30
               },
               description_localization_key: "spare_parts_product_21-front-wheel_variant_sex1-fw-21_description"
             }
@@ -8117,8 +8117,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 33
+                status: "AVAILABLE",
+                quantity: 3
               },
               description_localization_key: "spare_parts_product_x-grip-eh-2-rear-enduro-mousse-140-80-18_variant_sex1-rw-it-18m_description"
             }
@@ -8317,7 +8317,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 3
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_18-rear-wheel_variant_sex1-rw-18_description"
             }
@@ -8468,7 +8468,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 2
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_rear-tire-pirelli-diablo-rosso-iv-140-70-17-66h_variant_ssm1-rw-t-17pr_description"
             }
@@ -8564,7 +8564,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 55
+                quantity: 49
               },
               description_localization_key: "spare_parts_product_x-grip-eh-2-rear-mousse-110-90-19_variant_smx1-rw-it-19m_description"
             }
@@ -8616,7 +8616,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 24
+                quantity: 23
               },
               description_localization_key: "spare_parts_product_mousse-lubricant-gel_variant_sex1-w-gel-t_description"
             }
@@ -8674,12 +8674,12 @@
                 }
               ],
               price: {
-                amount_minor: 3900,
+                amount_minor: 3990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 167
+                quantity: 160
               },
               description_localization_key: "spare_parts_product_rear-sprocket_variant_smx1-rw-t-47_description"
             },
@@ -8697,7 +8697,7 @@
                 }
               ],
               price: {
-                amount_minor: 3900,
+                amount_minor: 3990,
                 currency: "USD"
               },
               availability: {
@@ -8720,7 +8720,7 @@
                 }
               ],
               price: {
-                amount_minor: 3900,
+                amount_minor: 3990,
                 currency: "USD"
               },
               availability: {
@@ -8785,7 +8785,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 39
+                quantity: 36
               },
               description_localization_key: "spare_parts_product_chain-master-link_variant_smx1-rw-t-02_description"
             }
@@ -8959,12 +8959,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/240708_Suspension_Parts_16.jpg"],
               attributes: [],
               price: {
-                amount_minor: 2549,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 92
+                quantity: 91
               },
               description_localization_key: "spare_parts_product_fork-oil-seal_variant_110014800502_description"
             }
@@ -9070,7 +9070,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/240708_Suspension_Parts_11.jpg"],
               attributes: [],
               price: {
-                amount_minor: 2150,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -9129,7 +9129,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/240708_Suspension_Parts_15.jpg"],
               attributes: [],
               price: {
-                amount_minor: 1800,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
@@ -9299,7 +9299,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/110770000401.webp"],
               attributes: [],
               price: {
-                amount_minor: 570,
+                amount_minor: 590,
                 currency: "USD"
               },
               availability: {
@@ -9363,7 +9363,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 2
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_wheel-shaft-lock-nut_variant_smx1-fw-s-03_description"
             }
@@ -9419,7 +9419,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 111
+                quantity: 99
               },
               description_localization_key: "spare_parts_product_handguard-top-mounting-bolt_variant_std-sc-0038_description"
             }
@@ -9469,12 +9469,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SEX1-HB-HG-03_topclamp.png"],
               attributes: [],
               price: {
-                amount_minor: 349,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 80
+                quantity: 73
               },
               description_localization_key: "spare_parts_product_left-hanguard-bracket-top-clamp_variant_sex1-hb-hg-04_description"
             }
@@ -9520,12 +9520,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/d9af7fbb-0281-45f3-93f7-d2583f9a7bd7.jpg"],
               attributes: [],
               price: {
-                amount_minor: 170,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 1008
+                quantity: 1006
               },
               description_localization_key: "spare_parts_product_m6x16-bolt_variant_i14580-060016-08_description"
             }
@@ -9586,7 +9586,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 49
+                quantity: 45
               },
               description_localization_key: "spare_parts_product_6x18-t30-delta-screw-for-homologation-license-plate-holder_variant_std-sc-0040_description"
             }
@@ -9783,7 +9783,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 11
+                quantity: 8
               },
               description_localization_key: "spare_parts_product_wheel_bearings_variant_smx1-bearing-fwrw-kt_description"
             }
@@ -10037,7 +10037,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 28
+                quantity: 18
               },
               description_localization_key: "spare_parts_product_body-kit-bolt-kit_variant_smx1-bolt-body-kt_description",
               kit_contents: ["11 × 6X12 T30 Delta screw", "4 × M6 Bushing", "2 × M6 clip nut for horn and rear spoiler", "11 × M6x12.5 T30 collar bolt", "4 × M6x16 bolt", "4 × M6x20 Homologation kit bolt", "1 × M6x32 T30 Collar bolt for seat base", "4 × M8 Plastic washer", "2 × M8x30 Bolt"]
@@ -10158,7 +10158,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 692
+                quantity: 669
               },
               description_localization_key: "spare_parts_product_m6x6-t30-collar-bolt_variant_std-sc-0003_description"
             }
@@ -10220,7 +10220,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 270
+                quantity: 267
               },
               description_localization_key: "spare_parts_product_side-stand-rubber-strap_variant_smx1-f-ss-03_description"
             }
@@ -10339,7 +10339,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 1165
+                quantity: 1109
               },
               description_localization_key: "spare_parts_product_m8x24-t45-countersunk-bolt_variant_std-sc-0009_description"
             }
@@ -10518,7 +10518,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 584
+                quantity: 583
               },
               description_localization_key: "spare_parts_product_m8x20-bolt_variant_i14580-080020-08_description"
             }
@@ -10641,7 +10641,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 9
+                quantity: 8
               },
               description_localization_key: "spare_parts_product_side-stand-outer-spring_variant_smx1-f-ss-05_description"
             }
@@ -10695,7 +10695,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-SR-PR-03.webp"],
               attributes: [],
               price: {
-                amount_minor: 1149,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
@@ -11545,7 +11545,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 8
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_footpeg-pin_variant_smx1-f-fp-03_description"
             }
@@ -11605,7 +11605,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 59
+                quantity: 54
               },
               description_localization_key: "spare_parts_product_rear-chain-guide-2_variant_smx1-sr-s-09_description"
             }
@@ -11657,7 +11657,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 18
+                quantity: 17
               },
               description_localization_key: "spare_parts_product_m6x32-t30-collar-bolt-for-seat-base_variant_std-sc-0007_description"
             }
@@ -11716,8 +11716,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 854
+                status: "AVAILABLE",
+                quantity: 50
               },
               description_localization_key: "spare_parts_product_rubber-strap_variant_std-rb-0007_description"
             }
@@ -11773,7 +11773,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-WH-F-02.webp"],
               attributes: [],
               price: {
-                amount_minor: 599,
+                amount_minor: 990,
                 currency: "USD"
               },
               availability: {
@@ -11898,7 +11898,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 30
+                quantity: 28
               },
               description_localization_key: "spare_parts_product_cap-rubber-plug-for-motor-case-front-hole-and-swingarm_variant_std-ca-0001_description"
             }
@@ -12189,7 +12189,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 132
+                quantity: 131
               },
               description_localization_key: "spare_parts_product_m8x30-bolt_variant_i14580-080030-08_description"
             }
@@ -12310,7 +12310,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 4
+                quantity: 3
               },
               description_localization_key: "spare_parts_product_right-side-plate_variant_smx1-f-a-02_description"
             }
@@ -12369,7 +12369,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 4
+                quantity: 2
               },
               description_localization_key: "spare_parts_product_left-side-plate_variant_smx1-f-a-01_description"
             }
@@ -12487,7 +12487,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 61
+                quantity: 57
               },
               description_localization_key: "spare_parts_product_side-stand-bracket_variant_smx1-f-ss-13_description"
             }
@@ -12991,7 +12991,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-WH-F-03.webp"],
               attributes: [],
               price: {
-                amount_minor: 599,
+                amount_minor: 690,
                 currency: "USD"
               },
               availability: {
@@ -13089,12 +13089,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/3aa169ac-b61f-4ef4-a1fc-b0f0a18c5682.webp"],
               attributes: [],
               price: {
-                amount_minor: 130,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 28
+                quantity: 22
               },
               description_localization_key: "spare_parts_product_m6x20-homologation-kit-bolt_variant_i14580-060020-08_description"
             }
@@ -13320,7 +13320,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/424b36dc-e0f7-4472-9c3c-998e8a83c4a6.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -13431,7 +13431,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-BE-0001.webp"],
               attributes: [],
               price: {
-                amount_minor: 1390,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
@@ -13492,12 +13492,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-SC-0019-LOWER_REAR_FENDER.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 94
+                quantity: 88
               },
               description_localization_key: "spare_parts_product_6x12-t30-delta-screw_variant_std-sc-0019_description"
             }
@@ -13552,12 +13552,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/D6923-080125-10.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 75
+                quantity: 69
               },
               description_localization_key: "spare_parts_product_m8x1-25-rear-sprocket-nut_variant_d6923-080125-10_description"
             }
@@ -13617,7 +13617,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 196
+                quantity: 184
               },
               description_localization_key: "spare_parts_product_skid-plate-screw_variant_std-sc-0008_description"
             }
@@ -13676,7 +13676,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 103
+                quantity: 102
               },
               description_localization_key: "spare_parts_product_m8-plastic-washer_variant_i7092-080-pl_description"
             }
@@ -14038,7 +14038,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 89
+                quantity: 84
               },
               description_localization_key: "spare_parts_product_m10x56-bolt_variant_smx1-sr-ra-09_description"
             }
@@ -14217,7 +14217,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 63
+                quantity: 59
               },
               description_localization_key: "spare_parts_product_handlebar-silentblock_variant_smx1-sf-tc-15_description"
             }
@@ -14436,7 +14436,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-F-A-13.webp"],
               attributes: [],
               price: {
-                amount_minor: 1190,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
@@ -14501,7 +14501,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 3
+                quantity: 2
               },
               description_localization_key: "spare_parts_product_m10x1-5-sw-13-nut_variant_std-nu-0001_description"
             }
@@ -14982,7 +14982,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 6
+                quantity: 5
               },
               description_localization_key: "spare_parts_product_front-wheel-shaft_variant_smx1-fw-s-01_description"
             }
@@ -15088,8 +15088,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 1
+                status: "AVAILABLE_HQ",
+                quantity: 302
               },
               description_localization_key: "spare_parts_product_18-rear-wheel-spoke_variant_smx1-rw-r-07_description"
             }
@@ -15140,7 +15140,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 328
+                quantity: 326
               },
               description_localization_key: "spare_parts_product_21-front-wheel-spokes_variant_smx1-fw-r-05_description"
             }
@@ -15246,7 +15246,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 24
+                quantity: 21
               },
               description_localization_key: "spare_parts_product_m8x35-front-wheel-shaft-clamp-bolt_variant_i14580-080035-08_description"
             }
@@ -15347,12 +15347,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-RIM-160X21.webp"],
               attributes: [],
               price: {
-                amount_minor: 14949,
+                amount_minor: 14900,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 5
+                quantity: 4
               },
               description_localization_key: "spare_parts_product_1-6x21-front-rim_variant_smx1-rim-160x21_description"
             }
@@ -15403,7 +15403,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 11
+                quantity: 6
               },
               description_localization_key: "spare_parts_product_rear-wheel-spacer_variant_smx1-rw-h-03_description"
             }
@@ -15461,8 +15461,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 3
+                status: "AVAILABLE_HQ",
+                quantity: 195
               },
               description_localization_key: "spare_parts_product_front-wheel-spacer-2_variant_smx1-fw-h-03_description"
             }
@@ -15517,7 +15517,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 5
+                quantity: 3
               },
               description_localization_key: "spare_parts_product_rear-wheel-rim-lock-2-15_variant_smx1-rw-r-03_description"
             }
@@ -15567,7 +15567,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/453553bc-82a2-47fb-a330-eb5865b700f9.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -15685,7 +15685,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/713bd5ba-c0c6-405b-9c54-19c57390588d.webp"],
               attributes: [],
               price: {
-                amount_minor: 6799,
+                amount_minor: 9990,
                 currency: "USD"
               },
               availability: {
@@ -15745,7 +15745,7 @@
               image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Placeholder.webp"],
               attributes: [],
               price: {
-                amount_minor: 350,
+                amount_minor: 990,
                 currency: "USD"
               },
               availability: {
@@ -15810,7 +15810,7 @@
                 }
               ],
               price: {
-                amount_minor: 68999,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
@@ -15833,7 +15833,7 @@
                 }
               ],
               price: {
-                amount_minor: 68999,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
@@ -15856,7 +15856,7 @@
                 }
               ],
               price: {
-                amount_minor: 68999,
+                amount_minor: 65900,
                 currency: "USD"
               },
               availability: {
@@ -15902,7 +15902,7 @@
               image_urls: ["https://s3-stark-production.s3.eu-west-1.amazonaws.com/spare-parts-images/Placeholder.webp"],
               attributes: [],
               price: {
-                amount_minor: 90,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -16118,12 +16118,12 @@
                 }
               ],
               price: {
-                amount_minor: 2299,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 112
+                quantity: 108
               },
               description_localization_key: "spare_parts_product_kyb-02m-fork-oil-1l_variant_130070010101_description"
             }
@@ -16309,8 +16309,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 16
+                status: "AVAILABLE",
+                quantity: 2
               },
               description: "KYB 48 mm fork spring for Stark VARG.\n4.4 N/mm — soft setting for the Stark VARG EX.\nChoose the spring rate that matches your weight and riding style for ideal suspension balance.\nStiffer springs (higher N/mm) suit heavier riders or aggressive riding; softer springs improve small-bump compliance for lighter riders.\nHigh-tensile steel alloy holds up where the terrain gets rough, and an anti-corrosion finish keeps them intact through wet, muddy, punishing conditions.\nBuilt for serious off-road.\n\nOriginal spring settings:\n\nVARG EX Soft: 4.4 N/mm\nVARG EX Medium: 4.6 N/mm\nVARG EX Hard: 4.8 N/mm\nVARG MX Soft: 4.6 N/mm\nVARG MX Medium: 4.8 N/mm\nVARG MX Hard:  5 N/mm",
               description_localization_key: "spare_parts_product_fork-spring_variant_110054809901_description"
@@ -16488,12 +16488,12 @@
                 }
               ],
               price: {
-                amount_minor: 9075,
+                amount_minor: 9990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 182
+                quantity: 181
               },
               description_localization_key: "spare_parts_product_kyb-02m-fork-oil-5l_variant_130070050101_description"
             }
@@ -16752,7 +16752,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 21
+                quantity: 20
               },
               description_localization_key: "spare_parts_product_power-tube-21_variant_smx1-fw-it-21t_description"
             }
@@ -16808,7 +16808,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 25
+                quantity: 24
               },
               description_localization_key: "spare_parts_product_power-tube-18-19_variant_smx1-rw-it-18t_description"
             }
@@ -16864,7 +16864,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 60
+                quantity: 59
               },
               description_localization_key: "spare_parts_product_rear_wheel_bearing_kit_variant_smx1-rw-br-kt_description"
             }
@@ -16923,7 +16923,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 770
+                quantity: 748
               },
               description_localization_key: "spare_parts_product_spoke-nut_variant_smx1-fw-r-06_description"
             }
@@ -16977,8 +16977,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 2
+                status: "AVAILABLE_HQ",
+                quantity: 33
               },
               description_localization_key: "spare_parts_product_21-rim-band_variant_smx1-fw-r-02_description"
             }
@@ -17033,7 +17033,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 15
+                quantity: 12
               },
               description_localization_key: "spare_parts_product_18-rim-band_variant_smx1-rw-r-02-18_description"
             }
@@ -17084,7 +17084,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 32
+                quantity: 31
               },
               description_localization_key: "spare_parts_product_19-rim-band_variant_smx1-rw-r-02_description"
             }
@@ -17648,12 +17648,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-FW-R-03.webp"],
               attributes: [],
               price: {
-                amount_minor: 1749,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 7
+                quantity: 5
               },
               description_localization_key: "spare_parts_product_1-60-rim-lock_variant_smx1-fw-r-03_description"
             }
@@ -17703,12 +17703,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-FW-R-04-FRONT_WHEEL.webp"],
               attributes: [],
               price: {
-                amount_minor: 290,
+                amount_minor: 490,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 16
+                quantity: 14
               },
               description_localization_key: "spare_parts_product_rim-lock-nut_variant_smx1-fw-r-04_description"
             }
@@ -17763,7 +17763,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 9
+                quantity: 7
               },
               description_localization_key: "spare_parts_product_rim-lock-nut-washer_variant_smx1-fw-r-07_description"
             }
@@ -18173,7 +18173,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 39
+                quantity: 38
               },
               description_localization_key: "spare_parts_product_complete_rear_hand_brake_kit_ex_variant_sex1-br-rwhb-kt_description"
             }
@@ -18275,7 +18275,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 6
+                quantity: 5
               },
               description_localization_key: "spare_parts_product_rear-hand-brake-conversion-kit_variant_smx1-br-rwh2b-kt_description",
               kit_contents: ["1 × Banjo bolt for hand master cylinder and front caliper", "1 × Brembo rear hand brake hose", "1 × Rear hand brake master cylinder"]
@@ -18432,12 +18432,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-RWHB-08.webp"],
               attributes: [],
               price: {
-                amount_minor: 2900,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 38
+                quantity: 33
               },
               description_localization_key: "spare_parts_product_brembo-rear-hand-brake-lever_variant_smx1-br-rwhb-08_description"
             }
@@ -18497,7 +18497,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 12
+                quantity: 9
               },
               description_localization_key: "spare_parts_product_varg-sm-brembo-front-brake-pads_variant_ssm1-br-fw-04_description"
             }
@@ -18544,7 +18544,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 152
+                quantity: 123
               },
               description_localization_key: "spare_parts_product_35_front_brake_pads_variant_smx1-br-fw-04_description"
             }
@@ -18594,12 +18594,12 @@
               image_urls: ["https://s3-stark-prod.s3.eu-central-1.amazonaws.com/spare-parts-images/SMX1-BR-RWF-04.webp"],
               attributes: [],
               price: {
-                amount_minor: 3590,
+                amount_minor: 3990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 102
+                quantity: 82
               },
               description_localization_key: "spare_parts_product_46_rear_brake_pads_variant_smx1-br-rwf-04_description"
             }
@@ -18654,12 +18654,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/3a258ac9-ff2e-40dd-a020-bf4b9de2bfb6.webp"],
               attributes: [],
               price: {
-                amount_minor: 3500,
+                amount_minor: 4990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 55
+                quantity: 47
               },
               description_localization_key: "spare_parts_product_front_brake_lever_sm_variant_ssm1-br-fw-07_description"
             }
@@ -18706,7 +18706,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 324
+                quantity: 316
               },
               description_localization_key: "spare_parts_product_galfer-rear-brake-pads_variant_smx1-br-rwf-06_description"
             }
@@ -18812,7 +18812,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 32
+                quantity: 29
               },
               description_localization_key: "spare_parts_product_39_brake_disc_260mm_variant_smx1-br-fw-260_description"
             }
@@ -18867,7 +18867,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 9
+                quantity: 8
               },
               description_localization_key: "spare_parts_product_brembo-front-brake-disc-260mm_variant_smx1-br-fw-260-x_description"
             }
@@ -18922,7 +18922,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 34
+                quantity: 28
               },
               description_localization_key: "spare_parts_product_brembo-rear-brake-disc-220mm_variant_smx1-br-rw-220-x_description"
             }
@@ -18981,7 +18981,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 1425
+                quantity: 1380
               },
               description_localization_key: "spare_parts_product_m6x12-brake-disc-bolt_variant_i14580-060012-08-p_description"
             }
@@ -19036,7 +19036,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 28
+                quantity: 18
               },
               description_localization_key: "spare_parts_product_front-disc-guard_variant_sex1-sf-dg-01_description"
             }
@@ -19092,7 +19092,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 20
+                quantity: 17
               },
               description_localization_key: "spare_parts_product_front-disc-guard-holder_variant_sex1-sf-dg-81_description"
             }
@@ -19142,12 +19142,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-FW-01.webp"],
               attributes: [],
               price: {
-                amount_minor: 20900,
+                amount_minor: 18900,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 69
+                quantity: 65
               },
               description_localization_key: "spare_parts_product_front-brake-caliper_variant_smx1-br-fw-01_description"
             }
@@ -19197,12 +19197,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-RWF-01.webp"],
               attributes: [],
               price: {
-                amount_minor: 12890,
+                amount_minor: 13900,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 296
+                quantity: 293
               },
               description_localization_key: "spare_parts_product_rear-brake-caliper_variant_smx1-br-rw-01_description"
             }
@@ -19261,7 +19261,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 24
+                quantity: 23
               },
               description_localization_key: "spare_parts_product_banjo-bolt-for-hand-master-cylinder-and-front-caliper_variant_smx1-br-fw-06_description"
             }
@@ -19321,7 +19321,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 61
+                quantity: 45
               },
               description_localization_key: "spare_parts_product_front_brake_caliper_bolt_sm_variant_std-sc-0034_description"
             }
@@ -19476,7 +19476,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 4
+                quantity: 3
               },
               description_localization_key: "spare_parts_product_rear-hand-brake-master-cylinder_variant_smx1-br-rwhb-02_description"
             }
@@ -19527,7 +19527,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 7
+                quantity: 4
               },
               description_localization_key: "spare_parts_product_front-brake-switch_variant_sex1-br-fw-80_description"
             }
@@ -19623,7 +19623,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 66
+                quantity: 63
               },
               description_localization_key: "spare_parts_product_rear-hand-brake-switch_variant_sex1-br-rwh-80_description"
             }
@@ -19726,7 +19726,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 16
+                quantity: 14
               },
               description_localization_key: "spare_parts_product_front-brake-switch-screw_variant_ssm1-br-fw-13_description"
             }
@@ -19768,12 +19768,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/reservoir%20bracket.webp"],
               attributes: [],
               price: {
-                amount_minor: 1800,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 38
+                quantity: 36
               },
               description_localization_key: "spare_parts_product_front-brake-reservoir-bracket_variant_ssm1-br-fw-06_description"
             }
@@ -19820,7 +19820,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 17
+                quantity: 15
               },
               description_localization_key: "spare_parts_product_front-brake-reservoir-nut_variant_ssm1-br-fw-12_description"
             }
@@ -19867,7 +19867,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 18
+                quantity: 17
               },
               description_localization_key: "spare_parts_product_front-brake-reservoir-rubber_variant_ssm1-br-fw-11_description"
             }
@@ -19914,7 +19914,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 18
+                quantity: 16
               },
               description_localization_key: "spare_parts_product_front-brake-reservoir-screw_variant_ssm1-br-fw-10_description"
             }
@@ -20011,12 +20011,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/7492bb17-985e-4a00-9027-88945ad63be8.webp"],
               attributes: [],
               price: {
-                amount_minor: 2899,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 82
+                quantity: 71
               },
               description_localization_key: "spare_parts_product_front-brake-lever_variant_smx1-br-fw-08_description"
             }
@@ -20118,7 +20118,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-FW-08.webp"],
               attributes: [],
               price: {
-                amount_minor: 2900,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -20329,7 +20329,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 107
+                quantity: 105
               },
               description_localization_key: "spare_parts_product_rear-foot-brake-switch_variant_sex1-br-rwf-80_description"
             }
@@ -20435,7 +20435,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-SC-0016.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -20608,12 +20608,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-RWHB-03_1.webp"],
               attributes: [],
               price: {
-                amount_minor: 5649,
+                amount_minor: 5990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 43
+                quantity: 42
               },
               description_localization_key: "spare_parts_product_brembo-rear-hand-brake-hose_variant_smx1-br-rwhb-03_description"
             }
@@ -20721,7 +20721,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 365
+                quantity: 358
               },
               description_localization_key: "spare_parts_product_banjo-bolt-and-brake-line-copper-washer_variant_smx1-br-fw-05_description"
             }
@@ -20835,12 +20835,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-BR-LS-01.webp"],
               attributes: [],
               price: {
-                amount_minor: 2899,
+                amount_minor: 4990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 129
+                quantity: 127
               },
               description_localization_key: "spare_parts_product_rear-brake-pedal_variant_smx1-br-ls-01_description"
             }
@@ -20899,7 +20899,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 74
+                quantity: 73
               },
               description_localization_key: "spare_parts_product_m10x30-brake-pedal-bolt_variant_std-sc-0017_description"
             }
@@ -20958,7 +20958,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 59
+                quantity: 58
               },
               description_localization_key: "spare_parts_product_6000-2rsh-rear-foot-brake-pedal-bearing_variant_std-be-0009_description"
             }
@@ -21018,7 +21018,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 24
+                quantity: 23
               },
               description_localization_key: "spare_parts_product_rear-brake-pedal-tip_variant_smx1-br-ls-03_description"
             }
@@ -21310,7 +21310,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-BE-0010.webp"],
               attributes: [],
               price: {
-                amount_minor: 1499,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
@@ -21374,7 +21374,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 18
+                quantity: 14
               },
               description_localization_key: "spare_parts_product_gen-1-to-gen-2-powertrain-unit-conversion-kit_variant_smx1-pt-14z-g2-kt_description",
               kit_contents: ["1 × Gen 2 Powertrain unit", "1 × Gen 2 Top tube frame cable holder", "1 × Gen 2 Wiring harness"]
@@ -21424,7 +21424,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 24
+                quantity: 32
               },
               description_localization_key: "spare_parts_product_gen-2-powertrain-unit_variant_smx1-pt-14z-g2_description"
             }
@@ -21534,7 +21534,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 240
+                quantity: 238
               },
               description_localization_key: "spare_parts_product_gear-oil-drain-plug_variant_smx1-pt-cs-15_description"
             }
@@ -21588,12 +21588,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/6a1bf37c-66b8-40fc-aa70-a01d4d0789c6.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 918
+                quantity: 895
               },
               description_localization_key: "spare_parts_product_gear-oil-drain-plug-washer_variant_d7603a-10016015-cu_description"
             }
@@ -21647,12 +21647,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/7c7da666-e72b-4dc4-863f-f0fc91656f5d.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 151
+                quantity: 147
               },
               description_localization_key: "spare_parts_product_gear-oil-level-bolt-washer_variant_d7603a-05009010-cu_description"
             }
@@ -21706,12 +21706,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/7562b6c8-0350-4cef-acf7-119fee3168c8.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 185
+                quantity: 184
               },
               description_localization_key: "spare_parts_product_m5x8-gear-oil-level-bolt_variant_i14580-050008-08_description"
             }
@@ -21770,7 +21770,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 16
+                quantity: 11
               },
               description_localization_key: "spare_parts_product_right-motor-cover_variant_smx1-pt-cs-02_description"
             }
@@ -21829,7 +21829,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 26
+                quantity: 23
               },
               description_localization_key: "spare_parts_product_right-motor-cover-gasket_variant_smx1-pt-cs-06_description"
             }
@@ -22107,7 +22107,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-SR-0005_1.webp"],
               attributes: [],
               price: {
-                amount_minor: 599,
+                amount_minor: 690,
                 currency: "USD"
               },
               availability: {
@@ -22166,7 +22166,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-PT-GB-04.webp"],
               attributes: [],
               price: {
-                amount_minor: 2549,
+                amount_minor: 4990,
                 currency: "USD"
               },
               availability: {
@@ -22526,7 +22526,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 49
+                quantity: 51
               },
               description_localization_key: "spare_parts_product_6-5-kwh-battery_variant_smx1-b-100s4p-kt_description"
             }
@@ -22573,7 +22573,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 60
+                quantity: 73
               },
               description_localization_key: "spare_parts_product_7-2-kwh-battery_variant_smx1-b06-assy-kt_description"
             }
@@ -22726,12 +22726,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/8f1a4d42-52c0-4b42-86c0-76fa9c9ef603.webp"],
               attributes: [],
               price: {
-                amount_minor: 1499,
+                amount_minor: 2990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 110
+                quantity: 106
               },
               description_localization_key: "spare_parts_product_charging-port-cap-gen-2_variant_smx1-pt-in-cap-op_description"
             }
@@ -22788,12 +22788,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/231123%20Charging%20Port%20Cover%20v1.webp"],
               attributes: [],
               price: {
-                amount_minor: 3449,
+                amount_minor: 4990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 3
+                quantity: 2
               },
               description_localization_key: "spare_parts_product_charging-port-cap-gen-1_variant_smx1-cb-cp-cap-kt_description"
             }
@@ -23192,7 +23192,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 22
+                quantity: 21
               },
               description_localization_key: "spare_parts_product_battery-hv-connector-cover_variant_std-co-0083_description"
             }
@@ -23404,7 +23404,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/admin/a1d2aefe-18ed-40aa-a272-9fed21c19c5f.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -23587,102 +23587,6 @@
           kit_contents: [],
           variants: [
             {
-              code: "3f6c5dcf-0f39-432b-a237-efd97b411125",
-              sku: "STD-CH-8000-AU",
-              stark_url: "https://starkfuture.com/parts-and-accessories/product/portable-charger-3-3-kw?variant=3f6c5dcf-0f39-432b-a237-efd97b411125",
-              image_urls: ["https://assets.starkfuture.com/spare-parts-images/SM%20Portable%20Charger%20spare%20parts.webp"],
-              attributes: [
-                {
-                  code: "location_charger",
-                  option_code: "AUS",
-                  option_display_name: "Australia / New Zealand",
-                  option_localization_key: "spare_parts_attribute_option_aus_name"
-                }
-              ],
-              price: {
-                amount_minor: 79900,
-                currency: "USD"
-              },
-              availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 6
-              },
-              description: "Portable charger Australia/New Zealand\n\nCompact, Powerful, and Built for Adventure\nAs the smallest and lightest charger in its class, it’s compact enough to fit easily into a backpack, making it ideal for travel and off-site charging. The portable charger can also be connected to an AC car charger using an adapter (not included).",
-              description_localization_key: "spare_parts_product_portable-charger-3-3-kw_variant_std-ch-8000-au_description"
-            },
-            {
-              code: "eabe310c-c944-4d2f-a6cd-b96286c28061",
-              sku: "STD-CH-8000-CH",
-              stark_url: "https://starkfuture.com/parts-and-accessories/product/portable-charger-3-3-kw?variant=eabe310c-c944-4d2f-a6cd-b96286c28061",
-              image_urls: ["https://assets.starkfuture.com/spare-parts-images/SM%20Portable%20Charger%20spare%20parts.webp"],
-              attributes: [
-                {
-                  code: "location_charger",
-                  option_code: "CH",
-                  option_display_name: "Switzerland",
-                  option_localization_key: "spare_parts_attribute_option_ch_name"
-                }
-              ],
-              price: {
-                amount_minor: 79900,
-                currency: "USD"
-              },
-              availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 5
-              },
-              description: "Portable charger Switzerland\n\nCompact, Powerful, and Built for Adventure\nAs the smallest and lightest charger in its class, it’s compact enough to fit easily into a backpack, making it ideal for travel and off-site charging. The portable charger can also be connected to an AC car charger using an adapter (not included).",
-              description_localization_key: "spare_parts_product_portable-charger-3-3-kw_variant_std-ch-8000-ch_description"
-            },
-            {
-              code: "871aee4e-c6ab-490d-a32d-7a9a7037a446",
-              sku: "STD-CH-8000-EU",
-              stark_url: "https://starkfuture.com/parts-and-accessories/product/portable-charger-3-3-kw?variant=871aee4e-c6ab-490d-a32d-7a9a7037a446",
-              image_urls: ["https://assets.starkfuture.com/spare-parts-images/SM%20Portable%20Charger%20spare%20parts.webp"],
-              attributes: [
-                {
-                  code: "location_charger",
-                  option_code: "EU",
-                  option_display_name: "Europe",
-                  option_localization_key: "spare_parts_attribute_option_eu_name"
-                }
-              ],
-              price: {
-                amount_minor: 79900,
-                currency: "USD"
-              },
-              availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 115
-              },
-              description: "Portable charger Europe\n\nCompact, Powerful, and Built for Adventure\nAs the smallest and lightest charger in its class, it’s compact enough to fit easily into a backpack, making it ideal for travel and off-site charging. The portable charger can also be connected to an AC car charger using an adapter (not included).",
-              description_localization_key: "spare_parts_product_portable-charger-3-3-kw_variant_std-ch-8000-eu_description"
-            },
-            {
-              code: "f01c3840-8081-43e7-a27e-b6e122a4263b",
-              sku: "STD-CH-8000-UK",
-              stark_url: "https://starkfuture.com/parts-and-accessories/product/portable-charger-3-3-kw?variant=f01c3840-8081-43e7-a27e-b6e122a4263b",
-              image_urls: ["https://assets.starkfuture.com/spare-parts-images/SM%20Portable%20Charger%20spare%20parts.webp"],
-              attributes: [
-                {
-                  code: "location_charger",
-                  option_code: "UK",
-                  option_display_name: "United Kingdom",
-                  option_localization_key: "spare_parts_attribute_option_uk_name"
-                }
-              ],
-              price: {
-                amount_minor: 79900,
-                currency: "USD"
-              },
-              availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 15
-              },
-              description: "Portable charger United Kingdom\n\nCompact, Powerful, and Built for Adventure\nAs the smallest and lightest charger in its class, it’s compact enough to fit easily into a backpack, making it ideal for travel and off-site charging. The portable charger can also be connected to an AC car charger using an adapter (not included).",
-              description_localization_key: "spare_parts_product_portable-charger-3-3-kw_variant_std-ch-8000-uk_description"
-            },
-            {
               code: "d193b79a-c6cd-4013-bce4-6b7603d21355",
               sku: "STD-CH-8000-US240",
               stark_url: "https://starkfuture.com/parts-and-accessories/product/portable-charger-3-3-kw?variant=d193b79a-c6cd-4013-bce4-6b7603d21355",
@@ -23701,7 +23605,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 51
+                quantity: 49
               },
               description_localization_key: "spare_parts_product_portable-charger-3-3-kw_variant_std-ch-8000-us240_description"
             }
@@ -23756,7 +23660,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/231123%20Stand%20v1.webp"],
               attributes: [],
               price: {
-                amount_minor: 17949,
+                amount_minor: 18900,
                 currency: "USD"
               },
               availability: {
@@ -23866,7 +23770,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-AC-CH-08.webp"],
               attributes: [],
               price: {
-                amount_minor: 3449,
+                amount_minor: 4990,
                 currency: "USD"
               },
               availability: {
@@ -23981,7 +23885,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 7
+                quantity: 6
               },
               description_localization_key: "spare_parts_product_stand-charger-front-cover-latch_variant_smx1-ac-ch-10_description"
             }
@@ -24031,7 +23935,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/I7380T-060020-08.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -24090,7 +23994,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-AC-CH-19.webp"],
               attributes: [],
               price: {
-                amount_minor: 449,
+                amount_minor: 690,
                 currency: "USD"
               },
               availability: {
@@ -24182,7 +24086,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 48
+                quantity: 46
               },
               description: "Stand charger Europe.\nThe original charger is more than a simple power source. It doubles as a stable, purpose-built stand that allows you to securely position your bike while charging. Its robust design ensures maximum stability and safety during the charging process and also provides the perfect setup for performing mechanical adjustments or maintenance on your Stark VARG.\nDoesn't include the stand/support that must be purchased separately if needed.\nIncludes both the power cord and the cable between the charger and the bike.\n3.3 kW charger\nCharging time is 2h at 240 V",
               description_localization_key: "spare_parts_product_stand-charger_variant_smx1-ac-ch-81-eu_description",
@@ -24207,7 +24111,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 19
+                quantity: 18
               },
               description_localization_key: "spare_parts_product_stand-charger_variant_smx1-ac-ch-81-us240_description",
               kit_contents: ["1 × Stand charger power cord (US/CA 240V)", "1 × VARG charging cable"]
@@ -24313,7 +24217,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/Placeholder.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -24423,7 +24327,7 @@
               image_urls: [],
               attributes: [],
               price: {
-                amount_minor: 1390,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
@@ -24483,7 +24387,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 46
+                quantity: 7
               },
               description_localization_key: "spare_parts_product_240v-120v-power-cord-adapter_variant_smx1-ac-ch-05-us001_description"
             }
@@ -24593,7 +24497,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 135
+                quantity: 134
               },
               description_localization_key: "spare_parts_product_stand-charger-power-cord-europe_variant_smx1-ac-ch-05-eu_description"
             }
@@ -24643,7 +24547,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/9f583a83-e76f-406e-9ba4-fcfa30486654.webp"],
               attributes: [],
               price: {
-                amount_minor: 4499,
+                amount_minor: 5990,
                 currency: "USD"
               },
               availability: {
@@ -24703,7 +24607,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 168
+                quantity: 167
               },
               description_localization_key: "spare_parts_product_stand-charger-power-cord-united-kingdom_variant_smx1-ac-ch-05-uk_description"
             }
@@ -24813,7 +24717,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 340
+                quantity: 337
               },
               description_localization_key: "spare_parts_product_varg-charging-cable_variant_smx1-ac-ch-02-wh_description"
             }
@@ -24973,12 +24877,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/e710ba62-4b7b-4230-a566-378be47e866c.webp"],
               attributes: [],
               price: {
-                amount_minor: 4499,
+                amount_minor: 5990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 39
+                quantity: 37
               },
               description_localization_key: "spare_parts_product_stand-charger-power-cord-united-states-canada-240v_variant_smx1-ac-ch-05-us240_description"
             }
@@ -25033,7 +24937,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 24
+                quantity: 22
               },
               description_localization_key: "spare_parts_product_radiator-assembly_variant_smx1-cl-rd_description"
             }
@@ -25196,7 +25100,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-FI-0002.webp"],
               attributes: [],
               price: {
-                amount_minor: 349,
+                amount_minor: 390,
                 currency: "USD"
               },
               availability: {
@@ -25303,7 +25207,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-CL-SB-01.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -25426,7 +25330,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 15
+                quantity: 13
               },
               description_localization_key: "spare_parts_product_water-pump-strap_variant_smx1-cl-fn-03_description"
             }
@@ -25599,7 +25503,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-CL-HS-01.webp"],
               attributes: [],
               price: {
-                amount_minor: 1499,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
@@ -25778,7 +25682,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-SC-0020.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -25908,7 +25812,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 26
+                quantity: 19
               },
               description: "Stark VARG phone for VARG MX 1.0 — EU version.\nThe original companion display for first-generation VARG MX 1.0 bikes.\nNot compatible with VARG MX 1.2, EX, or SM.\nThe phone must be installed in the docking station with the charging port towards the right.",
               description_localization_key: "spare_parts_product_stark-phone_variant_smx1-phone-eu_description"
@@ -25927,12 +25831,12 @@
                 }
               ],
               price: {
-                amount_minor: 34900,
+                amount_minor: 34999,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 411
+                quantity: 406
               },
               description_localization_key: "spare_parts_product_stark-phone_variant_smx1-phone-rw_description"
             }
@@ -25986,7 +25890,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 105
+                quantity: 101
               },
               description_localization_key: "spare_parts_product_arkenstone-phone_variant_smx1-phone-02-eu_description"
             },
@@ -26009,7 +25913,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 96
+                quantity: 93
               },
               description_localization_key: "spare_parts_product_arkenstone-phone_variant_smx1-phone-02-rw_description"
             }
@@ -26064,7 +25968,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 75
+                quantity: 59
               },
               description_localization_key: "spare_parts_product_arkenstone-screen-protector_variant_smx1-phone-02-sp_description"
             }
@@ -26119,7 +26023,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 15
+                quantity: 13
               },
               description_localization_key: "spare_parts_product_wireless-charging-module_variant_sex1-sf-d-ch-81_description"
             }
@@ -26174,7 +26078,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 52
+                quantity: 51
               },
               description_localization_key: "spare_parts_product_wireless-charging-module-2_variant_smx1-sf-d-ch_description"
             }
@@ -26221,7 +26125,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 48
+                quantity: 46
               },
               description_localization_key: "spare_parts_product_docking-station-mechanism_variant_smx1-sf-d-00_description"
             }
@@ -26323,7 +26227,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 46
+                quantity: 45
               },
               description_localization_key: "spare_parts_product_docking-station-foam_variant_smx1-sf-d-33_description"
             }
@@ -26463,12 +26367,12 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/SMX1-SF-D-14.webp"],
               attributes: [],
               price: {
-                amount_minor: 1499,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 40
+                quantity: 37
               },
               description_localization_key: "spare_parts_product_docking-station-small-foam_variant_smx1-sf-d-14_description"
             }
@@ -26565,7 +26469,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/STD-SC-0006.webp"],
               attributes: [],
               price: {
-                amount_minor: 249,
+                amount_minor: 290,
                 currency: "USD"
               },
               availability: {
@@ -26617,7 +26521,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 113
+                quantity: 109
               },
               description_localization_key: "spare_parts_product_m8x25-handlebar-clamp-bolt_variant_i14580-080025-08_description"
             }
@@ -26676,7 +26580,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 55
+                quantity: 51
               },
               description_localization_key: "spare_parts_product_wh_connector_endcap_variant_smx1-sf-d-37_description"
             }
@@ -26735,7 +26639,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 13
+                quantity: 11
               },
               description_localization_key: "spare_parts_product_varg-ex-sm-control-switch_variant_sex1-hb-sw-80_description"
             }
@@ -26833,7 +26737,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 28
+                quantity: 26
               },
               description_localization_key: "spare_parts_product_varg-mx-1-0-control-switch_variant_smx1-hb-sw_description"
             }
@@ -26880,7 +26784,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 45
+                quantity: 41
               },
               description_localization_key: "spare_parts_product_kill-switch_variant_sex1-hb-ks-80_description"
             }
@@ -26931,7 +26835,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 206
+                quantity: 184
               },
               description_localization_key: "spare_parts_product_varg-mx-1-2-ex-sm-throttle_variant_sex1-hb-05_description"
             }
@@ -26986,7 +26890,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 2470
+                quantity: 2465
               },
               description_localization_key: "spare_parts_product_varg-mx-1-0-throttle_variant_smx1-hb-05_description"
             }
@@ -27033,7 +26937,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 17
+                quantity: 16
               },
               description_localization_key: "spare_parts_product_horn-kit_variant_sex1-hm-hr-80_description"
             }
@@ -27134,8 +27038,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 9
+                status: "AVAILABLE_HQ",
+                quantity: 183
               },
               description_localization_key: "spare_parts_product_handlebar-7075-t6-28-6mm-with-internal-routing_variant_sex1-sf-hb-01_description"
             }
@@ -27292,7 +27196,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 56
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_grips-pair_variant_smx1-hb-gr-kt_description"
             }
@@ -27496,7 +27400,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 5
+                quantity: 4
               },
               description_localization_key: "spare_parts_product_north-star-headlight_variant_sex1-fr-l-85_description"
             }
@@ -27554,7 +27458,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 3
+                quantity: 2
               },
               description: "Silicone front left indicator, integrated directly into the front plate for a clean, streamlined look.\nCompatible with VARG EX and SM.\n\nNote that these indicators are not street legal in every country.\nWhen the homologation indicators supplied with the bike are installed and connected, the integrated indicators are automatically disabled.\n\nSold individually.",
               description_localization_key: "spare_parts_product_integrated-front-indicator_variant_sex1-fr-l-81_description"
@@ -27578,7 +27482,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 5
+                quantity: 4
               },
               description_localization_key: "spare_parts_product_integrated-front-indicator_variant_sex1-fr-l-82_description"
             }
@@ -27679,7 +27583,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 13
+                quantity: 12
               },
               description_localization_key: "spare_parts_product_front-indicator-set-us_variant_sex1-fr-l-88_description"
             }
@@ -27737,7 +27641,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 2
+                quantity: 1
               },
               description_localization_key: "spare_parts_product_left-front-indicator-bracket-us_variant_sex1-fr-l-05_description"
             }
@@ -27795,7 +27699,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 15
+                quantity: 14
               },
               description_localization_key: "spare_parts_product_right-front-indicator-bracket-us_variant_sex1-fr-l-06_description"
             }
@@ -27896,8 +27800,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 4
+                status: "NOT_AVAILABLE",
+                quantity: 0
               },
               description_localization_key: "spare_parts_product_6x14-t30-front-and-rear-lights-bolt_variant_std-sc-0041_description"
             }
@@ -27948,8 +27852,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE",
-                quantity: 1
+                status: "AVAILABLE_HQ",
+                quantity: 78
               },
               description_localization_key: "spare_parts_product_tail-light_variant_sex1-re-l-80_description"
             }
@@ -28078,7 +27982,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 60
+                quantity: 56
               },
               description_localization_key: "spare_parts_product_rear-indicator-set-eu_variant_sex1-re-l-87_description"
             }
@@ -28125,7 +28029,7 @@
               },
               availability: {
                 status: "AVAILABLE_HQ",
-                quantity: 40
+                quantity: 18
               },
               description_localization_key: "spare_parts_product_rear-indicator-set-us_variant_sex1-re-l-88_description"
             }
@@ -28223,7 +28127,7 @@
               },
               availability: {
                 status: "AVAILABLE",
-                quantity: 29
+                quantity: 27
               },
               description_localization_key: "spare_parts_product_rear-indicator-bushing_variant_std-bu-0026_description"
             }
@@ -28270,7 +28174,7 @@
               image_urls: ["https://assets.starkfuture.com/spare-parts-images/251217_SpareParts___%40syovanvliet_81682_WEB.jpg"],
               attributes: [],
               price: {
-                amount_minor: 86949,
+                amount_minor: 87900,
                 currency: "USD"
               },
               availability: {
@@ -28521,8 +28425,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "NOT_AVAILABLE",
-                quantity: 0
+                status: "AVAILABLE_HQ",
+                quantity: 181
               },
               description_localization_key: "spare_parts_product_original-seat-skoll_variant_ssm1-p-st-b_description"
             }
@@ -28583,7 +28487,7 @@
                 }
               ],
               price: {
-                amount_minor: 990,
+                amount_minor: 1990,
                 currency: "USD"
               },
               availability: {
@@ -28649,7 +28553,7 @@
                 }
               ],
               price: {
-                amount_minor: 9075,
+                amount_minor: 9990,
                 currency: "USD"
               },
               availability: {
@@ -28712,8 +28616,8 @@
                 currency: "USD"
               },
               availability: {
-                status: "AVAILABLE_HQ",
-                quantity: 53
+                status: "AVAILABLE",
+                quantity: 2
               },
               description_localization_key: "spare_parts_product_front_brake_pads_galfer_variant_smx1-br-fw-10_description"
             }
